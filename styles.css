@@ -191,12 +191,64 @@ body {
 .vehicle-visual::before { content: ""; position: absolute; inset: auto 8% 4% 8%; height: 18%; background: radial-gradient(ellipse, rgba(45,214,255,0.32), transparent 68%); filter: blur(18px); z-index: 1; }
 .vehicle-visual img { width: 100%; height: 100%; min-height: 430px; object-fit: cover; display: block; opacity: 0.95; transform: scale(1.01); transition: opacity 220ms ease, transform 450ms ease; }
 .vehicle-visual.is-swapping img { opacity: 0; transform: scale(1.045); }
-.callout { position: absolute; left: var(--x); top: var(--y); border: 0; background: transparent; color: var(--ink); cursor: pointer; z-index: 2; transform: translate(-50%, -50%); }
-.callout span { display: block; width: 10px; height: 10px; border-radius: 999px; background: var(--accent-2) transform: translateX (6px); box-shadow: 0 0 0 4px rgba(247,183,51,0.15), 0 0 12px rgba(247,183,51,0.55); animation: calloutPulse 1.65s ease-in-out infinite; }
-.callout em { position: absolute; left: 22px; top: -42px; width: max-content; max-width: 190px; padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.16); background: rgba(3,7,13,0.76); font-style: normal; font-size: 0.78rem; box-shadow: 0 12px 34px rgba(0,0,0,0.4); }
-.callout em::after { content: ""; position: absolute; left: 8px; bottom: -28px; width: 1px; height: 28px; background: linear-gradient(var(--accent-2), transparent); transform: rotate(24deg); transform-origin: top; }
-.callout-2 span { animation-delay: 0.3s; }
-.callout-3 span { animation-delay: 0.6s; }
+.callout {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+}
+
+/* Hide the yellow dots */
+.callout span {
+  display: none;
+}
+
+/* Floating label */
+.callout em {
+  display: block;
+  position: relative;
+  width: max-content;
+  max-width: 220px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(247,183,51,0.45);
+  background: rgba(3,7,13,0.78);
+  color: var(--ink);
+  font-style: normal;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.35;
+  box-shadow:
+    0 0 0 0 rgba(247,183,51,0.20),
+    0 12px 34px rgba(0,0,0,0.42);
+  animation: labelPulse 1.8s ease-in-out infinite;
+}
+
+/* Remove connector line */
+.callout em::after {
+  display: none;
+}
+
+@keyframes labelPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 0 rgba(247,183,51,0.18),
+      0 12px 34px rgba(0,0,0,0.42);
+    transform: scale(1);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 8px rgba(247,183,51,0.05),
+      0 16px 42px rgba(0,0,0,0.55);
+    transform: scale(1.03);
+  }
+}
 
 .price-card { border: 1px solid var(--line); background: var(--panel-strong); box-shadow: var(--shadow); backdrop-filter: blur(22px); border-radius: 24px; padding: 20px; overflow: visible; }
 .price-card-header { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(220px, 0.55fr); gap: 18px; align-items: end; margin-bottom: 18px; }
