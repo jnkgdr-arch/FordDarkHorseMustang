@@ -1,175 +1,297 @@
-diff --git a/index.html b/index.html
-new file mode 100644
-index 0000000000000000000000000000000000000000..d67be621232ded6d7c3a90ca10f258e7ce6cad9c
---- /dev/null
-+++ b/index.html
-@@ -0,0 +1,169 @@
-+<!DOCTYPE html>
-+<html lang="en">
-+  <head>
-+    <meta charset="UTF-8" />
-+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-+    <title>Ford Mustang Dark Horse | Global Marketing Dashboard</title>
-+    <link rel="preconnect" href="https://fonts.googleapis.com" />
-+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-+    <link rel="stylesheet" href="./styles.css" />
-+  </head>
-+  <body>
-+    <div class="backdrop" aria-hidden="true"></div>
-+    <div class="dashboard-shell">
-+      <aside class="sidebar" aria-label="Market navigation">
-+        <div class="brand-lockup">
-+          <span class="brand-mark">DH</span>
-+          <div>
-+            <p>Ford Mustang</p>
-+            <h1>Dark Horse</h1>
-+          </div>
-+        </div>
-+
-+        <section class="map-card" aria-labelledby="map-heading">
-+          <div class="section-kicker">Global Scope</div>
-+          <h2 id="map-heading">Priority launch markets</h2>
-+          <div class="world-map globe-map" role="group" aria-label="Dark globe market selector with glowing markers for the United States, United Kingdom and Kuwait">
-+            <svg class="globe-svg" viewBox="0 0 360 360" focusable="false">
-+              <defs>
-+                <radialGradient id="globeOcean" cx="33%" cy="28%" r="72%">
-+                  <stop offset="0%" stop-color="#1a5267" />
-+                  <stop offset="42%" stop-color="#0d2635" />
-+                  <stop offset="100%" stop-color="#050910" />
-+                </radialGradient>
-+                <linearGradient id="globeLand" x1="0" y1="0" x2="1" y2="1">
-+                  <stop offset="0" stop-color="#294b52" />
-+                  <stop offset="1" stop-color="#101c25" />
-+                </linearGradient>
-+                <filter id="globeGlow" x="-40%" y="-40%" width="180%" height="180%">
-+                  <feGaussianBlur stdDeviation="5" result="blur" />
-+                  <feMerge>
-+                    <feMergeNode in="blur" />
-+                    <feMergeNode in="SourceGraphic" />
-+                  </feMerge>
-+                </filter>
-+              </defs>
-+
-+              <circle class="globe-halo" cx="180" cy="180" r="154" />
-+              <circle class="globe-ocean" cx="180" cy="180" r="138" />
-+              <g class="globe-grid" aria-hidden="true">
-+                <ellipse cx="180" cy="180" rx="138" ry="48" />
-+                <ellipse cx="180" cy="180" rx="138" ry="86" />
-+                <ellipse cx="180" cy="180" rx="52" ry="138" />
-+                <ellipse cx="180" cy="180" rx="95" ry="138" />
-+                <path d="M42 180h276" />
-+                <path d="M180 42v276" />
-+              </g>
-+
-+              <g class="globe-landmasses" aria-hidden="true">
-+                <path d="M72 126c16-30 50-48 83-43 25 4 37 21 30 39-6 16-28 15-33 31-5 15 14 25 8 42-8 23-48 22-70 5-28-22-35-50-18-74Z" />
-+                <path d="M185 83c29-13 63-9 88 12 24 20 28 43 14 58-15 17-42 5-56 21-14 16 4 43-18 58-18 12-50 1-66-24-24-38-10-101 38-125Z" />
-+                <path d="M226 207c22-13 54-5 65 18 11 22-2 52-26 63-26 12-60-2-66-27-5-19 8-43 27-54Z" />
-+                <path d="M117 221c23 3 39 19 36 37-4 22-34 32-56 18-22-13-29-48-13-58 8-5 19 1 33 3Z" />
-+              </g>
-+
-+              <g class="market-highlight market-highlight-usa" aria-hidden="true">
-+                <path d="M82 135c20-20 55-24 76-7 17 14 14 40-4 51-23 14-60 5-74-15-6-9-6-20 2-29Z" />
-+              </g>
-+              <g class="market-highlight market-highlight-uk" aria-hidden="true">
-+                <path d="M196 118c10-8 26-6 32 4 5 9-1 22-13 24-12 2-25-6-27-15-1-5 2-10 8-13Z" />
-+              </g>
-+              <g class="market-highlight market-highlight-kuwait" aria-hidden="true">
-+                <path d="M247 178c12-5 26 2 28 14 2 11-9 21-22 18-11-2-19-13-16-22 1-5 5-8 10-10Z" />
-+              </g>
-+
-+              <path class="globe-route" d="M112 151 C152 104 184 100 209 132" aria-hidden="true" />
-+              <path class="globe-route" d="M209 132 C230 145 245 166 257 194" aria-hidden="true" />
-+              <path class="globe-route" d="M112 151 C160 223 218 224 257 194" aria-hidden="true" />
-+
-+              <g class="pin globe-pin pin-usa" data-market="usa" tabindex="0" role="button" aria-label="Show USA market">
-+                <circle class="pin-pulse" r="17" cx="112" cy="151" />
-+                <circle class="pin-core" r="6" cx="112" cy="151" />
-+                <text x="112" y="129">USA</text>
-+              </g>
-+              <g class="pin globe-pin pin-uk" data-market="uk" tabindex="0" role="button" aria-label="Show UK market">
-+                <circle class="pin-pulse" r="17" cx="209" cy="132" />
-+                <circle class="pin-core" r="6" cx="209" cy="132" />
-+                <text x="209" y="110">UK</text>
-+              </g>
-+              <g class="pin globe-pin pin-kuwait" data-market="kuwait" tabindex="0" role="button" aria-label="Show Kuwait market">
-+                <circle class="pin-pulse" r="17" cx="257" cy="194" />
-+                <circle class="pin-core" r="6" cx="257" cy="194" />
-+                <text x="257" y="225">KWT</text>
-+              </g>
-+            </svg>
-+          </div>
-+        </section>
-+
-+        <nav class="country-nav" aria-label="Select country">
-+          <button class="country-button active" data-market="usa" type="button">
-+            <span>USA</span><strong>Core performance halo</strong>
-+          </button>
-+          <button class="country-button" data-market="uk" type="button">
-+            <span>UK</span><strong>Precision enthusiast niche</strong>
-+          </button>
-+          <button class="country-button" data-market="kuwait" type="button">
-+            <span>Kuwait</span><strong>Luxury V8 statement</strong>
-+          </button>
-+        </nav>
-+
-+        <div class="sidebar-footer">
-+          <p>Strategy model</p>
-+          <strong>Product × Price × Brand × Channel</strong>
-+        </div>
-+      </aside>
-+
-+      <main class="main-panel">
-+        <header class="hero-header">
-+          <div>
-+            <div class="section-kicker">Global Marketing Strategy Dashboard</div>
-+            <h2 id="market-title">United States</h2>
-+            <p id="market-subtitle">Defend the Mustang's home-market performance crown while converting track-day aspiration into premium Dark Horse demand.</p>
-+          </div>
-+          <div class="header-metrics" aria-label="Market summary metrics">
-+            <div><span id="metric-a">5.0L</span><small>Coyote V8 hero</small></div>
-+            <div><span id="metric-b">500 hp</span><small>Performance story</small></div>
-+            <div><span id="metric-c">Track</span><small>Positioning edge</small></div>
-+          </div>
-+        </header>
-+
-+        <section class="vehicle-stage" aria-label="Vehicle feature callouts">
-+          <div class="vehicle-copy">
-+            <p class="eyebrow" id="market-kicker">USA market play</p>
-+            <h3 id="vehicle-headline">Own the attainable track weapon segment.</h3>
-+            <p id="vehicle-summary">Lead with authentic American performance, motorsport credibility and personalization that makes the Dark Horse feel both rare and reachable.</p>
-+          </div>
-+          <div class="vehicle-visual">
-+            <img id="vehicle-image" src="assets/us-mustang.jpg" alt="Ford Mustang Dark Horse for the United States strategy" />
-+            <button class="callout callout-1" style="--x: 28%; --y: 45%" type="button"><span></span><em id="callout-1">Track aero story</em></button>
-+            <button class="callout callout-2" style="--x: 55%; --y: 39%" type="button"><span></span><em id="callout-2">Coyote V8 proof point</em></button>
-+            <button class="callout callout-3" style="--x: 72%; --y: 61%" type="button"><span></span><em id="callout-3">Premium wheel package</em></button>
-+          </div>
-+        </section>
-+
-+        <section class="price-card" aria-labelledby="price-chart-title">
-+          <div class="price-card-header">
-+            <div>
-+              <div class="section-kicker">USD-equivalent MSRP benchmark</div>
-+              <h3 id="price-chart-title">Global Price Comparison</h3>
-+            </div>
-+            <p>Base / starting prices from the strategy essay, normalized to USD for cross-market comparison.</p>
-+          </div>
-+          <div class="price-chart" id="price-chart" role="img" aria-label="Bar chart comparing Mustang Dark Horse prices: United States $62,230, United Kingdom $94,320, Kuwait $72,698."></div>
-+        </section>
-+
-+        <section class="strategy-grid" aria-label="Marketing strategy sections">
-+          <article class="strategy-card"><span>01</span><h3>Product Adaptation</h3><p id="product-text"></p></article>
-+          <article class="strategy-card"><span>02</span><h3>Pricing Strategy</h3><p id="pricing-text"></p></article>
-+          <article class="strategy-card"><span>03</span><h3>Branding</h3><p id="branding-text"></p></article>
-+          <article class="strategy-card"><span>04</span><h3>IMC</h3><p id="imc-text"></p></article>
-+          <article class="strategy-card"><span>05</span><h3>Logistics</h3><p id="logistics-text"></p></article>
-+          <article class="strategy-card"><span>06</span><h3>Market Drivers</h3><p id="drivers-text"></p></article>
-+        </section>
-+      </main>
-+    </div>
-+
-+    <script src="./script.js"></script>
-+  </body>
-+</html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ford Mustang Dark Horse | Global Marketing Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+
+  <body>
+    <div class="backdrop" aria-hidden="true"></div>
+
+    <div class="dashboard-shell">
+      <aside class="sidebar" aria-label="Market navigation">
+        <div class="brand-lockup">
+          <span class="brand-mark">DH</span>
+          <div>
+            <p>Ford Mustang</p>
+            <h1>Dark Horse</h1>
+          </div>
+        </div>
+
+        <section class="map-card" aria-labelledby="map-heading">
+          <div class="section-kicker">Global Scope</div>
+          <h2 id="map-heading">Priority launch markets</h2>
+
+          <div
+            class="world-map globe-map"
+            role="group"
+            aria-label="Dark globe market selector with highlighted markets for the United States, United Kingdom, and Kuwait"
+          >
+            <svg class="globe-svg" viewBox="0 0 360 360" focusable="false">
+              <defs>
+                <radialGradient id="globeOcean" cx="33%" cy="28%" r="72%">
+                  <stop offset="0%" stop-color="#1a5267" />
+                  <stop offset="42%" stop-color="#0d2635" />
+                  <stop offset="100%" stop-color="#050910" />
+                </radialGradient>
+
+                <linearGradient id="globeLand" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#294b52" />
+                  <stop offset="1" stop-color="#101c25" />
+                </linearGradient>
+
+                <filter id="globeGlow" x="-40%" y="-40%" width="180%" height="180%">
+                  <feGaussianBlur stdDeviation="5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+
+              <circle class="globe-halo" cx="180" cy="180" r="154"></circle>
+              <circle class="globe-ocean" cx="180" cy="180" r="138"></circle>
+
+              <g class="globe-grid" aria-hidden="true">
+                <ellipse cx="180" cy="180" rx="138" ry="48"></ellipse>
+                <ellipse cx="180" cy="180" rx="138" ry="86"></ellipse>
+                <ellipse cx="180" cy="180" rx="52" ry="138"></ellipse>
+                <ellipse cx="180" cy="180" rx="95" ry="138"></ellipse>
+                <path d="M42 180h276"></path>
+                <path d="M180 42v276"></path>
+              </g>
+
+              <g class="globe-landmasses" aria-hidden="true">
+                <path d="M72 126c16-30 50-48 83-43 25 4 37 21 30 39-6 16-28 15-33 31-5 15 14 25 8 42-8 23-48 22-70 5-28-22-35-50-18-74Z"></path>
+                <path d="M185 83c29-13 63-9 88 12 24 20 28 43 14 58-15 17-42 5-56 21-14 16 4 43-18 58-18 12-50 1-66-24-24-38-10-101 38-125Z"></path>
+                <path d="M226 207c22-13 54-5 65 18 11 22-2 52-26 63-26 12-60-2-66-27-5-19 8-43 27-54Z"></path>
+                <path d="M117 221c23 3 39 19 36 37-4 22-34 32-56 18-22-13-29-48-13-58 8-5 19 1 33 3Z"></path>
+              </g>
+
+              <g class="market-highlight market-highlight-usa" aria-hidden="true">
+                <path d="M82 135c20-20 55-24 76-7 17 14 14 40-4 51-23 14-60 5-74-15-6-9-6-20 2-29Z"></path>
+              </g>
+
+              <g class="market-highlight market-highlight-uk" aria-hidden="true">
+                <path d="M196 118c10-8 26-6 32 4 5 9-1 22-13 24-12 2-25-6-27-15-1-5 2-10 8-13Z"></path>
+              </g>
+
+              <g class="market-highlight market-highlight-kuwait" aria-hidden="true">
+                <path d="M247 178c12-5 26 2 28 14 2 11-9 21-22 18-11-2-19-13-16-22 1-5 5-8 10-10Z"></path>
+              </g>
+
+              <path class="globe-route" d="M112 151 C152 104 184 100 209 132" aria-hidden="true"></path>
+              <path class="globe-route" d="M209 132 C230 145 245 166 257 194" aria-hidden="true"></path>
+              <path class="globe-route" d="M112 151 C160 223 218 224 257 194" aria-hidden="true"></path>
+
+              <g
+                class="pin globe-pin pin-usa active"
+                data-market="usa"
+                tabindex="0"
+                role="button"
+                aria-pressed="true"
+                aria-label="Show United States market"
+              >
+                <circle class="pin-pulse" r="17" cx="112" cy="151"></circle>
+                <circle class="pin-core" r="6" cx="112" cy="151"></circle>
+                <text x="112" y="129">USA</text>
+              </g>
+
+              <g
+                class="pin globe-pin pin-uk"
+                data-market="uk"
+                tabindex="0"
+                role="button"
+                aria-pressed="false"
+                aria-label="Show United Kingdom market"
+              >
+                <circle class="pin-pulse" r="17" cx="209" cy="132"></circle>
+                <circle class="pin-core" r="6" cx="209" cy="132"></circle>
+                <text x="209" y="110">UK</text>
+              </g>
+
+              <g
+                class="pin globe-pin pin-kuwait"
+                data-market="kuwait"
+                tabindex="0"
+                role="button"
+                aria-pressed="false"
+                aria-label="Show Kuwait market"
+              >
+                <circle class="pin-pulse" r="17" cx="257" cy="194"></circle>
+                <circle class="pin-core" r="6" cx="257" cy="194"></circle>
+                <text x="257" y="225">KWT</text>
+              </g>
+            </svg>
+          </div>
+        </section>
+
+        <nav class="country-nav" aria-label="Select country">
+          <button class="country-button active" data-market="usa" type="button" aria-pressed="true">
+            <span>USA</span>
+            <strong>Core performance halo</strong>
+          </button>
+
+          <button class="country-button" data-market="uk" type="button" aria-pressed="false">
+            <span>UK</span>
+            <strong>Precision enthusiast niche</strong>
+          </button>
+
+          <button class="country-button" data-market="kuwait" type="button" aria-pressed="false">
+            <span>Kuwait</span>
+            <strong>Luxury V8 statement</strong>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <p>Strategy model</p>
+          <strong>Product × Price × Brand × Channel</strong>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="hero-header">
+          <div>
+            <div class="section-kicker">Global Marketing Strategy Dashboard</div>
+            <h2 id="market-title">United States</h2>
+            <p id="market-subtitle">
+              Defend the Mustang's home-market performance crown while converting track-day aspiration into premium Dark Horse demand.
+            </p>
+          </div>
+
+          <div class="header-metrics" aria-label="Market summary metrics">
+            <div>
+              <span id="metric-a">5.0L</span>
+              <small>Coyote V8 hero</small>
+            </div>
+
+            <div>
+              <span id="metric-b">500 hp</span>
+              <small>Performance story</small>
+            </div>
+
+            <div>
+              <span id="metric-c">Track</span>
+              <small>Positioning edge</small>
+            </div>
+          </div>
+        </header>
+
+        <section class="vehicle-stage" aria-label="Vehicle feature callouts">
+          <div class="vehicle-copy">
+            <p class="eyebrow" id="market-kicker">USA market play</p>
+            <h3 id="vehicle-headline">Own the attainable track weapon segment.</h3>
+            <p id="vehicle-summary">
+              Lead with authentic American performance, motorsport credibility and personalization that makes the Dark Horse feel both rare and reachable.
+            </p>
+          </div>
+
+          <div class="vehicle-visual">
+            <img
+              id="vehicle-image"
+              src="assets/us-mustang.jpg"
+              alt="Ford Mustang Dark Horse for the United States strategy"
+            />
+
+            <button class="callout callout-1" style="--x: 28%; --y: 45%" type="button">
+              <span></span>
+              <em id="callout-1">Track aero story</em>
+            </button>
+
+            <button class="callout callout-2" style="--x: 55%; --y: 39%" type="button">
+              <span></span>
+              <em id="callout-2">Coyote V8 proof point</em>
+            </button>
+
+            <button class="callout callout-3" style="--x: 72%; --y: 61%" type="button">
+              <span></span>
+              <em id="callout-3">Premium wheel package</em>
+            </button>
+          </div>
+        </section>
+
+        <section class="price-card" aria-labelledby="price-chart-title">
+          <div class="price-card-header">
+            <div>
+              <div class="section-kicker">USD-equivalent MSRP benchmark</div>
+              <h3 id="price-chart-title">Global Price Comparison</h3>
+            </div>
+
+            <p>
+              Base / starting prices from the strategy essay, normalized to USD for cross-market comparison.
+            </p>
+          </div>
+
+          <div
+            class="price-chart"
+            id="price-chart"
+            role="img"
+            aria-label="Bar chart comparing Mustang Dark Horse prices: United States $62,230, United Kingdom $94,320, Kuwait $72,698."
+          ></div>
+        </section>
+
+        <section class="strategy-grid" aria-label="Marketing strategy sections">
+          <article class="strategy-card">
+            <span>01</span>
+            <h3>Product Adaptation</h3>
+            <p id="product-text">
+              Offer handling package, appearance packs and track-day accessories; keep the manual-transmission narrative prominent for enthusiast credibility.
+            </p>
+          </article>
+
+          <article class="strategy-card">
+            <span>02</span>
+            <h3>Pricing Strategy</h3>
+            <p id="pricing-text">
+              Use premium-plus pricing above GT with finance offers tied to limited allocations, loyalty incentives and high-margin personalization bundles.
+            </p>
+          </article>
+
+          <article class="strategy-card">
+            <span>03</span>
+            <h3>Branding</h3>
+            <p id="branding-text">
+              Frame Dark Horse as the modern evolution of American muscle: precise, serious and engineered for drivers who want a road-to-track halo.
+            </p>
+          </article>
+
+          <article class="strategy-card">
+            <span>04</span>
+            <h3>IMC</h3>
+            <p id="imc-text">
+              Blend motorsport content, dealer track events, creator test drives, configurator retargeting and launch films around V8 sound and lap-time proof.
+            </p>
+          </article>
+
+          <article class="strategy-card">
+            <span>05</span>
+            <h3>Logistics</h3>
+            <p id="logistics-text">
+              Prioritize allocation to performance-certified dealers, support quick parts availability and use regional events to forecast accessory demand.
+            </p>
+          </article>
+
+          <article class="strategy-card">
+            <span>06</span>
+            <h3>Market Drivers</h3>
+            <p id="drivers-text">
+              Home-market pride, track-day culture, customization, V8 scarcity and the emotional pull of Mustang heritage create high purchase intent.
+            </p>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="./script.js" defer></script>
+  </body>
+</html>
