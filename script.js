@@ -12,7 +12,7 @@ const markets = {
     callouts: [
       { text: "Track aero story", x: "28%", y: "45%" },
       { text: "Coyote V8 proof point", x: "55%", y: "39%" },
-      { text: "Premium wheel package", x: "72%", y: "61%" }
+      { text: "Premium wheel package", x: "60%", y: "61%" }
     ],
     sections: {
       product: "Offer handling package, appearance packs and track-day accessories; keep the manual-transmission narrative prominent for enthusiast credibility.",
@@ -35,9 +35,9 @@ const markets = {
     metrics: ["RHD", "Limited", "V8"],
     metricLabels: ["Market fit", "Supply signal", "Emotional hook"],
     callouts: [
-      { text: "Right-hand-drive appeal", x: "31%", y: "47%" },
+      { text: "Right-hand-drive appeal", x: "21%", y: "37%" },
       { text: "B-road handling tune", x: "57%", y: "43%" },
-      { text: "Collector specification", x: "76%", y: "63%" }
+      { text: "Collector specification", x: "40%", y: "51%" }
     ],
     sections: {
       product: "Tune messaging around right-hand-drive usability, MagneRide composure, premium cabin materials and options that suit narrower UK roads.",
@@ -60,9 +60,9 @@ const markets = {
     metrics: ["Heat", "Luxury", "V8"],
     metricLabels: ["Climate proof", "Retail tone", "Demand trigger"],
     callouts: [
-      { text: "Cooling confidence", x: "33%", y: "46%" },
+      { text: "Cooling confidence", x: "15%", y: "36%" },
       { text: "Premium interior focus", x: "56%", y: "41%" },
-      { text: "High-impact stance", x: "76%", y: "64%" }
+      { text: "High-impact stance", x: "55%", y: "60%" }
     ],
     sections: {
       product: "Highlight GCC-ready cooling, summer reliability, ceramic tint recommendations, premium trims and appearance packages with high visual presence.",
