@@ -33,7 +33,7 @@ index 0000000000000000000000000000000000000000..554f0c2343da2e22a4b2807ed2a29a6f
 +  background:
 +    linear-gradient(115deg, rgba(3, 7, 13, 0.94), rgba(6, 10, 18, 0.78) 44%, rgba(3, 7, 13, 0.96)),
 +    radial-gradient(circle at 78% 18%, rgba(45, 214, 255, 0.18), transparent 34%),
-+    url("assets/background-mustang.jpg") center/cover no-repeat;
++    url("assets/background-reference.png") center/cover no-repeat;
 +  z-index: -2;
 +}
 +
@@ -120,7 +120,7 @@ index 0000000000000000000000000000000000000000..554f0c2343da2e22a4b2807ed2a29a6f
 +.sidebar-footer strong { display: block; margin-top: 6px; font-size: 0.88rem; }
 +
 +.main-panel { border-radius: 30px; padding: 24px; display: flex; flex-direction: column; gap: 18px; position: relative; overflow: visible; }
-+.main-panel::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: url("assets/dashboard-reference.png") center/cover no-repeat; opacity: 0.045; mix-blend-mode: screen; pointer-events: none; }
++.main-panel::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: url("assets/background-reference.png") center/cover no-repeat; opacity: 0.045; mix-blend-mode: screen; pointer-events: none; }
 +.main-panel > * { position: relative; z-index: 1; }
 +.hero-header { display: grid; grid-template-columns: minmax(0, 1fr) minmax(360px, 0.42fr); align-items: start; gap: 24px; overflow: visible; }
 +.hero-header h2 { margin: 10px 0 8px; font: 800 clamp(2.2rem, 5vw, 5.2rem)/0.92 Space Grotesk, sans-serif; letter-spacing: -0.06em; }
