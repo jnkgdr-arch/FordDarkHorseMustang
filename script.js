@@ -37,7 +37,7 @@ const markets = {
     callouts: [
       { text: "Right-hand-drive appeal", x: "41%", y: "40%" },
       { text: "B-road handling tune", x: "67%", y: "53%" },
-      { text: "Collector specification", x: "20%", y: "44%" }
+      { text: "Collector specification", x: "20%", y: "50%" }
     ],
     sections: {
       product: "Tune messaging around right-hand-drive usability, MagneRide composure, premium cabin materials and options that suit narrower UK roads.",
