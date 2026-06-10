@@ -1,7 +1,6 @@
- (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
 diff --git a/index.html b/index.html
 new file mode 100644
-index 0000000000000000000000000000000000000000..e3429bee495184bdc4ffbdccd10641f6dc19b3a1
+index 0000000000000000000000000000000000000000..d67be621232ded6d7c3a90ca10f258e7ce6cad9c
 --- /dev/null
 +++ b/index.html
 @@ -0,0 +1,169 @@
@@ -14,7 +13,7 @@ index 0000000000000000000000000000000000000000..e3429bee495184bdc4ffbdccd10641f6
 +    <link rel="preconnect" href="https://fonts.googleapis.com" />
 +    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 +    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-+    <link rel="stylesheet" href="styles.css" />
++    <link rel="stylesheet" href="./styles.css" />
 +  </head>
 +  <body>
 +    <div class="backdrop" aria-hidden="true"></div>
@@ -171,9 +170,6 @@ index 0000000000000000000000000000000000000000..e3429bee495184bdc4ffbdccd10641f6
 +      </main>
 +    </div>
 +
-+    <script src="script.js"></script>
++    <script src="./script.js"></script>
 +  </body>
 +</html>
- 
-EOF
-)
