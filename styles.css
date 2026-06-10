@@ -224,6 +224,9 @@ body {
   font-weight: 600;
   line-height: 1.25;
   box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+
+  /* Add this */
+  animation: labelPulse 1.8s ease-in-out infinite;
 }
 
 /* Remove connector line */
