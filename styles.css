@@ -116,13 +116,52 @@ body {
 .main-panel { border-radius: 30px; padding: 24px; display: flex; flex-direction: column; gap: 18px; position: relative; overflow: visible; }
 .main-panel::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: url("assets/background-reference.png") center/cover no-repeat; opacity: 0.045; mix-blend-mode: screen; pointer-events: none; }
 .main-panel > * { position: relative; z-index: 1; }
-.hero-header { display: grid; grid-template-columns: minmax(0, 1fr) minmax(360px, 0.42fr); align-items: start; gap: 24px; overflow: visible; }
-.hero-header h2 { margin: 10px 0 8px; font: 800 clamp(2.2rem, 5vw, 5.2rem)/0.92 Space Grotesk, sans-serif; letter-spacing: -0.06em; }
-.hero-header p { max-width: 830px; margin: 0; color: #cbd2dc; font-size: 1.02rem; line-height: 1.7; }
-.header-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; gap: 12px; min-width: 0; width: 100%; max-width: 100%; overflow: visible; }
-.header-metrics div { min-width: 0; min-height: 104px; padding: 18px 14px; border-radius: 18px; background: rgba(255,255,255,0.06); border: 1px solid var(--line); display: flex; flex-direction: column; justify-content: center; gap: 9px; overflow: visible; }
-.header-metrics span { display: block; font: 800 clamp(1.05rem, 1.9vw, 1.42rem)/1.15 Space Grotesk, sans-serif; color: var(--accent); white-space: normal; overflow-wrap: anywhere; }
-.header-metrics small { color: var(--muted); display: block; font-size: 0.78rem; line-height: 1.38; white-space: normal; overflow-wrap: anywhere; }
+.hero-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+  overflow: visible;
+}
+
+.header-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 12px;
+  width: 100%;
+  overflow: visible;
+}
+
+.header-metrics div {
+  min-width: 0;
+  min-height: 128px;
+  padding: 20px 16px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  overflow: visible;
+}
+
+.header-metrics span {
+  display: block;
+  font: 800 clamp(1.1rem, 2vw, 1.6rem)/1.15 Space Grotesk, sans-serif;
+  color: var(--accent);
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.header-metrics small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
 .header-metrics::-webkit-scrollbar { height: 6px; }
 .header-metrics::-webkit-scrollbar-thumb { background: rgba(45,214,255,0.28); border-radius: 999px; }
 
