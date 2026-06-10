@@ -11,7 +11,7 @@ const markets = {
     metricLabels: ["Coyote V8 hero", "Performance story", "Positioning edge"],
     callouts: [
       { text: "Track aero story", x: "28%", y: "45%" },
-      { text: "Coyote V8 proof point", x: "55%", y: "39%" },
+      { text: "Coyote V8 proof point", x: "55%", y: "19%" },
       { text: "Premium wheel package", x: "60%", y: "61%" }
     ],
     sections: {
@@ -36,8 +36,8 @@ const markets = {
     metricLabels: ["Market fit", "Supply signal", "Emotional hook"],
     callouts: [
       { text: "Right-hand-drive appeal", x: "41%", y: "37%" },
-      { text: "B-road handling tune", x: "67%", y: "43%" },
-      { text: "Collector specification", x: "20%", y: "34%" }
+      { text: "B-road handling tune", x: "67%", y: "73%" },
+      { text: "Collector specification", x: "20%", y: "64%" }
     ],
     sections: {
       product: "Tune messaging around right-hand-drive usability, MagneRide composure, premium cabin materials and options that suit narrower UK roads.",
@@ -60,9 +60,9 @@ const markets = {
     metrics: ["Heat", "Luxury", "V8"],
     metricLabels: ["Climate proof", "Retail tone", "Demand trigger"],
     callouts: [
-      { text: "Cooling confidence", x: "15%", y: "26%" },
+      { text: "Cooling confidence", x: "15%", y: "56%" },
       { text: "Premium interior focus", x: "56%", y: "41%" },
-      { text: "High-impact stance", x: "55%", y: "60%" }
+      { text: "High-impact stance", x: "66%", y: "60%" }
     ],
     sections: {
       product: "Highlight GCC-ready cooling, summer reliability, ceramic tint recommendations, premium trims and appearance packages with high visual presence.",
