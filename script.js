@@ -55,7 +55,7 @@ const markets = {
     kicker: "Kuwait market play",
     headline: "Fuse V8 theatre with luxury-performance status.",
     summary: "The Kuwait launch should combine desert-climate confidence, premium concierge retail and bold visual packages that turn the Dark Horse into a social statement.",
-    image: "assets/kuwait-mustang.jpg",
+    image: "assets/kuwait-mustang.png",
     alt: "Ford Mustang Dark Horse for Kuwait strategy",
     metrics: ["Heat", "Luxury", "V8"],
     metricLabels: ["Climate proof", "Retail tone", "Demand trigger"],
