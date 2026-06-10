@@ -35,9 +35,9 @@ const markets = {
     metrics: ["RHD", "Limited", "V8"],
     metricLabels: ["Market fit", "Supply signal", "Emotional hook"],
     callouts: [
-      { text: "Right-hand-drive appeal", x: "21%", y: "37%" },
-      { text: "B-road handling tune", x: "57%", y: "43%" },
-      { text: "Collector specification", x: "40%", y: "51%" }
+      { text: "Right-hand-drive appeal", x: "41%", y: "37%" },
+      { text: "B-road handling tune", x: "67%", y: "43%" },
+      { text: "Collector specification", x: "20%", y: "34%" }
     ],
     sections: {
       product: "Tune messaging around right-hand-drive usability, MagneRide composure, premium cabin materials and options that suit narrower UK roads.",
@@ -60,7 +60,7 @@ const markets = {
     metrics: ["Heat", "Luxury", "V8"],
     metricLabels: ["Climate proof", "Retail tone", "Demand trigger"],
     callouts: [
-      { text: "Cooling confidence", x: "15%", y: "36%" },
+      { text: "Cooling confidence", x: "15%", y: "26%" },
       { text: "Premium interior focus", x: "56%", y: "41%" },
       { text: "High-impact stance", x: "55%", y: "60%" }
     ],
