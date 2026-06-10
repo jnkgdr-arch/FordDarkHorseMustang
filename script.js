@@ -61,7 +61,7 @@ const markets = {
     metricLabels: ["Climate proof", "Retail tone", "Demand trigger"],
     callouts: [
       { text: "Cooling confidence", x: "15%", y: "56%" },
-      { text: "Premium interior focus", x: "56%", y: "41%" },
+      { text: "Premium interior focus", x: "56%", y: "31%" },
       { text: "High-impact stance", x: "66%", y: "60%" }
     ],
     sections: {
