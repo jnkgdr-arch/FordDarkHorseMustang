@@ -121,7 +121,7 @@ body {
 .sidebar-footer strong { display: block; margin-top: 6px; font-size: 0.88rem; }
 
 .main-panel { border-radius: 30px; padding: 24px; display: flex; flex-direction: column; gap: 18px; position: relative; overflow: visible; }
-.main-panel::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: url("assets/background-reference.png") center/cover no-repeat; opacity: 0.20; mix-blend-mode: screen; pointer-events: none; }
+.main-panel::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: url("assets/background-reference.png") center/cover no-repeat; opacity: 0.45; mix-blend-mode: screen; pointer-events: none; }
 .main-panel > * { position: relative; z-index: 1; }
 .hero-header {
   display: grid;
