@@ -1,4 +1,3 @@
- (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
 diff --git a/script.js b/script.js
 new file mode 100644
 index 0000000000000000000000000000000000000000..421d08006e0743df4b4148efedc619cbe7576189
@@ -185,6 +184,3 @@ index 0000000000000000000000000000000000000000..421d08006e0743df4b4148efedc619cb
 +
 +renderPriceChart();
 +setActiveMarket("usa");
- 
-EOF
-) 
