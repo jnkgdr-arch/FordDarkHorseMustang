@@ -26,16 +26,17 @@ body {
   inset: 0;
   background:
     linear-gradient(115deg,
-      rgba(3, 7, 13, 0.72),
-      rgba(6, 10, 18, 0.50) 44%,
-      rgba(3, 7, 13, 0.72)
+      rgba(3, 7, 13, 0.84),
+      rgba(6, 10, 18, 0.72) 44%,
+      rgba(3, 7, 13, 0.88)
     ),
     radial-gradient(
       circle at 78% 18%,
-      rgba(45, 214, 255, 0.15),
+      rgba(45, 214, 255, 0.08),
       transparent 34%
     ),
     url("assets/background-reference.png") center/cover no-repeat;
+  z-index: -2;
 }
 
 .backdrop::after {
