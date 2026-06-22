@@ -76,10 +76,29 @@ const markets = {
 };
 
 const priceComparisons = [
-  { market: "United States", value: 62230 },
-  { market: "United Kingdom", value: 94320 },
-  { market: "Kuwait", value: 72698 }
+  { market: "U.S. Standard", country: "usa", value: 62230, local: "$62,230" },
+  { market: "U.S. Premium", country: "usa", value: 66225, local: "$66,225" },
+  { market: "Kuwait Starting Price", country: "kuwait", value: 72698, local: "KWD 22,536.50" },
+  { market: "U.K. Manual", country: "uk", value: 94320, local: "£70,740" },
+  { market: "U.K. Automatic", country: "uk", value: 96987, local: "£72,740" }
 ];
+
+const chartDatasets = {
+  standardization: [
+    { label: "Shared global features", country: "global", value: 8 },
+    { label: "U.S. localized features", country: "usa", value: 3 },
+    { label: "U.K. localized features", country: "uk", value: 6 },
+    { label: "Kuwait localized features", country: "kuwait", value: 7 }
+  ],
+  production: [
+    { label: "Export from U.S.", country: "usa", value: 3 },
+    { label: "Kuwait local assembly possibility", country: "kuwait", value: 5 },
+    { label: "U.K. local assembly possibility", country: "uk", value: 5 }
+  ]
+};
+
+const chartInstances = {};
+let activeMarketKey = "usa";
 
 function formatUsd(value) {
   return new Intl.NumberFormat("en-US", {
@@ -102,28 +121,163 @@ function setText(id, value) {
   }
 }
 
-function renderPriceChart() {
-  const chart = document.getElementById("price-chart");
-  if (!chart) return;
-
-  const maxPrice = Math.max(...priceComparisons.map((item) => item.value));
-
-  chart.innerHTML = priceComparisons
-    .map((item) => {
-      const width = Math.max((item.value / maxPrice) * 100, 12).toFixed(2);
-
-      return `
-        <div class="price-row">
-          <div class="price-label">${item.market}</div>
-          <div class="price-track" aria-hidden="true">
-            <div class="price-bar" style="--bar-width: ${width}%"></div>
-          </div>
-          <div class="price-value">${formatUsd(item.value)}</div>
-        </div>
-      `;
-    })
-    .join("");
+function getAccentForCountry(country, activeCountry) {
+  if (country === "global") return "rgba(247, 183, 51, 0.86)";
+  return country === activeCountry ? "rgba(45, 214, 255, 0.9)" : "rgba(255, 255, 255, 0.24)";
 }
+
+function getBorderForCountry(country, activeCountry) {
+  if (country === "global") return "rgba(247, 183, 51, 1)";
+  return country === activeCountry ? "rgba(141, 234, 255, 1)" : "rgba(255, 255, 255, 0.35)";
+}
+
+function createPriceGradient(context) {
+  const chart = context.chart;
+  const { chartArea, ctx } = chart;
+  if (!chartArea) return "rgba(45, 214, 255, 0.9)";
+  const gradient = ctx.createLinearGradient(chartArea.left, 0, chartArea.right, 0);
+  gradient.addColorStop(0, "rgba(45, 214, 255, 0.95)");
+  gradient.addColorStop(0.58, "rgba(141, 234, 255, 0.9)");
+  gradient.addColorStop(1, "rgba(247, 183, 51, 0.95)");
+  return gradient;
+}
+
+const valueLabelPlugin = {
+  id: "valueLabelPlugin",
+  afterDatasetsDraw(chart) {
+    const { ctx, data } = chart;
+    const dataset = data.datasets[0];
+    const meta = chart.getDatasetMeta(0);
+    ctx.save();
+    ctx.fillStyle = "#f6f8fb";
+    ctx.font = "700 12px Inter, sans-serif";
+    ctx.textBaseline = "middle";
+    meta.data.forEach((bar, index) => {
+      const value = dataset.data[index];
+      const label = dataset.valueFormatter ? dataset.valueFormatter(value, index) : String(value);
+      ctx.fillText(label, bar.x + 8, bar.y);
+    });
+    ctx.restore();
+  }
+};
+
+function createHorizontalBarChart(canvasId, items, options = {}) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return null;
+  if (typeof Chart === "undefined") {
+    const panel = canvas.closest(".chart-panel");
+    if (panel) panel.classList.add("chart-unavailable");
+    return null;
+  }
+
+  if (chartInstances[canvasId]) {
+    chartInstances[canvasId].destroy();
+  }
+
+  const labels = items.map((item) => item.label || item.market);
+  const values = items.map((item) => item.value);
+  const countries = items.map((item) => item.country);
+
+  chartInstances[canvasId] = new Chart(canvas, {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        countries,
+        valueFormatter: options.valueFormatter,
+        useGradient: options.useGradient || false,
+        backgroundColor: options.useGradient
+          ? (context) => createPriceGradient(context)
+          : countries.map((country) => getAccentForCountry(country, activeMarketKey)),
+        borderColor: countries.map((country) => getBorderForCountry(country, activeMarketKey)),
+        borderWidth: 1.5,
+        borderRadius: 999,
+        barThickness: options.barThickness || 24
+      }]
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? false : { duration: 700 },
+      layout: { padding: { right: options.rightPadding || 110, left: options.leftPadding || 8 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            afterLabel(context) {
+              const item = items[context.dataIndex];
+              return item.local ? `Local price: ${item.local}` : "Number of features explicitly discussed in the paper";
+            },
+            label(context) {
+              return options.valueFormatter ? options.valueFormatter(context.parsed.x, context.dataIndex) : `${context.parsed.x}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          grid: { color: "rgba(255,255,255,0.08)" },
+          ticks: { color: "#95a0ad" }
+        },
+        y: {
+          grid: { display: false },
+          ticks: { color: "#f6f8fb", font: { weight: "700" } }
+        }
+      }
+    },
+    plugins: [valueLabelPlugin]
+  });
+
+  return chartInstances[canvasId];
+}
+
+function renderPriceChart() {
+  createHorizontalBarChart("price-chart", priceComparisons, {
+    valueFormatter: (value) => formatUsd(value),
+    barThickness: 26,
+    useGradient: true,
+    rightPadding: 120
+  });
+}
+
+function renderDerivedCharts() {
+  createHorizontalBarChart("standardization-chart", chartDatasets.standardization, {
+    valueFormatter: (value) => `${value}`,
+    barThickness: 24,
+    rightPadding: 60,
+    leftPadding: 16
+  });
+
+  createHorizontalBarChart("production-chart", chartDatasets.production, {
+    valueFormatter: (value) => `${value}`,
+    barThickness: 24
+  });
+}
+
+function updateChartHighlights() {
+  Object.values(chartInstances).forEach((chart) => {
+    const dataset = chart.data.datasets[0];
+    if (!dataset.useGradient) {
+      dataset.backgroundColor = dataset.countries.map((country) => getAccentForCountry(country, activeMarketKey));
+    }
+    dataset.borderColor = dataset.countries.map((country) => getBorderForCountry(country, activeMarketKey));
+    chart.update();
+  });
+
+  document.querySelectorAll("[data-market-row]").forEach((row) => {
+    row.classList.toggle("is-active-market", row.dataset.marketRow === activeMarketKey);
+  });
+}
+
+function showMatrixDetail(message) {
+  if (!message) return;
+  const live = document.getElementById("matrix-live-region");
+  if (live) live.textContent = message;
+}
+
 
 const textBindings = {
   "market-title": "title",
@@ -142,6 +296,7 @@ const textBindings = {
 function setActiveMarket(marketKey) {
   const market = markets[marketKey];
   if (!market) return;
+  activeMarketKey = marketKey;
 
   Object.entries(textBindings).forEach(([id, path]) => {
     setText(id, getNestedValue(market, path));
@@ -185,6 +340,8 @@ function setActiveMarket(marketKey) {
     }
   });
 
+  updateChartHighlights();
+
   document.querySelectorAll("[data-market]").forEach((button) => {
     const isActive = button.dataset.market === marketKey;
     button.classList.toggle("active", isActive);
@@ -192,11 +349,27 @@ function setActiveMarket(marketKey) {
     if (button.hasAttribute("aria-pressed")) {
       button.setAttribute("aria-pressed", String(isActive));
     }
+
+    if (button.matches("a")) {
+      if (isActive) {
+        button.setAttribute("aria-current", "page");
+      } else {
+        button.removeAttribute("aria-current");
+      }
+    }
   });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   renderPriceChart();
+  renderDerivedCharts();
+  updateChartHighlights();
+
+  document.querySelectorAll("[data-detail]").forEach((control) => {
+    control.addEventListener("focus", () => showMatrixDetail(control.dataset.detail));
+    control.addEventListener("mouseenter", () => showMatrixDetail(control.dataset.detail));
+    control.addEventListener("click", () => showMatrixDetail(control.dataset.detail));
+  });
 
   document.querySelectorAll("[data-market]").forEach((button) => {
     button.addEventListener("click", () => {
