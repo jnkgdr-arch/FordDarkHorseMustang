@@ -192,6 +192,14 @@ function setActiveMarket(marketKey) {
     if (button.hasAttribute("aria-pressed")) {
       button.setAttribute("aria-pressed", String(isActive));
     }
+
+    if (button.matches("a")) {
+      if (isActive) {
+        button.setAttribute("aria-current", "page");
+      } else {
+        button.removeAttribute("aria-current");
+      }
+    }
   });
 }
 

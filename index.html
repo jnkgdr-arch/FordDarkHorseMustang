@@ -18,6 +18,19 @@
   <body>
     <div class="backdrop" aria-hidden="true"></div>
 
+    <header class="site-header">
+      <a class="site-brand" href="#market-title" aria-label="Janelle Gardner Mustang Dark Horse dashboard home">
+        <span>Janelle Gardner</span>
+        <strong>Mustang Dark Horse Strategy</strong>
+      </a>
+
+      <nav class="top-market-nav" aria-label="Country stats navigation">
+        <a class="market-link active" href="#market-title" data-market="usa" aria-current="page">United States</a>
+        <a class="market-link" href="#market-title" data-market="uk">United Kingdom</a>
+        <a class="market-link" href="#market-title" data-market="kuwait">Kuwait</a>
+      </nav>
+    </header>
+
     <div class="dashboard-shell">
       <aside class="sidebar" aria-label="Market navigation">
        <div class="brand-lockup">
@@ -140,21 +153,21 @@
           </div>
         </section>
 
-        <nav class="country-nav" aria-label="Select country">
-          <button class="country-button active" data-market="usa" type="button" aria-pressed="true">
-            <span>USA</span>
+        <nav class="country-nav" aria-label="Select country stats">
+          <a class="country-button active" href="#market-title" data-market="usa" aria-current="page">
+            <span>United States</span>
             <strong>Core performance halo</strong>
-          </button>
+          </a>
 
-          <button class="country-button" data-market="uk" type="button" aria-pressed="false">
-            <span>UK</span>
+          <a class="country-button" href="#market-title" data-market="uk">
+            <span>United Kingdom</span>
             <strong>Precision enthusiast niche</strong>
-          </button>
+          </a>
 
-          <button class="country-button" data-market="kuwait" type="button" aria-pressed="false">
+          <a class="country-button" href="#market-title" data-market="kuwait">
             <span>Kuwait</span>
             <strong>Luxury V8 statement</strong>
-          </button>
+          </a>
         </nav>
 
         <div class="sidebar-footer">
