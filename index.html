@@ -25,11 +25,28 @@
         <strong>Mustang Dark Horse Strategy</strong>
       </a>
 
-      <nav class="top-market-nav" aria-label="Country stats navigation">
-        <a class="market-link active" href="#market-title" data-market="usa" aria-current="page">United States</a>
-        <a class="market-link" href="#market-title" data-market="uk">United Kingdom</a>
-        <a class="market-link" href="#market-title" data-market="kuwait">Kuwait</a>
-      </nav>
+      <div class="header-nav-stack">
+        <nav class="top-market-nav" aria-label="Country stats navigation">
+          <a class="market-link active" href="#market-title" data-market="usa" aria-current="page">United States</a>
+          <a class="market-link" href="#market-title" data-market="uk">United Kingdom</a>
+          <a class="market-link" href="#market-title" data-market="kuwait">Kuwait</a>
+        </nav>
+
+        <nav class="section-nav" aria-label="Dashboard section navigation">
+          <a href="#price-chart-title">Prices</a>
+          <a href="#recommendation-title">Recommendations</a>
+          <a href="#executive-title">Executive Summary</a>
+          <a href="#framework-title">Framework</a>
+          <a href="#diffusion-title">Diffusion</a>
+          <a href="#branding-title">Branding</a>
+          <a href="#pricing-drivers-title">Pricing Drivers</a>
+          <a href="#production-title">Production</a>
+          <a href="#imc-title">IMC</a>
+          <a href="#logistics-title">Logistics</a>
+          <a href="#conclusion-title">Conclusion</a>
+          <a href="#references-title">References</a>
+        </nav>
+      </div>
     </header>
 
     <div class="dashboard-shell">
@@ -321,7 +338,6 @@
           <div class="metric-tile-grid" aria-label="Executive summary counts derived from original paper">
             <article><span>3</span><strong>Target markets</strong><em></em></article><article><span>8</span><strong>Standardized global features</strong><em></em></article><article><span>16</span><strong>Localized features discussed</strong><em></em></article><article><span>5</span><strong>Vehicle price variants</strong><em></em></article><article><span>3</span><strong>Pricing models</strong><em></em></article><article><span>2</span><strong>Adopter-stage categories</strong><em></em></article><article><span>3</span><strong>Logistics environments</strong><em></em></article>
           </div>
-          <p class="chart-note">Counts represent factors or features explicitly mentioned in the original paper; they are not market-performance ratings.</p>
         </section>
 
         <section class="paper-section" aria-labelledby="framework-title">
@@ -342,7 +358,7 @@
           </div>
 
           <div class="viz-grid two-column">
-            <div class="chart-panel" role="img" aria-labelledby="standardization-chart-title" aria-describedby="standardization-note">
+            <div class="chart-panel" role="img" aria-labelledby="standardization-chart-title">
               <h4 id="standardization-chart-title">Standardized Identity vs. Local Adaptation</h4>
               <canvas id="standardization-chart" aria-label="Horizontal chart showing feature counts explicitly discussed in the paper."></canvas>
               <p class="chart-fallback">Shared global standardized features: 8; United States localized features: 3; United Kingdom localized features: 6; Kuwait localized features: 7.</p>
@@ -357,7 +373,6 @@
               </div>
             </div>
           </div>
-          <p class="chart-note" id="standardization-note">Counts represent factors or features explicitly mentioned in the original paper; they are not market-performance ratings.</p>
           <div class="details-grid">
             <details><summary>Shared standardized features</summary><ul><li>5.0L V8 engine</li><li>Sport-tuned suspension</li><li>Bold sports-car exterior styling</li><li>Quad tailpipes</li><li>Blue-knobbed gear shift</li><li>Distinctive brake calipers</li><li>Consistent luxury-performance positioning</li><li>MagneRide Damping System</li></ul></details>
             <details><summary>United States localized features</summary><ul><li>Interior luxury</li><li>Driver-assist technologies</li><li>Promotions tailored to specific consumer groups</li></ul></details>
@@ -394,7 +409,6 @@
             <div class="brand-row" data-market-row="kuwait"><strong>Kuwait</strong><i>○</i><b>●</b><i>○</i><b>●</b><b>●</b><i>○</i><i>○</i><b>●</b><span class="count-bar"><em style="--count:4"></em>4</span></div>
           </div>
           <div class="details-grid"><details><summary>United States brand details</summary><ul><li>Freedom</li><li>Excitement</li><li>Independence</li><li>American car culture</li><li>Aggressive styling</li><li>Raw V8 power</li><li>Personal expression</li><li>Open-road and driving-thrill messaging</li></ul></details><details><summary>United Kingdom brand details</summary><ul><li>Power</li><li>Individuality</li><li>Refined sensory driving experience</li><li>Active valve exhaust and controllable vehicle sound</li><li>Enhanced acceleration</li><li>Performance balanced with regulatory responsibility</li></ul></details><details><summary>Kuwait brand details</summary><ul><li>Speed</li><li>Durability</li><li>Luxury</li><li>Status</li><li>High-performance vehicle culture</li><li>Visual upgrades</li><li>Powerful engine</li><li>Advanced safety</li></ul></details></div>
-          <p class="chart-note">Counts represent factors or features explicitly mentioned in the original paper; they are not market-performance ratings.</p>
           <blockquote class="brand-message">“Innovation, performance, heritage, and individuality.”</blockquote>
         </section>
 
@@ -407,7 +421,7 @@
         <section class="paper-section" aria-labelledby="production-title">
           <div class="paper-heading"><div><div class="section-kicker">Market-entry structure</div><h3 id="production-title">Non-Cash Compensation and Production Strategy</h3></div><p>Strategic possibilities discussed in the paper; not claims that Ford currently manufactures the Dark Horse locally in Kuwait or the United Kingdom.</p></div>
           <div class="branch-diagram" aria-label="Export versus local assembly branching diagram"><h4>Mustang Dark Horse Global Production Strategy</h4><div><article><strong>Export from the United States</strong><ul><li>Maintains quality control</li><li>Preserves brand consistency</li><li>Limits initial foreign-production investment</li></ul></article><article><strong>Potential Kuwait assembly</strong><ul><li>Possible tax breaks</li><li>Government incentives</li><li>Access to assembly facilities</li><li>Reduced entry barriers</li><li>Greater market integration</li></ul></article><article><strong>Potential United Kingdom assembly</strong><ul><li>Potentially lower labor and logistics costs</li><li>Direct access to regional suppliers</li><li>Improved consumer insights</li><li>More efficient operations</li><li>Better alignment with local preferences</li></ul></article></div></div>
-          <div class="chart-panel small-chart" role="img" aria-labelledby="production-chart-title"><h4 id="production-chart-title">Number of strategic benefits discussed in the paper</h4><canvas id="production-chart" aria-label="Bar chart showing stated production strategy benefit counts."></canvas><p class="chart-fallback">Export from U.S.: 3; Kuwait local assembly possibility: 5; U.K. local assembly possibility: 5.</p></div><p class="chart-note">Counts represent factors or features explicitly mentioned in the original paper; they are not market-performance ratings.</p>
+          <div class="chart-panel small-chart" role="img" aria-labelledby="production-chart-title"><h4 id="production-chart-title">Production strategy comparison</h4><canvas id="production-chart" aria-label="Bar chart showing stated production strategy benefit counts."></canvas><p class="chart-fallback">Export from U.S.: 3; Kuwait local assembly possibility: 5; U.K. local assembly possibility: 5.</p></div>
         </section>
 
         <section class="paper-section" aria-labelledby="imc-title">
@@ -426,7 +440,7 @@
         <section class="paper-section conclusion" aria-labelledby="conclusion-title"><div class="paper-heading"><div><div class="section-kicker">Strategic Conclusion</div><h3 id="conclusion-title">Preserve identity, localize execution</h3></div><p>Ford preserves the Mustang Dark Horse’s global performance identity while adapting pricing, messaging, product features, and distribution to regional expectations.</p></div><blockquote class="brand-message">“Continued localization and innovation will be essential to the Mustang Dark Horse’s long-term international success.”</blockquote></section>
 
         <details class="references-section">
-          <summary>References from the original paper</summary>
+          <summary id="references-title">References from the original paper</summary>
           <ul><li>Ford U.K., “All-New Ford Mustang: 5L V8 Sportscar”</li><li>Alsalfiti and Notteboom’s 2025 research on Shuwaikh Port</li><li>BestSellingCars/Statista Kuwait market-share data</li><li>“Competing Effectively Through Global Marketing, Distribution, and Supply-Chain Management”</li><li>Ford Alghanim, “Ford Mustang Dark Horse”</li><li>AP News reporting by Jon Gambrell on tariffs and falling oil prices</li><li>AP News reporting on Kuwait’s political gridlock</li><li>Ford’s 2025 Mustang pricing and model pages</li></ul>
         </details>
       </main>

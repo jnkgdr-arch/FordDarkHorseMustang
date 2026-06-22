@@ -85,9 +85,9 @@ const priceComparisons = [
 
 const chartDatasets = {
   standardization: [
-    { label: "Shared global standardized features", country: "global", value: 8 },
-    { label: "United States localized features", country: "usa", value: 3 },
-    { label: "United Kingdom localized features", country: "uk", value: 6 },
+    { label: "Shared global features", country: "global", value: 8 },
+    { label: "U.S. localized features", country: "usa", value: 3 },
+    { label: "U.K. localized features", country: "uk", value: 6 },
     { label: "Kuwait localized features", country: "kuwait", value: 7 }
   ],
   production: [
@@ -129,6 +129,17 @@ function getAccentForCountry(country, activeCountry) {
 function getBorderForCountry(country, activeCountry) {
   if (country === "global") return "rgba(247, 183, 51, 1)";
   return country === activeCountry ? "rgba(141, 234, 255, 1)" : "rgba(255, 255, 255, 0.35)";
+}
+
+function createPriceGradient(context) {
+  const chart = context.chart;
+  const { chartArea, ctx } = chart;
+  if (!chartArea) return "rgba(45, 214, 255, 0.9)";
+  const gradient = ctx.createLinearGradient(chartArea.left, 0, chartArea.right, 0);
+  gradient.addColorStop(0, "rgba(45, 214, 255, 0.95)");
+  gradient.addColorStop(0.58, "rgba(141, 234, 255, 0.9)");
+  gradient.addColorStop(1, "rgba(247, 183, 51, 0.95)");
+  return gradient;
 }
 
 const valueLabelPlugin = {
@@ -175,7 +186,10 @@ function createHorizontalBarChart(canvasId, items, options = {}) {
         data: values,
         countries,
         valueFormatter: options.valueFormatter,
-        backgroundColor: countries.map((country) => getAccentForCountry(country, activeMarketKey)),
+        useGradient: options.useGradient || false,
+        backgroundColor: options.useGradient
+          ? (context) => createPriceGradient(context)
+          : countries.map((country) => getAccentForCountry(country, activeMarketKey)),
         borderColor: countries.map((country) => getBorderForCountry(country, activeMarketKey)),
         borderWidth: 1.5,
         borderRadius: 999,
@@ -187,7 +201,7 @@ function createHorizontalBarChart(canvasId, items, options = {}) {
       responsive: true,
       maintainAspectRatio: false,
       animation: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? false : { duration: 700 },
-      layout: { padding: { right: 90 } },
+      layout: { padding: { right: options.rightPadding || 110, left: options.leftPadding || 8 } },
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -223,14 +237,18 @@ function createHorizontalBarChart(canvasId, items, options = {}) {
 function renderPriceChart() {
   createHorizontalBarChart("price-chart", priceComparisons, {
     valueFormatter: (value) => formatUsd(value),
-    barThickness: 26
+    barThickness: 26,
+    useGradient: true,
+    rightPadding: 120
   });
 }
 
 function renderDerivedCharts() {
   createHorizontalBarChart("standardization-chart", chartDatasets.standardization, {
     valueFormatter: (value) => `${value}`,
-    barThickness: 24
+    barThickness: 24,
+    rightPadding: 60,
+    leftPadding: 16
   });
 
   createHorizontalBarChart("production-chart", chartDatasets.production, {
@@ -242,7 +260,9 @@ function renderDerivedCharts() {
 function updateChartHighlights() {
   Object.values(chartInstances).forEach((chart) => {
     const dataset = chart.data.datasets[0];
-    dataset.backgroundColor = dataset.countries.map((country) => getAccentForCountry(country, activeMarketKey));
+    if (!dataset.useGradient) {
+      dataset.backgroundColor = dataset.countries.map((country) => getAccentForCountry(country, activeMarketKey));
+    }
     dataset.borderColor = dataset.countries.map((country) => getBorderForCountry(country, activeMarketKey));
     chart.update();
   });
