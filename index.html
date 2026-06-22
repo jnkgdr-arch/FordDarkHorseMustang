@@ -18,6 +18,19 @@
   <body>
     <div class="backdrop" aria-hidden="true"></div>
 
+    <header class="site-header">
+      <a class="site-brand" href="#market-title" aria-label="Janelle Gardner Mustang Dark Horse dashboard home">
+        <span>Janelle Gardner</span>
+        <strong>Mustang Dark Horse Strategy</strong>
+      </a>
+
+      <nav class="top-market-nav" aria-label="Country stats navigation">
+        <a class="market-link active" href="#market-title" data-market="usa" aria-current="page">United States</a>
+        <a class="market-link" href="#market-title" data-market="uk">United Kingdom</a>
+        <a class="market-link" href="#market-title" data-market="kuwait">Kuwait</a>
+      </nav>
+    </header>
+
     <div class="dashboard-shell">
       <aside class="sidebar" aria-label="Market navigation">
        <div class="brand-lockup">
@@ -140,21 +153,21 @@
           </div>
         </section>
 
-        <nav class="country-nav" aria-label="Select country">
-          <button class="country-button active" data-market="usa" type="button" aria-pressed="true">
-            <span>USA</span>
+        <nav class="country-nav" aria-label="Select country stats">
+          <a class="country-button active" href="#market-title" data-market="usa" aria-current="page">
+            <span>United States</span>
             <strong>Core performance halo</strong>
-          </button>
+          </a>
 
-          <button class="country-button" data-market="uk" type="button" aria-pressed="false">
-            <span>UK</span>
+          <a class="country-button" href="#market-title" data-market="uk">
+            <span>United Kingdom</span>
             <strong>Precision enthusiast niche</strong>
-          </button>
+          </a>
 
-          <button class="country-button" data-market="kuwait" type="button" aria-pressed="false">
+          <a class="country-button" href="#market-title" data-market="kuwait">
             <span>Kuwait</span>
             <strong>Luxury V8 statement</strong>
-          </button>
+          </a>
         </nav>
 
         <div class="sidebar-footer">
@@ -244,7 +257,15 @@
           ></div>
         </section>
 
-        <section class="strategy-grid" aria-label="Marketing strategy sections">
+        <section class="recommendation-intro" aria-labelledby="recommendation-title">
+          <div class="section-kicker">Additional Strategic Recommendations</div>
+          <h3 id="recommendation-title">Existing market playbooks</h3>
+          <p>
+            The interactive cards below preserve the original dashboard recommendations and separate them from the paper-supported academic sections that follow.
+          </p>
+        </section>
+
+        <section class="strategy-grid" aria-label="Additional strategic recommendations">
           <article class="strategy-card">
             <span>01</span>
             <h3>Product Adaptation</h3>
@@ -293,6 +314,78 @@
             </p>
           </article>
         </section>
+
+        <section class="paper-section" aria-labelledby="framework-title">
+          <div class="paper-heading">
+            <div>
+              <div class="section-kicker">Paper-backed framework</div>
+              <h3 id="framework-title">Global Strategy Framework</h3>
+            </div>
+            <p>Ford balances one recognizable Mustang Dark Horse identity with market-specific feature, safety, pricing, and promotional adaptation.</p>
+          </div>
+
+          <div class="flow-diagram" aria-label="Global Mustang Identity to Local Market Adaptation to Regional Relevance">
+            <span>Global Mustang Identity</span>
+            <strong aria-hidden="true">→</strong>
+            <span>Local Market Adaptation</span>
+            <strong aria-hidden="true">→</strong>
+            <span>Regional Relevance</span>
+          </div>
+
+          <div class="feature-cloud" aria-label="Standardized Dark Horse features">
+            <span>5.0L V8 engine</span><span>Sport-tuned suspension</span><span>Bold sports-car exterior styling</span><span>Quad tailpipes</span><span>Blue-knobbed gear shift</span><span>Distinctive brake calipers</span><span>Luxury-performance positioning</span><span>MagneRide Damping System</span>
+          </div>
+
+          <div class="info-grid three">
+            <article class="info-card"><h4>United States</h4><ul><li>Interior luxury</li><li>Driver-assist technologies</li><li>Promotions tailored to specific consumer groups</li></ul></article>
+            <article class="info-card"><h4>United Kingdom</h4><ul><li>Slightly lower engine output because of stricter emissions requirements</li><li>Pedestrian and cyclist detection</li><li>Lane-keeping aid</li><li>Adaptive cruise control</li><li>Emergency braking systems</li><li>Safety and emissions compliance emphasis</li></ul></article>
+            <article class="info-card"><h4>Kuwait</h4><ul><li>Visual customization</li><li>Child-restraint systems</li><li>Crash-severity sensors</li><li>Cross-traffic alert</li><li>Pre-collision assist</li><li>Forward-collision warning</li><li>Luxury, visual presence, and safety emphasis</li></ul></article>
+          </div>
+        </section>
+
+        <section class="paper-section" aria-labelledby="diffusion-title">
+          <div class="paper-heading"><div><div class="section-kicker">International adoption</div><h3 id="diffusion-title">Multinational Diffusion Theory</h3></div><p>The theory describes how innovations spread internationally by adapting to cultural, economic, regulatory, and technological conditions. Ford combines standardized innovation with regional adaptation.</p></div>
+          <div class="info-grid three">
+            <article class="info-card"><h4>United States</h4><ul><li>Rigid cost-plus pricing</li><li>Standard model: $62,230</li><li>Premium model: $66,225</li><li>Additional destination charge</li><li>Target audience: early adopters</li><li>Priorities: performance, technology, personalization</li><li>Incentives for military members, students, and people with disabilities</li><li>Promotion through television, digital platforms, dealerships, and targeted offers</li></ul></article>
+            <article class="info-card"><h4>United Kingdom</h4><ul><li>Flexible cost-plus pricing</li><li>Manual model: £70,740, approximately $94,320</li><li>Automatic model: £72,740, approximately $96,987</li><li>Target audience: cautious early majority</li><li>Strong focus on safety and emissions compliance</li></ul></article>
+            <article class="info-card"><h4>Kuwait</h4><ul><li>Dynamic incremental pricing</li><li>Starting price: KWD 22,536.50, approximately $72,698</li><li>Target audience: early adopters</li><li>Priorities: luxury, appearance, and advanced safety</li></ul></article>
+          </div>
+          <div class="comparison-table" role="region" aria-label="Detailed local currency and approximate US dollar price comparison"><table><thead><tr><th>Variant</th><th>Local currency</th><th>Approx. USD equivalent</th></tr></thead><tbody><tr><td>U.S. standard</td><td>$62,230</td><td>$62,230</td></tr><tr><td>U.S. Premium</td><td>$66,225</td><td>$66,225</td></tr><tr><td>U.K. manual</td><td>£70,740</td><td>Approximately $94,320</td></tr><tr><td>U.K. automatic</td><td>£72,740</td><td>Approximately $96,987</td></tr><tr><td>Kuwait starting price</td><td>KWD 22,536.50</td><td>Approximately $72,698</td></tr></tbody></table></div>
+        </section>
+
+        <section class="paper-section" aria-labelledby="branding-title">
+          <div class="paper-heading"><div><div class="section-kicker">Message adaptation</div><h3 id="branding-title">Global Branding Strategy</h3></div><p>Ford maintains one global brand identity while changing emphasis by market.</p></div>
+          <div class="info-grid three compact"><article class="info-card"><h4>United States</h4><ul><li>Freedom</li><li>Excitement</li><li>Independence</li><li>American car culture</li><li>Aggressive styling</li><li>Raw V8 power</li><li>Personal expression</li><li>Open-road and driving-thrill messaging</li></ul></article><article class="info-card"><h4>United Kingdom</h4><ul><li>Power</li><li>Individuality</li><li>Refined sensory driving experience</li><li>Active valve exhaust and controllable vehicle sound</li><li>Enhanced acceleration</li><li>Performance balanced with regulatory responsibility</li></ul></article><article class="info-card"><h4>Kuwait</h4><ul><li>Speed</li><li>Durability</li><li>Luxury</li><li>Status</li><li>High-performance vehicle culture</li><li>Visual upgrades</li><li>Powerful engine</li><li>Advanced safety</li></ul></article></div>
+          <blockquote class="brand-message">“Innovation, performance, heritage, and individuality.”</blockquote>
+        </section>
+
+        <section class="paper-section" aria-labelledby="pricing-drivers-title">
+          <div class="paper-heading"><div><div class="section-kicker">Value pressure map</div><h3 id="pricing-drivers-title">Foreign-Market Pricing Drivers</h3></div><p>International value perception depends on regulation, macroeconomic pressure, import costs, and buyer expectations beyond the vehicle itself.</p></div>
+          <div class="info-grid two"><article class="info-card pressure"><h4>Kuwait</h4><ul><li>Political gridlock</li><li>Reduced government spending</li><li>Weakened consumer purchasing power</li><li>10% tariff on Gulf Cooperation Council countries discussed in the paper</li><li>Higher vehicle-import costs</li><li>Falling oil prices</li><li>Reduced national revenue</li><li>Economic uncertainty</li><li>Currency fluctuations</li><li>Effects on perceived value</li></ul></article><article class="info-card pressure"><h4>United Kingdom</h4><ul><li>Environmental regulations</li><li>CO₂-based vehicle taxation</li><li>Higher first-year road tax for high-emission vehicles</li><li>Continuing annual charges</li><li>Environmental responsibility expectations</li><li>Need to justify price through safety and emissions compliance</li><li>Effect of environmental standards on value perception</li></ul></article></div>
+        </section>
+
+        <section class="paper-section" aria-labelledby="production-title">
+          <div class="paper-heading"><div><div class="section-kicker">Market-entry structure</div><h3 id="production-title">Non-Cash Compensation and Production Strategy</h3></div><p>Ford can manufacture the Mustang Dark Horse in the United States and export it globally as a lower-investment strategy.</p></div>
+          <div class="split-visual"><article><h4>Export from the U.S.</h4><ul><li>Maintains quality control</li><li>Preserves brand consistency</li><li>Limits initial foreign-production investment</li></ul></article><article><h4>Local assembly possibilities</h4><p>Strategic possibilities discussed in the paper; not claims of current Dark Horse manufacturing in Kuwait or the United Kingdom.</p><div class="mini-grid"><div><strong>Kuwait</strong><ul><li>Possible tax breaks</li><li>Government incentives</li><li>Access to assembly facilities</li><li>Reduced entry barriers</li><li>Greater market integration</li></ul></div><div><strong>United Kingdom</strong><ul><li>Potentially lower labor and logistics costs</li><li>Direct access to regional suppliers</li><li>Improved consumer insights</li><li>More efficient operations</li><li>Better alignment with local preferences</li></ul></div></div></article></div>
+        </section>
+
+        <section class="paper-section" aria-labelledby="imc-title">
+          <div class="paper-heading"><div><div class="section-kicker">Communication constraints</div><h3 id="imc-title">Global IMC Constraints and Communication Tools</h3></div><p>Promotional tools must adapt to each market’s regulatory, cultural, and media environment.</p></div>
+          <div class="info-grid three"><article class="info-card"><h4>United States</h4><ul><li>Flexible advertising environment</li><li>Bold digital marketing and social media campaigns</li><li>Power, individuality, and speed messaging</li><li>Targeted public relations</li><li>Incentives for military personnel and first responders</li><li><strong>Advantages:</strong> wide reach, engagement, personalization, emotional impact</li><li><strong>Challenges:</strong> saturation, competing social content, short attention spans</li></ul></article><article class="info-card"><h4>United Kingdom</h4><ul><li>Stricter regulatory environment</li><li>More cautious communication tone</li><li>Corporate social responsibility</li><li>Environmental responsibility</li><li>Safety and emissions-control messaging</li><li><strong>Advantage:</strong> stronger trust and credibility</li><li><strong>Disadvantage:</strong> reduced emotional appeal for a performance vehicle</li></ul></article><article class="info-card"><h4>Kuwait</h4><ul><li>Cultural and regulatory localization</li><li>Luxury, exclusivity, and road-safety messaging</li><li>Television, billboards, print media, targeted social media</li><li>Personal selling and showroom experiences</li><li><strong>Advantages:</strong> personalized selling and strong local influence</li><li><strong>Challenges:</strong> language nuances, cultural expectations, consumer values</li></ul></article></div>
+          <div class="tool-strip" aria-label="IMC tool comparison"><article><h4>Digital marketing</h4><p><strong>Advantage:</strong> broad reach and engagement</p><p><strong>Limitation:</strong> requires careful localization</p></article><article><h4>Corporate social responsibility</h4><p><strong>Advantage:</strong> builds trust</p><p><strong>Limitation:</strong> can take time to influence purchasing behavior</p></article><article><h4>Advertising</h4><p><strong>Advantage:</strong> creates awareness</p><p><strong>Limitation:</strong> must follow cultural and regulatory boundaries</p></article><article><h4>Personal selling</h4><p><strong>Advantage:</strong> personalized communication</p><p><strong>Limitation:</strong> requires more employees, time, and resources</p></article></div>
+        </section>
+
+        <section class="paper-section" aria-labelledby="logistics-title">
+          <div class="paper-heading"><div><div class="section-kicker">Distribution realities</div><h3 id="logistics-title">Global Logistics Challenges</h3></div><p>Each market creates a different delivery constraint, from national distance to urban access to port capacity.</p></div>
+          <div class="info-grid three logistics"><article class="info-card"><h4>United States</h4><ul><li>Vast distances between states</li><li>Long-haul transportation requirements</li><li>Dependence on regional distribution centers</li><li>Coordinated nationwide delivery</li></ul></article><article class="info-card"><h4>United Kingdom</h4><ul><li>Narrow streets</li><li>Urban congestion</li><li>Limited space in city centers</li><li>Complicated last-mile delivery</li><li>Dealership-access challenges</li><li>Strict emissions zones</li></ul></article><article class="info-card"><h4>Kuwait</h4><ul><li>Harsh desert climate</li><li>Limitations at Shuwaikh Port</li><li>Outdated equipment and limited automation</li><li>Insufficient port facilities</li><li>Customs-clearance and vehicle-handling delays</li><li>Frustration among clearing and forwarding agents</li></ul></article></div>
+        </section>
+
+        <section class="paper-section conclusion" aria-labelledby="conclusion-title"><div class="paper-heading"><div><div class="section-kicker">Strategic Conclusion</div><h3 id="conclusion-title">Preserve identity, localize execution</h3></div><p>Ford preserves the Mustang Dark Horse’s global performance identity while adapting pricing, messaging, product features, and distribution to regional expectations.</p></div><blockquote class="brand-message">“Continued localization and innovation will be essential to the Mustang Dark Horse’s long-term international success.”</blockquote></section>
+
+        <details class="references-section">
+          <summary>References from the original paper</summary>
+          <ul><li>Ford U.K., “All-New Ford Mustang: 5L V8 Sportscar”</li><li>Alsalfiti and Notteboom’s 2025 research on Shuwaikh Port</li><li>BestSellingCars/Statista Kuwait market-share data</li><li>“Competing Effectively Through Global Marketing, Distribution, and Supply-Chain Management”</li><li>Ford Alghanim, “Ford Mustang Dark Horse”</li><li>AP News reporting by Jon Gambrell on tariffs and falling oil prices</li><li>AP News reporting on Kuwait’s political gridlock</li><li>Ford’s 2025 Mustang pricing and model pages</li></ul>
+        </details>
       </main>
     </div>
 
