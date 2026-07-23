@@ -32,6 +32,13 @@
       </nav>
     </header>
 
+    <div class="site-view-selector site-container" aria-label="Dashboard view selector">
+      <button type="button" class="view-toggle active" data-view-toggle="compare" aria-pressed="true">Compare Markets</button>
+      <button type="button" class="view-toggle" data-view-toggle="usa" aria-pressed="false">United States</button>
+      <button type="button" class="view-toggle" data-view-toggle="uk" aria-pressed="false">United Kingdom</button>
+      <button type="button" class="view-toggle" data-view-toggle="kuwait" aria-pressed="false">Kuwait</button>
+    </div>
+
     <section class="global-scope-strip" aria-labelledby="map-heading">
       <div class="global-strip-content">
         <div class="brand-lockup">
@@ -254,7 +261,12 @@
         </section>
         </section>
 
-        <section class="price-card full-width-section" aria-labelledby="price-chart-title">
+        <section class="country-focus-section" id="country-focus" data-view="country" hidden aria-labelledby="country-focus-title">
+          <div class="paper-heading"><div><div class="section-kicker">Focused country view</div><h3 id="country-focus-title">United States Market Focus</h3></div><p id="country-focus-note">Country-specific strategy details gathered from the dashboard research.</p></div>
+          <div class="country-focus-grid dashboard-grid" id="country-focus-grid"></div>
+        </section>
+
+        <section class="price-card full-width-section" data-view="comparison" aria-labelledby="price-chart-title">
           <div class="price-card-header">
             <div>
               <div class="section-kicker">USD-equivalent MSRP benchmark</div>
@@ -346,7 +358,7 @@
           </aside>
         </section>
 
-        <section class="paper-section executive-summary" aria-labelledby="executive-title">
+        <section class="paper-section executive-summary" data-view="comparison" aria-labelledby="executive-title">
           <div class="paper-heading"><div><div class="section-kicker">Visual Executive Summary</div><h3 id="executive-title">Paper-derived dashboard counts</h3></div><p>These counts summarize items explicitly discussed in the original paper and do not imply market performance rankings.</p></div>
           <div class="chart-panel executive-chart-panel" role="img" aria-labelledby="executive-chart-title" aria-describedby="executive-chart-note">
             <h4 id="executive-chart-title">Global Strategy Research Coverage</h4>
@@ -356,7 +368,7 @@
           <p class="chart-note" id="executive-chart-note">These counts summarize items explicitly discussed in the original paper and do not imply market performance rankings.</p>
         </section>
 
-        <section class="paper-section" aria-labelledby="framework-title">
+        <section class="paper-section" data-view="comparison" aria-labelledby="framework-title">
           <div class="paper-heading">
             <div>
               <div class="section-kicker">Paper-backed framework</div>
@@ -408,7 +420,7 @@
           </div>
         </section>
 
-        <section class="paper-section" aria-labelledby="diffusion-title">
+        <section class="paper-section" data-view="comparison" aria-labelledby="diffusion-title">
           <div class="paper-heading"><div><div class="section-kicker">International adoption</div><h3 id="diffusion-title">Multinational Diffusion Theory</h3></div><p>The theory describes how innovations spread internationally by adapting to cultural, economic, regulatory, and technological conditions. Ford combines standardized innovation with regional adaptation.</p></div>
           <p class="support-text">The paper places the U.S. and Kuwait with early adopters because their audiences prioritize performance, personalization, luxury, appearance, and advanced safety; the U.K. is positioned with a cautious early majority because safety and emissions compliance are central.</p>
           <figure class="diffusion-bell-curve" aria-labelledby="diffusion-curve-title" aria-describedby="diffusion-curve-note">
@@ -500,7 +512,7 @@
           <details class="comparison-details"><summary>View exact local prices</summary><div class="comparison-table" role="region" aria-label="Detailed local currency and approximate US dollar price comparison"><table><thead><tr><th>Variant</th><th>Local currency</th><th>Approx. USD equivalent</th></tr></thead><tbody><tr><td>U.S. standard</td><td>$62,230</td><td>$62,230</td></tr><tr><td>U.S. Premium</td><td>$66,225</td><td>$66,225</td></tr><tr><td>U.K. manual</td><td>£70,740</td><td>Approximately $94,320</td></tr><tr><td>U.K. automatic</td><td>£72,740</td><td>Approximately $96,987</td></tr><tr><td>Kuwait starting price</td><td>KWD 22,536.50</td><td>Approximately $72,698</td></tr></tbody></table></div></details>
         </section>
 
-        <section class="paper-section" aria-labelledby="branding-title">
+        <section class="paper-section" data-view="comparison" aria-labelledby="branding-title">
           <div class="paper-heading"><div><div class="section-kicker">Message adaptation</div><h3 id="branding-title">Global Branding Strategy</h3></div><p>Ford maintains one global brand identity while changing emphasis by market.</p></div>
           <div class="brand-hub-diagram" aria-labelledby="brand-hub-title">
             <div class="brand-hub-node">
@@ -530,12 +542,17 @@
           <blockquote class="brand-message">“Innovation, performance, heritage, and individuality.”</blockquote>
         </section>
 
-        <section class="paper-section" aria-labelledby="pricing-drivers-title">
+        <section class="paper-section" data-view="comparison" aria-labelledby="pricing-drivers-title">
           <div class="paper-heading"><div><div class="section-kicker">Value pressure map</div><h3 id="pricing-drivers-title">Foreign-Market Pricing Drivers</h3></div><p>International value perception depends on regulation, macroeconomic pressure, import costs, and buyer expectations beyond the vehicle itself.</p></div>
-          <div class="visual-pair pricing-driver-visuals"><div class="binary-matrix matrix-scroll risk-heatmap" aria-label="Risk-factor heat map for pricing pressure comparison"><div class="matrix-row matrix-head"><span>Market</span><span>Political pressure</span><span>Economic pressure</span><span>Import cost</span><span>Currency pressure</span><span>Environmental regulation</span><span>Vehicle taxation</span><span>Consumer value expectations</span></div><div class="matrix-row" data-market-row="kuwait"><strong>Kuwait</strong><b>Applicable</b><b>Applicable</b><b>Applicable</b><b>Applicable</b><span>Not emphasized</span><span>Not emphasized</span><b>Applicable</b></div><div class="matrix-row" data-market-row="uk"><strong>United Kingdom</strong><span>Not emphasized</span><span>Not emphasized</span><span>Not emphasized</span><span>Not emphasized</span><b>Applicable</b><b>Applicable</b><b>Applicable</b></div></div><div class="chart-panel compact-chart" role="img" aria-labelledby="pricing-pressure-chart-title"><h4 id="pricing-pressure-chart-title">Foreign-Market Pricing Pressures Discussed</h4><canvas id="pricing-pressure-chart" aria-label="Horizontal bar chart showing pricing pressures explicitly discussed: Kuwait 5, United Kingdom 3. Counts are not profitability or severity scores."></canvas><p class="chart-fallback">Kuwait: 5; United Kingdom: 3.</p></div></div><div class="compact-detail-panels market-comparison-grid pricing-driver-details"><details><summary>Kuwait price-pressure details</summary><p>Political gridlock, reduced government spending, falling oil prices, tariffs and import costs, and currency fluctuations affect purchasing power, economic uncertainty, Mustang price, and value perception.</p></details><details><summary>United Kingdom price-pressure details</summary><p>CO₂ regulations, first-year road tax, continuing annual charges, and environmental expectations affect higher ownership costs, compliance pressure, Mustang price, and value perception.</p></details></div>
+          <div class="pricing-driver-tabs" role="tablist" aria-label="Pricing-driver country selector">
+            <button type="button" role="tab" class="pricing-driver-tab active" data-pricing-driver="usa" aria-selected="true" aria-expanded="true" aria-controls="pricing-driver-panel">United States</button>
+            <button type="button" role="tab" class="pricing-driver-tab" data-pricing-driver="uk" aria-selected="false" aria-expanded="false" aria-controls="pricing-driver-panel">United Kingdom</button>
+            <button type="button" role="tab" class="pricing-driver-tab" data-pricing-driver="kuwait" aria-selected="false" aria-expanded="false" aria-controls="pricing-driver-panel">Kuwait</button>
+          </div>
+          <div class="pricing-driver-panel" id="pricing-driver-panel" role="tabpanel" aria-live="polite"></div>
         </section>
 
-        <section class="paper-section" aria-labelledby="production-title">
+        <section class="paper-section" data-view="comparison" aria-labelledby="production-title">
           <div class="paper-heading"><div><div class="section-kicker">Market-entry structure</div><h3 id="production-title">Non-Cash Compensation and Production Strategy</h3></div><p>Strategic possibilities discussed in the paper; not claims that Ford currently manufactures the Dark Horse locally in Kuwait or the United Kingdom.</p></div>
           <div class="production-detail-grid compact-detail-panels market-comparison-grid" aria-label="Production strategy benefit detail cards">
             <details><summary>Export from the United States</summary><ul><li>Maintains quality control</li><li>Preserves brand consistency</li><li>Limits initial foreign-production investment</li></ul></details>
@@ -545,7 +562,7 @@
           <div class="chart-panel small-chart" role="img" aria-labelledby="production-chart-title"><h4 id="production-chart-title">Strategic Benefits Discussed by Production Option</h4><canvas id="production-chart" aria-label="Horizontal bar chart showing the number of potential benefits identified by production option; values are not performance ratings or recommendations."></canvas><p class="chart-fallback">Export from U.S.: 3; Kuwait local assembly possibility: 5; U.K. local assembly possibility: 5.</p></div>
         </section>
 
-        <section class="paper-section" aria-labelledby="imc-title">
+        <section class="paper-section" data-view="comparison" aria-labelledby="imc-title">
           <div class="paper-heading"><div><div class="section-kicker">Communication constraints</div><h3 id="imc-title">Global IMC Constraints and Communication Tools</h3></div><p>Focus or activate a matrix cell to read how each explicitly mentioned channel is used, including advantages and constraints.</p></div>
           <div class="imc-venn-panel" aria-labelledby="imc-venn-title">
             <h4 id="imc-venn-title">IMC Tool Overlap by Market</h4>
@@ -579,7 +596,7 @@
           <div class="tool-strip visual-tools dashboard-grid" aria-label="IMC tool comparison"><details><summary><span aria-hidden="true">📱</span> Digital marketing</summary><div><span>Advantage</span><strong>Broad reach and engagement</strong></div><div><span>Limitation</span><strong>Requires careful localization</strong></div></details><details><summary><span aria-hidden="true">🤝</span> Corporate social responsibility</summary><div><span>Advantage</span><strong>Builds trust</strong></div><div><span>Limitation</span><strong>Can take time to influence purchasing behavior</strong></div></details><details><summary><span aria-hidden="true">📺</span> Advertising</summary><div><span>Advantage</span><strong>Creates awareness</strong></div><div><span>Limitation</span><strong>Must follow cultural and regulatory boundaries</strong></div></details><details><summary><span aria-hidden="true">🧑‍💼</span> Personal selling</summary><div><span>Advantage</span><strong>Personalized communication</strong></div><div><span>Limitation</span><strong>Requires more employees, time, and resources</strong></div></details></div>
         </section>
 
-        <section class="paper-section" aria-labelledby="logistics-title">
+        <section class="paper-section" data-view="comparison" aria-labelledby="logistics-title">
           <div class="paper-heading"><div><div class="section-kicker">Distribution realities</div><h3 id="logistics-title">Global Logistics Challenges</h3></div><p>Binary logistics-risk matrix: applicable means the challenge is explicitly discussed for that market.</p></div>
           <div class="logistics-lane-diagram" aria-labelledby="logistics-lane-title">
             <div class="logistics-lane-header">
@@ -609,7 +626,7 @@
           <div class="details-grid market-comparison-grid"><details><summary>U.S. logistics details</summary><ul><li>Vast distances between states</li><li>Long-haul transportation requirements</li><li>Dependence on regional distribution centers</li><li>Need for coordinated nationwide delivery</li></ul></details><details><summary>U.K. logistics details</summary><ul><li>Narrow streets</li><li>Urban congestion</li><li>Limited space in city centers</li><li>Complicated last-mile delivery</li><li>Dealership-access challenges</li><li>Strict emissions zones</li></ul></details><details><summary>Kuwait logistics details</summary><ul><li>Harsh desert climate</li><li>Limitations at Shuwaikh Port</li><li>Outdated equipment</li><li>Limited automation</li><li>Insufficient port facilities</li><li>Customs-clearance delays</li><li>Vehicle-handling delays</li><li>Frustration among clearing and forwarding agents</li></ul></details></div>
         </section>
 
-        <section class="paper-section conclusion" aria-labelledby="conclusion-title"><div class="paper-heading"><div><div class="section-kicker">Strategic Conclusion</div><h3 id="conclusion-title">Preserve identity, localize execution</h3></div><p>Ford preserves the Mustang Dark Horse’s global performance identity while adapting pricing, messaging, product features, and distribution to regional expectations.</p></div><blockquote class="brand-message">“Continued localization and innovation will be essential to the Mustang Dark Horse’s long-term international success.”</blockquote></section>
+        <section class="paper-section conclusion" data-view="comparison" aria-labelledby="conclusion-title"><div class="paper-heading"><div><div class="section-kicker">Strategic Conclusion</div><h3 id="conclusion-title">Preserve identity, localize execution</h3></div><p>Ford preserves the Mustang Dark Horse’s global performance identity while adapting pricing, messaging, product features, and distribution to regional expectations.</p></div><blockquote class="brand-message">“Continued localization and innovation will be essential to the Mustang Dark Horse’s long-term international success.”</blockquote></section>
 
         <details class="references-section">
           <summary id="references-title">References from the original paper</summary>

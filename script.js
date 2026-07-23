@@ -139,6 +139,125 @@ const recommendationTitles = {
 
 let activeRecommendationKey = null;
 
+const viewConfig = {
+  compare: {
+    hash: "#compare",
+    nav: [["Prices", "price-chart-title"], ["Framework", "framework-title"], ["Diffusion", "diffusion-title"], ["Branding", "branding-title"], ["Pricing Drivers", "pricing-drivers-title"], ["Production", "production-title"], ["IMC", "imc-title"], ["Logistics", "logistics-title"], ["Conclusion", "conclusion-title"]]
+  },
+  usa: { hash: "#united-states", market: "usa", title: "United States Market Focus" },
+  uk: { hash: "#united-kingdom", market: "uk", title: "United Kingdom Market Focus" },
+  kuwait: { hash: "#kuwait", market: "kuwait", title: "Kuwait Market Focus" }
+};
+
+const countryFocusData = {
+  usa: {
+    price: ["Standard model: $62,230", "Premium model: $66,225", "Additional destination charge", "Incentives for military members, students, and people with disabilities", "Promotion through television, digital platforms, dealerships, and targeted offers"],
+    features: ["Interior luxury", "Driver-assist technologies", "Promotions tailored to specific consumer groups"],
+    adoption: ["Adoption stage: Early Adopters", "Appeal: Performance, technology, personalization", "Rigid cost-plus pricing"],
+    branding: ["Freedom", "Excitement", "Independence", "American car culture", "Aggressive styling", "Raw V8 power", "Personal expression", "Open-road and driving-thrill messaging"],
+    imc: ["Bold digital marketing. Advantage: reach, engagement, personalization, emotional impact. Constraint: saturation and short attention spans.", "Social media campaigns focused on power, individuality, and speed. Constraint: competing social content.", "Targeted public relations. Advantage: personalization and emotional impact.", "Television promotion. Advantage: awareness and reach."],
+    logistics: ["Vast distances between states", "Long-haul transportation requirements", "Dependence on regional distribution centers", "Need for coordinated nationwide delivery"],
+    pricingDrivers: ["Domestic benchmark", "Foreign-market political, import, currency, regulatory, and taxation pressures were not evaluated for the U.S. market."]
+  },
+  uk: {
+    price: ["Manual model: £70,740, approximately $94,320", "Automatic model: £72,740, approximately $96,987"],
+    features: ["Slightly lower engine output because of stricter emissions requirements", "Pedestrian and cyclist detection", "Lane-keeping aid", "Adaptive cruise control", "Emergency braking systems", "Safety and emissions compliance emphasis"],
+    adoption: ["Adoption stage: Early Majority", "Appeal: Safety, compliance, road usability", "Flexible cost-plus pricing"],
+    branding: ["Power", "Individuality", "Refined sensory driving experience", "Active valve exhaust and controllable vehicle sound", "Enhanced acceleration", "Performance balanced with regulatory responsibility"],
+    imc: ["Corporate social responsibility plus environmental responsibility. Advantage: trust and credibility. Limitation: reduced emotional appeal."],
+    logistics: ["Narrow streets", "Urban congestion", "Limited space in city centers", "Complicated last-mile delivery", "Dealership-access challenges", "Strict emissions zones"],
+    pricingDrivers: ["Environmental regulation: Applicable", "Vehicle taxation: Applicable", "Consumer value expectations: Applicable", "CO₂ regulations, first-year road tax, continuing annual charges, and environmental expectations affect higher ownership costs, compliance pressure, Mustang price, and value perception."]
+  },
+  kuwait: {
+    price: ["Starting price: KWD 22,536.50, approximately $72,698"],
+    features: ["Visual customization", "Child-restraint systems", "Crash-severity sensors", "Cross-traffic alert", "Pre-collision assist", "Forward-collision warning", "Luxury, visual presence, and safety emphasis"],
+    adoption: ["Adoption stage: Early Adopters", "Appeal: Luxury, prestige, advanced safety", "Dynamic incremental pricing"],
+    branding: ["Speed", "Durability", "Luxury", "Status", "High-performance vehicle culture", "Visual upgrades", "Powerful engine", "Advanced safety"],
+    imc: ["Targeted social media with cultural and regulatory localization. Constraint: language nuances and consumer-value differences.", "Targeted social media supports luxury, exclusivity, and road-safety messaging.", "Television supports localized luxury and road-safety messaging.", "Billboards support local influence and awareness.", "Print media supports localized awareness.", "Personal selling. Advantage: personalized selling and strong local influence. Limitation: more employees, time, and resources.", "Showroom experiences support personalized local influence."],
+    logistics: ["Harsh desert climate", "Limitations at Shuwaikh Port", "Outdated equipment", "Limited automation", "Insufficient port facilities", "Customs-clearance delays", "Vehicle-handling delays", "Frustration among clearing and forwarding agents"],
+    pricingDrivers: ["Political pressure: Applicable", "Economic pressure: Applicable", "Import costs: Applicable", "Currency pressure: Applicable", "Consumer value expectations: Applicable", "Political gridlock, reduced government spending, falling oil prices, tariffs and import costs, and currency fluctuations affect purchasing power, economic uncertainty, Mustang price, and value perception."]
+  }
+};
+
+const pricingDriverStates = {
+  usa: { title: "United States — Domestic Benchmark", states: ["not-assessed", "not-assessed", "not-assessed", "not-assessed", "not-assessed", "not-assessed", "not-assessed"], note: "The United States functions as the domestic pricing benchmark in this analysis. Foreign-market political, import, currency, regulatory, and taxation pressures were not evaluated for the U.S. market.", details: ["Standard model: $62,230", "Premium model: $66,225", "Additional destination charge", "Relevant incentives and targeted offers"] },
+  uk: { title: "United Kingdom — Foreign-Market Pricing Pressures", states: ["not-emphasized", "not-emphasized", "not-emphasized", "not-emphasized", "applicable", "applicable", "applicable"], note: "CO₂ regulations, first-year road tax, continuing annual charges, and environmental expectations affect higher ownership costs and value perception.", details: ["Environmental regulation: Applicable", "Vehicle taxation: Applicable", "Consumer value expectations: Applicable"] },
+  kuwait: { title: "Kuwait — Foreign-Market Pricing Pressures", states: ["applicable", "applicable", "applicable", "applicable", "not-emphasized", "not-emphasized", "applicable"], note: "Political gridlock, reduced government spending, falling oil prices, tariffs and import costs, and currency fluctuations affect purchasing power and value perception.", details: ["Political pressure: Applicable", "Economic pressure: Applicable", "Import costs: Applicable", "Currency pressure: Applicable", "Consumer value expectations: Applicable"] }
+};
+
+const pricingDriverLabels = [
+  ["Political", "Political pressure"], ["Economic", "Economic pressure"], ["Import", "Import costs"], ["Currency", "Currency pressure"], ["Environmental", "Environmental regulation"], ["Taxation", "Vehicle taxation"], ["Consumer value", "Consumer value expectations"]
+];
+
+let activeViewKey = "compare";
+let activePricingDriverKey = "usa";
+
+function renderPricingDriverPanel(marketKey) {
+  const panel = document.getElementById("pricing-driver-panel");
+  const data = pricingDriverStates[marketKey];
+  if (!panel || !data) return;
+  activePricingDriverKey = marketKey;
+  document.querySelectorAll("[data-pricing-driver]").forEach((button) => {
+    const isActive = button.dataset.pricingDriver === marketKey;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-selected", String(isActive));
+    button.setAttribute("aria-expanded", String(isActive));
+  });
+  const bars = data.states.map((state, index) => {
+    const [shortLabel, fullLabel] = pricingDriverLabels[index];
+    const label = state === "applicable" ? "Applicable" : state === "not-emphasized" ? "Not emphasized" : "Not assessed";
+    return `<div class="pricing-driver-bar ${state}" aria-label="${fullLabel}: ${label}" title="${fullLabel}: ${label}"><span></span><strong>${shortLabel}</strong><em>${label}</em></div>`;
+  }).join("");
+  panel.innerHTML = `<h4>${data.title}</h4><div class="pricing-driver-legend"><span class="applicable">Applicable</span><span class="not-emphasized">Not emphasized</span><span class="not-assessed">Not assessed</span></div><div class="pricing-driver-bars">${bars}</div><p>${data.note}</p><details><summary>View supporting pricing details</summary><ul>${data.details.map((item) => `<li>${item}</li>`).join("")}</ul></details>`;
+}
+
+function renderCountryFocus(marketKey) {
+  const container = document.getElementById("country-focus-grid");
+  const title = document.getElementById("country-focus-title");
+  const data = countryFocusData[marketKey];
+  const market = markets[marketKey];
+  if (!container || !title || !data || !market) return;
+  title.textContent = `${market.title} Market Focus`;
+  const cards = [
+    ["Product", data.features], ["Price", data.price], ["Adoption", data.adoption], ["Branding", data.branding], ["Pricing Drivers", data.pricingDrivers], ["IMC", data.imc], ["Logistics", data.logistics], ["Recommendations", Object.values(market.sections)]
+  ];
+  container.innerHTML = cards.map(([heading, items]) => `<article class="country-focus-card"><h4>${heading}</h4><ul>${items.map((item) => `<li>${item}</li>`).join("")}</ul></article>`).join("");
+}
+
+function updateSectionNav(viewKey) {
+  const nav = document.querySelector(".sidebar-section-nav");
+  if (!nav) return;
+  const countryNav = [["Overview", "market-title"], ["Product", "country-focus"], ["Price", "country-focus"], ["Adoption", "country-focus"], ["Branding", "country-focus"], ["IMC", "country-focus"], ["Logistics", "country-focus"], ["Recommendations", "recommendation-title"]];
+  const links = viewKey === "compare" ? viewConfig.compare.nav : countryNav;
+  nav.innerHTML = links.map(([label, id]) => `<a href="#${id}">${label}</a>`).join("");
+}
+
+function setDashboardView(viewKey, options = {}) {
+  const config = viewConfig[viewKey] || viewConfig.compare;
+  activeViewKey = viewKey in viewConfig ? viewKey : "compare";
+  const isCompare = activeViewKey === "compare";
+  document.querySelectorAll("[data-view='comparison']").forEach((node) => { node.hidden = !isCompare; });
+  document.querySelectorAll("[data-view='country']").forEach((node) => { node.hidden = isCompare; });
+  document.querySelectorAll("[data-view-toggle]").forEach((button) => {
+    const isActive = button.dataset.viewToggle === activeViewKey;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+  if (!isCompare && config.market) {
+    setActiveMarket(config.market);
+    renderCountryFocus(config.market);
+  }
+  updateSectionNav(activeViewKey);
+  if (!options.skipHash) history.pushState({ view: activeViewKey }, "", config.hash);
+  if (!options.skipScroll) document.querySelector(".dashboard-shell")?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function viewFromHash() {
+  const hash = window.location.hash;
+  return Object.entries(viewConfig).find(([, config]) => config.hash === hash)?.[0] || "compare";
+}
+
+
 function updateRecommendationPanel(recommendationKey, forceOpen = false) {
   const panel = document.getElementById("recommendation-detail-panel");
   const title = document.getElementById("recommendation-detail-title");
@@ -488,6 +607,17 @@ document.addEventListener("DOMContentLoaded", () => {
     control.addEventListener("click", () => showMatrixDetail(control.dataset.detail));
   });
 
+  document.querySelectorAll("[data-pricing-driver]").forEach((button) => {
+    button.addEventListener("click", () => renderPricingDriverPanel(button.dataset.pricingDriver));
+  });
+  renderPricingDriverPanel(activePricingDriverKey);
+
+  document.querySelectorAll("[data-view-toggle]").forEach((button) => {
+    button.addEventListener("click", () => setDashboardView(button.dataset.viewToggle));
+  });
+
+  window.addEventListener("popstate", () => setDashboardView(viewFromHash(), { skipHash: true, skipScroll: true }));
+
   document.querySelectorAll("[data-recommendation-toggle]").forEach((button) => {
     button.addEventListener("click", () => updateRecommendationPanel(button.dataset.recommendationToggle));
   });
@@ -513,4 +643,5 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   setActiveMarket("usa");
+  setDashboardView(viewFromHash(), { skipHash: true, skipScroll: true });
 });
