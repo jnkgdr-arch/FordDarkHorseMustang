@@ -84,16 +84,44 @@ const priceComparisons = [
 ];
 
 const chartDatasets = {
+  executive: [
+    { label: "Target markets", country: "global", value: 3 },
+    { label: "Standardized global features", country: "global", value: 8 },
+    { label: "Localized features discussed", country: "global", value: 16 },
+    { label: "Vehicle price variants", country: "global", value: 5 },
+    { label: "Pricing models", country: "global", value: 3 },
+    { label: "Adopter-stage categories", country: "global", value: 2 },
+    { label: "Logistics environments", country: "global", value: 3 }
+  ],
   standardization: [
-    { label: "Shared global features", country: "global", value: 8 },
-    { label: "U.S. localized features", country: "usa", value: 3 },
-    { label: "U.K. localized features", country: "uk", value: 6 },
+    { label: "Shared standardized features", country: "global", value: 8 },
+    { label: "United States localized features", country: "usa", value: 3 },
+    { label: "United Kingdom localized features", country: "uk", value: 6 },
     { label: "Kuwait localized features", country: "kuwait", value: 7 }
   ],
+  brandThemes: [
+    { label: "United States", country: "usa", value: 5 },
+    { label: "United Kingdom", country: "uk", value: 5 },
+    { label: "Kuwait", country: "kuwait", value: 4 }
+  ],
+  pricingPressures: [
+    { label: "Kuwait", country: "kuwait", value: 5 },
+    { label: "United Kingdom", country: "uk", value: 3 }
+  ],
   production: [
-    { label: "Export from U.S.", country: "usa", value: 3 },
-    { label: "Kuwait local assembly possibility", country: "kuwait", value: 5 },
-    { label: "U.K. local assembly possibility", country: "uk", value: 5 }
+    { label: "Export from the United States", country: "usa", value: 3 },
+    { label: "Potential Kuwait assembly", country: "kuwait", value: 5 },
+    { label: "Potential United Kingdom assembly", country: "uk", value: 5 }
+  ],
+  imcChannels: [
+    { label: "United States", country: "usa", value: 4 },
+    { label: "United Kingdom", country: "uk", value: 1 },
+    { label: "Kuwait", country: "kuwait", value: 7 }
+  ],
+  logisticsChallenges: [
+    { label: "United States", country: "usa", value: 2 },
+    { label: "United Kingdom", country: "uk", value: 3 },
+    { label: "Kuwait", country: "kuwait", value: 3 }
   ]
 };
 
@@ -119,6 +147,15 @@ function setText(id, value) {
   if (element && value !== undefined) {
     element.textContent = value;
   }
+}
+
+function summarizeRecommendation(value) {
+  if (!value) return "";
+  const semicolonIndex = value.indexOf(";");
+  if (semicolonIndex > -1) {
+    return `${value.slice(0, semicolonIndex)}.`;
+  }
+  return value;
 }
 
 function getAccentForCountry(country, activeCountry) {
@@ -208,7 +245,7 @@ function createHorizontalBarChart(canvasId, items, options = {}) {
           callbacks: {
             afterLabel(context) {
               const item = items[context.dataIndex];
-              return item.local ? `Local price: ${item.local}` : "Number of features explicitly discussed in the paper";
+              return item.local ? `Local price: ${item.local}` : (options.tooltipSuffix || "Number of items explicitly discussed in the paper");
             },
             label(context) {
               return options.valueFormatter ? options.valueFormatter(context.parsed.x, context.dataIndex) : `${context.parsed.x}`;
@@ -244,16 +281,50 @@ function renderPriceChart() {
 }
 
 function renderDerivedCharts() {
+  createHorizontalBarChart("executive-chart", chartDatasets.executive, {
+    valueFormatter: (value) => `${value}`,
+    barThickness: 18,
+    rightPadding: 50,
+    leftPadding: 12,
+    tooltipSuffix: "items discussed in the project"
+  });
+
   createHorizontalBarChart("standardization-chart", chartDatasets.standardization, {
     valueFormatter: (value) => `${value}`,
-    barThickness: 24,
+    barThickness: 22,
     rightPadding: 60,
-    leftPadding: 16
+    leftPadding: 16,
+    tooltipSuffix: "features explicitly discussed"
+  });
+
+  createHorizontalBarChart("brand-count-chart", chartDatasets.brandThemes, {
+    valueFormatter: (value) => `${value}`,
+    barThickness: 20,
+    tooltipSuffix: "brand themes emphasized; not a performance score"
+  });
+
+  createHorizontalBarChart("pricing-pressure-chart", chartDatasets.pricingPressures, {
+    valueFormatter: (value) => `${value}`,
+    barThickness: 20,
+    tooltipSuffix: "pricing pressures discussed; not a severity score"
   });
 
   createHorizontalBarChart("production-chart", chartDatasets.production, {
     valueFormatter: (value) => `${value}`,
-    barThickness: 24
+    barThickness: 22,
+    tooltipSuffix: "potential benefits identified; not a recommendation rating"
+  });
+
+  createHorizontalBarChart("imc-channel-chart", chartDatasets.imcChannels, {
+    valueFormatter: (value) => `${value}`,
+    barThickness: 20,
+    tooltipSuffix: "communication channels explicitly discussed"
+  });
+
+  createHorizontalBarChart("logistics-count-chart", chartDatasets.logisticsChallenges, {
+    valueFormatter: (value) => `${value}`,
+    barThickness: 20,
+    tooltipSuffix: "logistics challenges discussed; not a severity score"
   });
 }
 
@@ -300,6 +371,11 @@ function setActiveMarket(marketKey) {
 
   Object.entries(textBindings).forEach(([id, path]) => {
     setText(id, getNestedValue(market, path));
+  });
+
+  document.querySelectorAll("[data-summary-section]").forEach((node) => {
+    const value = market.sections[node.dataset.summarySection];
+    if (value) node.textContent = summarizeRecommendation(value);
   });
 
   const metricIds = ["metric-a", "metric-b", "metric-c"];
