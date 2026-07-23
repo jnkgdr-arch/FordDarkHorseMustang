@@ -1891,3 +1891,71 @@ p { margin-block: 0 0.6rem; }
   .country-adoption-strip { grid-template-columns: 1fr; }
   .country-price-row { grid-template-columns: 1fr; }
 }
+
+/* Country-view refinements: no inactive pricing bars and unclipped Mustang captions */
+.mustang-figure {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  overflow: visible;
+}
+.mustang-image-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+  border-radius: inherit;
+  background: #080d14;
+}
+.mustang-image-wrapper img {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  object-fit: contain;
+}
+.mustang-caption {
+  width: 100%;
+  margin-top: 0.6rem;
+  padding-inline: 0.25rem;
+  color: #c7d0db;
+  font-size: clamp(0.78rem, 0.3vw + 0.7rem, 0.92rem);
+  line-height: 1.35;
+  white-space: normal;
+  overflow: visible;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+}
+.vehicle-visual { overflow: visible; min-height: 0; }
+.vehicle-visual img { min-height: 0; object-fit: contain; }
+
+.mini-diffusion-curve {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.65rem;
+  background: rgba(255,255,255,0.035);
+}
+.mini-diffusion-curve svg { display: block; width: 100%; height: auto; }
+.mini-curve-fill { fill: rgba(45,214,255,0.12); }
+.mini-curve-line { fill: none; stroke: rgba(141,234,255,0.8); stroke-width: 3; }
+.mini-stages text { fill: var(--muted); font: 800 0.62rem Space Grotesk, sans-serif; text-anchor: middle; }
+.mini-stages text.active { fill: var(--accent-2); }
+.mini-marker-line { stroke: rgba(247,183,51,0.65); stroke-width: 2; stroke-dasharray: 4 5; }
+.mini-marker { fill: var(--accent-2); stroke: #fff; stroke-width: 2; }
+.mini-marker-label { fill: var(--ink); font: 800 0.72rem Space Grotesk, sans-serif; text-anchor: middle; paint-order: stroke; stroke: rgba(0,0,0,0.55); stroke-width: 3px; }
+.mini-diffusion-curve figcaption { margin-top: 0.45rem; color: #c7d0db; font-size: 0.78rem; line-height: 1.35; }
+.not-assessed-panel {
+  border: 1px dashed rgba(255,255,255,0.24);
+  border-radius: 14px;
+  padding: 0.85rem;
+  background: repeating-linear-gradient(45deg, rgba(255,255,255,0.045), rgba(255,255,255,0.045) 7px, rgba(255,255,255,0.02) 7px, rgba(255,255,255,0.02) 14px);
+}
+.not-assessed-panel strong { display: block; color: var(--accent-2); font: 800 1rem Space Grotesk, sans-serif; margin-bottom: 0.35rem; }
+.country-summary-band {
+  border: 1px solid rgba(45,214,255,0.22);
+  border-radius: 12px;
+  padding: 0.65rem;
+  background: rgba(45,214,255,0.06);
+}
+.country-summary-band span { color: #d8dee7; font-size: 0.82rem; line-height: 1.4; }

@@ -231,7 +231,10 @@ function makePriceBars(marketKey) {
 
 function makeAdoptionStrip(marketKey) {
   const active = marketKey === "uk" ? "Early Majority" : "Early Adopters";
-  return `<div class="country-adoption-strip">${["Innovators", "Early Adopters", "Early Majority", "Late Majority", "Laggards"].map((stage) => `<span class="${stage === active ? "active" : ""}">${stage}</span>`).join("")}</div><p>${active} placement summarizes this market's adoption role in the project analysis.</p>`;
+  const markerX = marketKey === "uk" ? 560 : marketKey === "kuwait" ? 340 : 270;
+  const markerY = marketKey === "uk" ? 86 : marketKey === "kuwait" ? 132 : 210;
+  const label = markets[marketKey].title;
+  return `<figure class="mini-diffusion-curve" aria-label="${label} diffusion adoption curve marker"><svg viewBox="0 0 760 260" role="img" focusable="false"><path class="mini-curve-fill" d="M50 218 C120 216 150 188 190 150 C245 96 300 50 380 44 C460 50 515 96 570 150 C610 188 640 216 710 218 L50 218 Z"></path><path class="mini-curve-line" d="M50 218 C120 216 150 188 190 150 C245 96 300 50 380 44 C460 50 515 96 570 150 C610 188 640 216 710 218"></path><g class="mini-stages">${["Innovators", "Early Adopters", "Early Majority", "Late Majority", "Laggards"].map((stage, index) => `<text class="${stage === active ? "active" : ""}" x="${90 + index * 145}" y="244">${stage}</text>`).join("")}</g><line class="mini-marker-line" x1="${markerX}" y1="${markerY}" x2="${markerX}" y2="218"></line><circle class="mini-marker" cx="${markerX}" cy="${markerY}" r="8"></circle><text class="mini-marker-label" x="${markerX}" y="${markerY - 18}">${label}: ${active}</text></svg><figcaption>${active} placement summarizes this market's adoption role in the project analysis.</figcaption></figure>`;
 }
 
 function makeBrandBranches(marketKey, themes) {
@@ -240,9 +243,12 @@ function makeBrandBranches(marketKey, themes) {
 
 function makePricingDriverBarsForCountry(marketKey) {
   const data = pricingDriverStates[marketKey];
-  return `<div class="pricing-driver-bars country-driver-bars">${data.states.map((state, index) => {
+  if (data.states.every((state) => state === "not-assessed")) {
+    return `<div class="not-assessed-panel"><strong>Not Assessed</strong><p>${data.note}</p></div>`;
+  }
+  return `<div class="pricing-driver-bars country-driver-bars">${data.states.map((state, index) => ({ state, index })).filter(({ state }) => state !== "not-assessed").map(({ state, index }) => {
     const [shortLabel, fullLabel] = pricingDriverLabels[index];
-    const label = state === "applicable" ? "Applicable" : state === "not-emphasized" ? "Not emphasized" : "Not assessed";
+    const label = state === "applicable" ? "Applicable" : "Not emphasized";
     return `<div class="pricing-driver-bar ${state}" aria-label="${fullLabel}: ${label}"><span></span><strong>${shortLabel}</strong><em>${label}</em></div>`;
   }).join("")}</div><p>${data.note}</p>`;
 }
@@ -277,8 +283,8 @@ function renderCountryFocus(marketKey) {
     kuwait: ["Port infrastructure", "Customs and handling delays", "Climate exposure"]
   }[marketKey];
   container.innerHTML = `
-    <article class="country-story-card country-overview-card" id="country-overview"><h4>Market Overview</h4><div class="country-metric-grid">${overviewMetrics.map(([label, value]) => `<div><span>${label}</span><strong>${value}</strong></div>`).join("")}</div><p>${market.summary}</p>${makeDetail("View Full Market Analysis", [market.subtitle, market.summary, market.headline])}</article>
-    <article class="country-story-card" id="country-product"><h4>Product Adaptation</h4><div class="feature-band-grid"><div><strong>Shared Global Features</strong><span>5.0L V8 engine</span><span>Sport-tuned suspension</span><span>MagneRide Damping System</span></div><div><strong>Country-Specific Adaptations</strong>${data.features.slice(0, 3).map((item) => `<span>${item}</span>`).join("")}</div><div><strong>Regulatory and Safety Requirements</strong>${data.features.filter((item) => /safety|emissions|assist|detection|crash|warning|braking|restraint|compliance/i.test(item)).slice(0, 4).map((item) => `<span>${item}</span>`).join("") || '<span>Not emphasized in this market section</span>'}</div><div><strong>Performance and Appearance Adjustments</strong>${data.features.filter((item) => /performance|visual|appearance|engine|luxury|interior|customization/i.test(item)).slice(0, 4).map((item) => `<span>${item}</span>`).join("") || '<span>Core Mustang performance identity retained</span>'}</div></div><p>Shared Mustang identity remains the base while visible adaptations respond to local expectations.</p>${makeDetail("View Product Adaptation Details", data.features)}</article>
+    <article class="country-story-card country-overview-card" id="country-overview"><h4>Market Overview</h4><div class="country-metric-grid">${overviewMetrics.map(([label, value]) => `<div><span>${label}</span><strong>${value}</strong></div>`).join("")}</div><div class="country-summary-band"><span>${market.summary}</span></div>${makeDetail("View Full Market Analysis", [market.subtitle, market.summary, market.headline])}</article>
+    <article class="country-story-card" id="country-product"><h4>Product Adaptation</h4><div class="feature-band-grid"><div><strong>Shared Global Features</strong><span>5.0L V8 engine</span><span>Sport-tuned suspension</span><span>MagneRide Damping System</span></div><div><strong>Country-Specific Adaptations</strong>${data.features.slice(0, 3).map((item) => `<span>${item}</span>`).join("")}</div><div><strong>Regulatory and Safety Requirements</strong>${data.features.filter((item) => /safety|emissions|assist|detection|crash|warning|braking|restraint|compliance/i.test(item)).slice(0, 4).map((item) => `<span>${item}</span>`).join("") || '<span>Not emphasized in this market section</span>'}</div><div><strong>Performance and Appearance Adjustments</strong>${data.features.filter((item) => /performance|visual|appearance|engine|luxury|interior|customization/i.test(item)).slice(0, 4).map((item) => `<span>${item}</span>`).join("") || '<span>Core Mustang performance identity retained</span>'}</div></div><div class="country-summary-band"><span>Shared Mustang identity remains the base while visible adaptations respond to local expectations.</span></div>${makeDetail("View Product Adaptation Details", data.features)}</article>
     <article class="country-story-card" id="country-price"><h4>Local Price Visualization</h4>${makePriceBars(marketKey)}<p>Local price references remain tied to the project pricing notes and currency context.</p>${makeDetail("View Pricing Details", data.price)}</article>
     <article class="country-story-card" id="country-adoption"><h4>Adoption Stage</h4>${makeAdoptionStrip(marketKey)}${makeDetail("View Adoption Analysis", data.adoption)}</article>
     <article class="country-story-card" id="country-branding"><h4>Branding Strategy</h4>${makeBrandBranches(marketKey, data.branding)}<p>Brand positioning translates the global Mustang identity into market-specific emphasis.</p>${makeDetail("View Full Branding Strategy", data.branding)}</article>
@@ -629,6 +635,7 @@ function setActiveMarket(marketKey) {
 
   const vehicleVisual = document.querySelector(".vehicle-visual");
   const vehicleImage = document.getElementById("vehicle-image");
+  const vehicleCaption = document.getElementById("vehicle-caption");
 
   if (vehicleVisual && vehicleImage) {
     vehicleVisual.classList.add("is-swapping");
@@ -636,6 +643,7 @@ function setActiveMarket(marketKey) {
     window.setTimeout(() => {
       vehicleImage.src = market.image;
       vehicleImage.alt = market.alt;
+      if (vehicleCaption) vehicleCaption.textContent = market.alt;
       vehicleVisual.classList.remove("is-swapping");
     }, 180);
   }
