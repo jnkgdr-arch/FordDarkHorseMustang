@@ -1524,3 +1524,108 @@ p { margin-block: 0 0.75rem; }
   .stacked-bar span { min-height: 34px; white-space: normal; }
   .imc-venn { min-width: 760px; }
 }
+
+/* Six-card recommendations and logistics lane diagram */
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.recommendations-grid .recommendation-card {
+  min-width: 0;
+  min-height: 220px;
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.recommendation-icon {
+  font-size: 1.25rem;
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(45,214,255,0.14);
+  border: 1px solid rgba(45,214,255,0.32);
+}
+
+.recommendation-number { color: var(--accent-2); font: 800 0.7rem Space Grotesk, sans-serif; }
+.recommendations-grid .recommendation-card h3 { font-size: 0.95rem; line-height: 1.2; margin: 0.2rem 0; }
+.recommendation-summary { font-size: 0.78rem; line-height: 1.35; color: #c7d0db; margin: 0; }
+.recommendation-toggle,
+.recommendation-detail-close {
+  margin-top: auto;
+  color: var(--ink);
+  cursor: pointer;
+  border: 1px solid rgba(45,214,255,0.34);
+  border-radius: 999px;
+  padding: 0.4rem 0.55rem;
+  background: rgba(45,214,255,0.1);
+  font: 800 0.72rem Space Grotesk, sans-serif;
+}
+.recommendation-toggle:hover,
+.recommendation-toggle:focus-visible,
+.recommendation-detail-close:hover,
+.recommendation-detail-close:focus-visible { outline: none; border-color: rgba(247,183,51,0.7); background: rgba(247,183,51,0.12); }
+.is-selected-recommendation { border-color: rgba(247,183,51,0.56); }
+.recommendation-detail-panel {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  border: 1px solid rgba(247,183,51,0.32);
+  border-radius: 18px;
+  padding: 1rem;
+  background: rgba(247,183,51,0.08);
+}
+.recommendation-detail-panel[hidden] { display: none; }
+.recommendation-detail-panel h3 { margin: 0.25rem 0 0.4rem; font: 800 1.1rem Space Grotesk, sans-serif; }
+.recommendation-detail-panel p { margin: 0; color: #d8dee7; line-height: 1.5; }
+.recommendation-detail-close { flex: 0 0 auto; margin-top: 0; }
+
+.logistics-lane-diagram {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: clamp(1rem, 1.35vw, 1.35rem);
+  background: rgba(255,255,255,0.04);
+  display: grid;
+  gap: 12px;
+}
+.logistics-lane-header { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 0.45fr); gap: 12px; align-items: start; }
+.logistics-lane-header h4 { margin: 0; font: 800 1.05rem Space Grotesk, sans-serif; }
+.logistics-factor-counts { border: 1px solid var(--line); border-radius: 16px; padding: 12px; background: rgba(255,255,255,0.04); display: grid; gap: 4px; }
+.logistics-factor-counts strong { color: var(--accent); font: 800 0.8rem Space Grotesk, sans-serif; text-transform: uppercase; letter-spacing: 0.08em; }
+.logistics-factor-counts span { color: #d8dee7; font-size: 0.82rem; }
+.logistics-factor-counts small { color: var(--muted); line-height: 1.35; }
+.logistics-lane { display: grid; grid-template-columns: minmax(170px, 0.35fr) minmax(0, 1fr) minmax(220px, 0.45fr); gap: 12px; align-items: center; border: 1px solid var(--line); border-radius: 18px; padding: 12px; background: rgba(255,255,255,0.035); }
+.lane-market { display: grid; gap: 4px; }
+.lane-market strong { font: 800 0.95rem Space Grotesk, sans-serif; }
+.lane-market span { color: var(--accent-2); font-size: 0.78rem; font-weight: 800; line-height: 1.3; }
+.lane-flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.lane-flow span { border: 1px solid rgba(45,214,255,0.25); border-radius: 999px; padding: 8px 10px; background: rgba(45,214,255,0.08); color: #e9edf4; font-size: 0.8rem; font-weight: 800; }
+.lane-flow b { margin-right: 4px; }
+.lane-flow i { color: var(--accent-2); font-style: normal; font-weight: 900; }
+.logistics-lane p { margin: 0; color: #c7d0db; font-size: 0.82rem; line-height: 1.45; }
+.full-logistics-comparison { margin-top: 12px; }
+.full-logistics-comparison .comparison-table table { min-width: 1120px; }
+
+@media (max-width: 1300px) {
+  .recommendations-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .logistics-lane-header,
+  .logistics-lane { grid-template-columns: 1fr; }
+}
+@media (max-width: 800px) {
+  .recommendations-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 520px) {
+  .recommendations-grid { grid-template-columns: 1fr; }
+  .recommendation-detail-panel { flex-direction: column; }
+}

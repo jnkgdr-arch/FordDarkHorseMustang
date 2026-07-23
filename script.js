@@ -128,6 +128,43 @@ const chartDatasets = {
 const chartInstances = {};
 let activeMarketKey = "usa";
 
+const recommendationTitles = {
+  product: "Product Adaptation",
+  pricing: "Pricing Strategy",
+  branding: "Branding",
+  imc: "IMC",
+  logistics: "Logistics",
+  drivers: "Market Drivers"
+};
+
+let activeRecommendationKey = null;
+
+function updateRecommendationPanel(recommendationKey, forceOpen = false) {
+  const panel = document.getElementById("recommendation-detail-panel");
+  const title = document.getElementById("recommendation-detail-title");
+  const text = document.getElementById("recommendation-detail-text");
+  if (!panel || !title || !text) return;
+
+  const isClosing = activeRecommendationKey === recommendationKey && !panel.hidden && !forceOpen;
+  activeRecommendationKey = isClosing ? null : recommendationKey;
+  panel.hidden = !activeRecommendationKey;
+
+  document.querySelectorAll("[data-recommendation-toggle]").forEach((button) => {
+    const isActive = button.dataset.recommendationToggle === activeRecommendationKey;
+    button.setAttribute("aria-expanded", String(isActive));
+    button.textContent = isActive ? "Collapse Recommendation" : "View Full Recommendation";
+  });
+
+  document.querySelectorAll("[data-recommendation-card]").forEach((card) => {
+    card.classList.toggle("is-selected-recommendation", card.dataset.recommendationCard === activeRecommendationKey);
+  });
+
+  if (!activeRecommendationKey) return;
+  title.textContent = recommendationTitles[activeRecommendationKey];
+  text.textContent = markets[activeMarketKey].sections[activeRecommendationKey];
+}
+
+
 function formatUsd(value) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -378,6 +415,10 @@ function setActiveMarket(marketKey) {
     if (value) node.textContent = summarizeRecommendation(value);
   });
 
+  if (activeRecommendationKey) {
+    updateRecommendationPanel(activeRecommendationKey, true);
+  }
+
   const metricIds = ["metric-a", "metric-b", "metric-c"];
 
   metricIds.forEach((id, index) => {
@@ -446,6 +487,17 @@ document.addEventListener("DOMContentLoaded", () => {
     control.addEventListener("mouseenter", () => showMatrixDetail(control.dataset.detail));
     control.addEventListener("click", () => showMatrixDetail(control.dataset.detail));
   });
+
+  document.querySelectorAll("[data-recommendation-toggle]").forEach((button) => {
+    button.addEventListener("click", () => updateRecommendationPanel(button.dataset.recommendationToggle));
+  });
+
+  const recommendationClose = document.querySelector(".recommendation-detail-close");
+  if (recommendationClose) {
+    recommendationClose.addEventListener("click", () => {
+      if (activeRecommendationKey) updateRecommendationPanel(activeRecommendationKey);
+    });
+  }
 
   document.querySelectorAll("[data-market]").forEach((button) => {
     button.addEventListener("click", () => {
