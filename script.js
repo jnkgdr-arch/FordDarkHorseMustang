@@ -211,23 +211,88 @@ function renderPricingDriverPanel(marketKey) {
   panel.innerHTML = `<h4>${data.title}</h4><div class="pricing-driver-legend"><span class="applicable">Applicable</span><span class="not-emphasized">Not emphasized</span><span class="not-assessed">Not assessed</span></div><div class="pricing-driver-bars">${bars}</div><p>${data.note}</p><details><summary>View supporting pricing details</summary><ul>${data.details.map((item) => `<li>${item}</li>`).join("")}</ul></details>`;
 }
 
+function makeList(items) {
+  return `<ul>${items.map((item) => `<li>${item}</li>`).join("")}</ul>`;
+}
+
+function makeDetail(label, items) {
+  return `<details><summary>${label}</summary>${Array.isArray(items) ? makeList(items) : `<p>${items}</p>`}</details>`;
+}
+
+function makePriceBars(marketKey) {
+  const priceData = {
+    usa: [["Standard", "$62,230", 62230], ["Premium", "$66,225", 66225]],
+    uk: [["Manual", "£70,740 / ~$94,320", 70740], ["Automatic", "£72,740 / ~$96,987", 72740]],
+    kuwait: [["Starting price", "KWD 22,536.50 / ~$72,698", 22536.5]]
+  }[marketKey];
+  const max = Math.max(...priceData.map(([, , value]) => value));
+  return `<div class="country-price-bars">${priceData.map(([label, value, amount]) => `<div class="country-price-row"><strong>${label}</strong><span><i style="--bar:${Math.max((amount / max) * 100, 48)}%"></i></span><em>${value}</em></div>`).join("")}</div>`;
+}
+
+function makeAdoptionStrip(marketKey) {
+  const active = marketKey === "uk" ? "Early Majority" : "Early Adopters";
+  return `<div class="country-adoption-strip">${["Innovators", "Early Adopters", "Early Majority", "Late Majority", "Laggards"].map((stage) => `<span class="${stage === active ? "active" : ""}">${stage}</span>`).join("")}</div><p>${active} placement summarizes this market's adoption role in the project analysis.</p>`;
+}
+
+function makeBrandBranches(marketKey, themes) {
+  return `<div class="country-brand-node"><strong>${markets[marketKey].title} Brand Position</strong><div>${themes.slice(0, 6).map((theme) => `<span>${theme}</span>`).join("")}</div></div>`;
+}
+
+function makePricingDriverBarsForCountry(marketKey) {
+  const data = pricingDriverStates[marketKey];
+  return `<div class="pricing-driver-bars country-driver-bars">${data.states.map((state, index) => {
+    const [shortLabel, fullLabel] = pricingDriverLabels[index];
+    const label = state === "applicable" ? "Applicable" : state === "not-emphasized" ? "Not emphasized" : "Not assessed";
+    return `<div class="pricing-driver-bar ${state}" aria-label="${fullLabel}: ${label}"><span></span><strong>${shortLabel}</strong><em>${label}</em></div>`;
+  }).join("")}</div><p>${data.note}</p>`;
+}
+
+function makeFlow(title, steps, constraint) {
+  return `<div class="country-flow"><strong>${title}</strong><div>${steps.map((step, index) => `${index ? '<i aria-hidden="true">→</i>' : ''}<span>${step}</span>`).join("")}</div><p>${constraint}</p></div>`;
+}
+
 function renderCountryFocus(marketKey) {
   const container = document.getElementById("country-focus-grid");
   const title = document.getElementById("country-focus-title");
   const data = countryFocusData[marketKey];
   const market = markets[marketKey];
   if (!container || !title || !data || !market) return;
-  title.textContent = `${market.title} Market Focus`;
-  const cards = [
-    ["Product", data.features], ["Price", data.price], ["Adoption", data.adoption], ["Branding", data.branding], ["Pricing Drivers", data.pricingDrivers], ["IMC", data.imc], ["Logistics", data.logistics], ["Recommendations", Object.values(market.sections)]
+  title.textContent = `${market.title} Visual Strategy Dashboard`;
+  const overviewMetrics = [
+    ["Market Position", market.subtitle],
+    ["Adoption Stage", data.adoption[0].replace("Adoption stage: ", "")],
+    ["Price", data.price[0]],
+    ["Pricing Model", data.adoption[2]],
+    ["Audience Priority", data.adoption[1].replace("Appeal: ", "")],
+    ["Market Play", market.headline]
   ];
-  container.innerHTML = cards.map(([heading, items]) => `<article class="country-focus-card"><h4>${heading}</h4><ul>${items.map((item) => `<li>${item}</li>`).join("")}</ul></article>`).join("");
+  const imcSteps = {
+    usa: ["Performance audience", "Digital, social, television, public relations, dealer track events, creator test drives", "Awareness, engagement, and track-day aspiration", "Constraint: saturation and short attention spans"],
+    uk: ["Compliance-aware enthusiasts", "CSR, environmental responsibility, performance media, YouTube comparisons, CRM invitations, circuit experiences", "Trust with measured performance desire", "Constraint: balancing emotional appeal with responsibility and compliance"],
+    kuwait: ["Luxury-status buyers", "Social media, television, billboards, print, personal selling, showroom experiences, localized events", "Exclusivity, road-safety relevance, and high-visibility desire", "Constraint: cultural, language, and regulatory localization"]
+  }[marketKey];
+  const logisticsSteps = {
+    usa: ["Long-distance transportation", "Distribution-center dependence"],
+    uk: ["Urban congestion", "Last-mile access", "Emissions-zone restrictions"],
+    kuwait: ["Port infrastructure", "Customs and handling delays", "Climate exposure"]
+  }[marketKey];
+  container.innerHTML = `
+    <article class="country-story-card country-overview-card" id="country-overview"><h4>Market Overview</h4><div class="country-metric-grid">${overviewMetrics.map(([label, value]) => `<div><span>${label}</span><strong>${value}</strong></div>`).join("")}</div><p>${market.summary}</p>${makeDetail("View Full Market Analysis", [market.subtitle, market.summary, market.headline])}</article>
+    <article class="country-story-card" id="country-product"><h4>Product Adaptation</h4><div class="feature-band-grid"><div><strong>Shared Global Features</strong><span>5.0L V8 engine</span><span>Sport-tuned suspension</span><span>MagneRide Damping System</span></div><div><strong>Country-Specific Adaptations</strong>${data.features.slice(0, 3).map((item) => `<span>${item}</span>`).join("")}</div><div><strong>Regulatory and Safety Requirements</strong>${data.features.filter((item) => /safety|emissions|assist|detection|crash|warning|braking|restraint|compliance/i.test(item)).slice(0, 4).map((item) => `<span>${item}</span>`).join("") || '<span>Not emphasized in this market section</span>'}</div><div><strong>Performance and Appearance Adjustments</strong>${data.features.filter((item) => /performance|visual|appearance|engine|luxury|interior|customization/i.test(item)).slice(0, 4).map((item) => `<span>${item}</span>`).join("") || '<span>Core Mustang performance identity retained</span>'}</div></div><p>Shared Mustang identity remains the base while visible adaptations respond to local expectations.</p>${makeDetail("View Product Adaptation Details", data.features)}</article>
+    <article class="country-story-card" id="country-price"><h4>Local Price Visualization</h4>${makePriceBars(marketKey)}<p>Local price references remain tied to the project pricing notes and currency context.</p>${makeDetail("View Pricing Details", data.price)}</article>
+    <article class="country-story-card" id="country-adoption"><h4>Adoption Stage</h4>${makeAdoptionStrip(marketKey)}${makeDetail("View Adoption Analysis", data.adoption)}</article>
+    <article class="country-story-card" id="country-branding"><h4>Branding Strategy</h4>${makeBrandBranches(marketKey, data.branding)}<p>Brand positioning translates the global Mustang identity into market-specific emphasis.</p>${makeDetail("View Full Branding Strategy", data.branding)}</article>
+    <article class="country-story-card" id="country-pricing-drivers"><h4>Pricing-Driver Visualization</h4>${makePricingDriverBarsForCountry(marketKey)}${makeDetail("View Pricing-Driver Details", data.pricingDrivers)}</article>
+    <article class="country-story-card" id="country-imc"><h4>IMC Pathway</h4>${makeFlow("Audience Priority → Communication Tools → Intended Response → Constraint", imcSteps, imcSteps[3])}${makeDetail("View IMC Details", data.imc)}</article>
+    <article class="country-story-card" id="country-logistics"><h4>Logistics Flow</h4>${makeFlow("Logistics process", logisticsSteps, data.logistics[0])}${makeDetail("View Logistics Details", data.logistics)}</article>
+  `;
 }
+
 
 function updateSectionNav(viewKey) {
   const nav = document.querySelector(".sidebar-section-nav");
   if (!nav) return;
-  const countryNav = [["Overview", "market-title"], ["Product", "country-focus"], ["Price", "country-focus"], ["Adoption", "country-focus"], ["Branding", "country-focus"], ["IMC", "country-focus"], ["Logistics", "country-focus"], ["Recommendations", "recommendation-title"]];
+  const countryNav = [["Overview", "country-overview"], ["Product", "country-product"], ["Price", "country-price"], ["Adoption", "country-adoption"], ["Branding", "country-branding"], ["Pricing Drivers", "country-pricing-drivers"], ["IMC", "country-imc"], ["Logistics", "country-logistics"], ["Recommendations", "recommendation-title"]];
   const links = viewKey === "compare" ? viewConfig.compare.nav : countryNav;
   nav.innerHTML = links.map(([label, id]) => `<a href="#${id}">${label}</a>`).join("");
 }
@@ -243,7 +308,19 @@ function setDashboardView(viewKey, options = {}) {
     button.classList.toggle("active", isActive);
     button.setAttribute("aria-pressed", String(isActive));
   });
-  if (!isCompare && config.market) {
+  if (isCompare) {
+    setText("market-title", "Ford Mustang Dark Horse");
+    setText("market-subtitle", "A compact global marketing strategy dashboard comparing launch-market positioning, pricing, branding, IMC, logistics, and production considerations.");
+    setText("market-kicker", "Global strategy model");
+    setText("vehicle-headline", "Product × Price × Brand × Channel");
+    setText("vehicle-summary", "Use the comparison view to scan cross-market strategy patterns, then switch to a country view for focused visual storytelling and expandable research details.");
+    setText("metric-a", "3");
+    setText("metric-b", "Global");
+    setText("metric-c", "Visual");
+    document.querySelectorAll(".header-metrics small").forEach((node, index) => {
+      node.textContent = ["Priority markets", "Strategy lens", "Dashboard format"][index] || node.textContent;
+    });
+  } else if (config.market) {
     setActiveMarket(config.market);
     renderCountryFocus(config.market);
   }

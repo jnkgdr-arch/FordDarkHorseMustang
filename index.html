@@ -19,164 +19,19 @@
   <body>
     <div class="backdrop" aria-hidden="true"></div>
 
-    <header class="site-header">
-      <a class="site-brand" href="#market-title" aria-label="Janelle Gardner Mustang Dark Horse dashboard home">
-        <span>Janelle Gardner</span>
-        <strong>Mustang Dark Horse Strategy</strong>
+    <header class="site-header site-container">
+      <a class="site-brand" href="#market-title" aria-label="Mustang Dark Horse dashboard home">
+        <span>Mustang Dark Horse Strategy</span>
+        <strong>Product × Price × Brand × Channel</strong>
       </a>
 
-      <nav class="top-market-nav" aria-label="Country stats navigation">
-        <a class="market-link active" href="#market-title" data-market="usa" aria-current="page">United States</a>
-        <a class="market-link" href="#market-title" data-market="uk">United Kingdom</a>
-        <a class="market-link" href="#market-title" data-market="kuwait">Kuwait</a>
+      <nav class="site-view-selector" aria-label="Dashboard view selector">
+        <button type="button" class="view-toggle active" data-view-toggle="compare" aria-pressed="true">Compare Markets</button>
+        <button type="button" class="view-toggle" data-view-toggle="usa" aria-pressed="false">United States</button>
+        <button type="button" class="view-toggle" data-view-toggle="uk" aria-pressed="false">United Kingdom</button>
+        <button type="button" class="view-toggle" data-view-toggle="kuwait" aria-pressed="false">Kuwait</button>
       </nav>
     </header>
-
-    <div class="site-view-selector site-container" aria-label="Dashboard view selector">
-      <button type="button" class="view-toggle active" data-view-toggle="compare" aria-pressed="true">Compare Markets</button>
-      <button type="button" class="view-toggle" data-view-toggle="usa" aria-pressed="false">United States</button>
-      <button type="button" class="view-toggle" data-view-toggle="uk" aria-pressed="false">United Kingdom</button>
-      <button type="button" class="view-toggle" data-view-toggle="kuwait" aria-pressed="false">Kuwait</button>
-    </div>
-
-    <section class="global-scope-strip" aria-labelledby="map-heading">
-      <div class="global-strip-content">
-        <div class="brand-lockup">
-  <img
-    class="brand-logo"
-    src="assets/ford-mustang-thumbnail.png"
-    alt="Ford Mustang Dark Horse"
-  />
-  <div>
-    <p>Ford Mustang</p>
-    <h1>Dark Horse</h1>
-  </div>
-</div>
-
-        <section class="map-card" aria-labelledby="map-heading">
-          <div class="section-kicker">Global Scope</div>
-          <h2 id="map-heading">Priority launch markets</h2>
-
-          <div
-            class="world-map globe-map"
-            role="group"
-            aria-label="Dark globe market selector with highlighted markets for the United States, United Kingdom, and Kuwait"
-          >
-            <svg class="globe-svg" viewBox="0 0 360 360" focusable="false">
-              <defs>
-                <radialGradient id="globeOcean" cx="33%" cy="28%" r="72%">
-                  <stop offset="0%" stop-color="#1a5267" />
-                  <stop offset="42%" stop-color="#0d2635" />
-                  <stop offset="100%" stop-color="#050910" />
-                </radialGradient>
-
-                <linearGradient id="globeLand" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stop-color="#294b52" />
-                  <stop offset="1" stop-color="#101c25" />
-                </linearGradient>
-
-                <filter id="globeGlow" x="-40%" y="-40%" width="180%" height="180%">
-                  <feGaussianBlur stdDeviation="5" result="blur" />
-                  <feMerge>
-                    <feMergeNode in="blur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-              </defs>
-
-              <circle class="globe-halo" cx="180" cy="180" r="154"></circle>
-              <circle class="globe-ocean" cx="180" cy="180" r="138"></circle>
-
-              <g class="globe-grid" aria-hidden="true">
-                <ellipse cx="180" cy="180" rx="138" ry="48"></ellipse>
-                <ellipse cx="180" cy="180" rx="138" ry="86"></ellipse>
-                <ellipse cx="180" cy="180" rx="52" ry="138"></ellipse>
-                <ellipse cx="180" cy="180" rx="95" ry="138"></ellipse>
-                <path d="M42 180h276"></path>
-                <path d="M180 42v276"></path>
-              </g>
-
-              <g class="globe-landmasses" aria-hidden="true">
-                <path d="M72 126c16-30 50-48 83-43 25 4 37 21 30 39-6 16-28 15-33 31-5 15 14 25 8 42-8 23-48 22-70 5-28-22-35-50-18-74Z"></path>
-                <path d="M185 83c29-13 63-9 88 12 24 20 28 43 14 58-15 17-42 5-56 21-14 16 4 43-18 58-18 12-50 1-66-24-24-38-10-101 38-125Z"></path>
-                <path d="M226 207c22-13 54-5 65 18 11 22-2 52-26 63-26 12-60-2-66-27-5-19 8-43 27-54Z"></path>
-                <path d="M117 221c23 3 39 19 36 37-4 22-34 32-56 18-22-13-29-48-13-58 8-5 19 1 33 3Z"></path>
-              </g>
-
-              <g class="market-highlight market-highlight-usa" aria-hidden="true">
-                <path d="M82 135c20-20 55-24 76-7 17 14 14 40-4 51-23 14-60 5-74-15-6-9-6-20 2-29Z"></path>
-              </g>
-
-              <g class="market-highlight market-highlight-uk" aria-hidden="true">
-                <path d="M196 118c10-8 26-6 32 4 5 9-1 22-13 24-12 2-25-6-27-15-1-5 2-10 8-13Z"></path>
-              </g>
-
-              <g class="market-highlight market-highlight-kuwait" aria-hidden="true">
-                <path d="M247 178c12-5 26 2 28 14 2 11-9 21-22 18-11-2-19-13-16-22 1-5 5-8 10-10Z"></path>
-              </g>
-
-              <path class="globe-route" d="M112 151 C152 104 184 100 209 132" aria-hidden="true"></path>
-              <path class="globe-route" d="M209 132 C230 145 245 166 257 194" aria-hidden="true"></path>
-              <path class="globe-route" d="M112 151 C160 223 218 224 257 194" aria-hidden="true"></path>
-
-              <g
-                class="pin globe-pin pin-usa active"
-                data-market="usa"
-                tabindex="0"
-                role="button"
-                aria-pressed="true"
-                aria-label="Show United States market"
-              >
-                <circle class="pin-pulse" r="17" cx="112" cy="151"></circle>
-                <circle class="pin-core" r="6" cx="112" cy="151"></circle>
-                <text x="112" y="129">USA</text>
-              </g>
-
-              <g
-                class="pin globe-pin pin-uk"
-                data-market="uk"
-                tabindex="0"
-                role="button"
-                aria-pressed="false"
-                aria-label="Show United Kingdom market"
-              >
-                <circle class="pin-pulse" r="17" cx="209" cy="132"></circle>
-                <circle class="pin-core" r="6" cx="209" cy="132"></circle>
-                <text x="209" y="110">UK</text>
-              </g>
-
-              <g
-                class="pin globe-pin pin-kuwait"
-                data-market="kuwait"
-                tabindex="0"
-                role="button"
-                aria-pressed="false"
-                aria-label="Show Kuwait market"
-              >
-                <circle class="pin-pulse" r="17" cx="257" cy="194"></circle>
-                <circle class="pin-core" r="6" cx="257" cy="194"></circle>
-                <text x="257" y="225">KWT</text>
-              </g>
-            </svg>
-          </div>
-        </section>
-
-        <div class="priority-markets" aria-label="Priority Launch Markets">
-          <div class="section-kicker">Global Scope</div>
-          <h2>Priority Launch Markets</h2>
-          <div class="market-pill-row">
-            <button class="market-pill active" type="button" data-market="usa">USA</button>
-            <button class="market-pill" type="button" data-market="uk">UK</button>
-            <button class="market-pill" type="button" data-market="kuwait">Kuwait</button>
-          </div>
-        </div>
-
-        <div class="sidebar-footer">
-          <p>Strategy model</p>
-          <strong>Product × Price × Brand × Channel</strong>
-        </div>
-      </div>
-    </section>
 
     <div class="dashboard-shell">
       <aside class="sidebar" aria-label="Dashboard section navigation">
@@ -295,7 +150,6 @@
 
         <section class="recommendations-grid" aria-label="Additional strategic recommendations">
           <article class="strategy-card recommendation-card" data-recommendation-card="product">
-            <span class="recommendation-icon" aria-hidden="true">🏎️</span>
             <small class="recommendation-number">01</small>
             <h3>Product Adaptation</h3>
             <p class="recommendation-summary">Offer handling, appearance, and track-day accessory packages.</p>
@@ -304,7 +158,6 @@
           </article>
 
           <article class="strategy-card recommendation-card" data-recommendation-card="pricing">
-            <span class="recommendation-icon" aria-hidden="true">💵</span>
             <small class="recommendation-number">02</small>
             <h3>Pricing Strategy</h3>
             <p class="recommendation-summary">Use premium-plus pricing, finance offers, loyalty incentives, and personalization bundles.</p>
@@ -313,7 +166,6 @@
           </article>
 
           <article class="strategy-card recommendation-card" data-recommendation-card="branding">
-            <span class="recommendation-icon" aria-hidden="true">🐎</span>
             <small class="recommendation-number">03</small>
             <h3>Branding</h3>
             <p class="recommendation-summary">Position Dark Horse as the precise, modern evolution of American muscle.</p>
@@ -322,7 +174,6 @@
           </article>
 
           <article class="strategy-card recommendation-card" data-recommendation-card="imc">
-            <span class="recommendation-icon" aria-hidden="true">📣</span>
             <small class="recommendation-number">04</small>
             <h3>IMC</h3>
             <p class="recommendation-summary">Combine motorsport content, track events, creator drives, retargeting, and launch films.</p>
@@ -331,7 +182,6 @@
           </article>
 
           <article class="strategy-card recommendation-card" data-recommendation-card="logistics">
-            <span class="recommendation-icon" aria-hidden="true">🚚</span>
             <small class="recommendation-number">05</small>
             <h3>Logistics</h3>
             <p class="recommendation-summary">Prioritize certified dealers, parts availability, and regional demand forecasting.</p>
@@ -340,7 +190,6 @@
           </article>
 
           <article class="strategy-card recommendation-card" data-recommendation-card="drivers">
-            <span class="recommendation-icon" aria-hidden="true">⚡</span>
             <small class="recommendation-number">06</small>
             <h3>Market Drivers</h3>
             <p class="recommendation-summary">Use heritage, V8 scarcity, customization, track culture, and home-market pride.</p>
@@ -605,17 +454,17 @@
             </div>
             <div class="logistics-lane" data-market-row="usa">
               <div class="lane-market"><strong>United States</strong><span>Scale and Distance</span></div>
-              <div class="lane-flow" aria-label="United States applicable logistics factors"><span><b aria-hidden="true">🚚</b> Long-distance transportation</span><i aria-hidden="true">→</i><span><b aria-hidden="true">🏬</b> Distribution-center dependence</span></div>
+              <div class="lane-flow" aria-label="United States applicable logistics factors"><span>Long-distance transportation</span><i aria-hidden="true">→</i><span>Distribution-center dependence</span></div>
               <p>Large travel distances and reliance on distribution centers shape domestic vehicle movement.</p>
             </div>
             <div class="logistics-lane" data-market-row="uk">
               <div class="lane-market"><strong>United Kingdom</strong><span>Urban Access and Emissions Restrictions</span></div>
-              <div class="lane-flow" aria-label="United Kingdom applicable logistics factors"><span><b aria-hidden="true">🏙️</b> Urban congestion</span><i aria-hidden="true">→</i><span><b aria-hidden="true">🚐</b> Last-mile access</span><i aria-hidden="true">→</i><span><b aria-hidden="true">🌿</b> Emissions-zone restrictions</span></div>
+              <div class="lane-flow" aria-label="United Kingdom applicable logistics factors"><span>Urban congestion</span><i aria-hidden="true">→</i><span>Last-mile access</span><i aria-hidden="true">→</i><span>Emissions-zone restrictions</span></div>
               <p>Dense urban environments and emissions restrictions complicate final delivery and market access.</p>
             </div>
             <div class="logistics-lane" data-market-row="kuwait">
               <div class="lane-market"><strong>Kuwait</strong><span>Climate and Port Capacity</span></div>
-              <div class="lane-flow" aria-label="Kuwait applicable logistics factors"><span><b aria-hidden="true">🚢</b> Port infrastructure</span><i aria-hidden="true">→</i><span><b aria-hidden="true">📦</b> Customs and handling delays</span><i aria-hidden="true">→</i><span><b aria-hidden="true">🌡️</b> Climate exposure</span></div>
+              <div class="lane-flow" aria-label="Kuwait applicable logistics factors"><span>Port infrastructure</span><i aria-hidden="true">→</i><span>Customs and handling delays</span><i aria-hidden="true">→</i><span>Climate exposure</span></div>
               <p>Imported vehicles depend on port capacity, customs processing, careful handling, and protection from extreme heat.</p>
             </div>
           </div>
