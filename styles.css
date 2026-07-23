@@ -1361,3 +1361,89 @@ p { margin-block: 0 0.75rem; }
 @media (max-width: 900px) {
   .diffusion-timeline { grid-template-columns: repeat(5, minmax(170px, 1fr)); }
 }
+
+/* Diffusion bell-curve visualization */
+.diffusion-bell-curve {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: clamp(0.75rem, 1.2vw, 1.1rem);
+  background: linear-gradient(135deg, rgba(45,214,255,0.08), rgba(255,255,255,0.035));
+}
+
+.bell-curve-scroll {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-color: rgba(45,214,255,0.35) transparent;
+}
+
+.diffusion-bell-curve svg {
+  display: block;
+  width: 100%;
+  min-width: 860px;
+  height: auto;
+}
+
+.stage-band {
+  fill: rgba(255,255,255,0.025);
+  stroke: rgba(255,255,255,0.055);
+  stroke-width: 1;
+}
+
+.stage-band-active { fill: rgba(45,214,255,0.105); }
+.stage-band-majority { fill: rgba(247,183,51,0.11); }
+.bell-fill { fill: url(#curveFill); }
+.bell-line { fill: none; stroke: rgba(141,234,255,0.88); stroke-width: 4; stroke-linecap: round; filter: drop-shadow(0 0 16px rgba(45,214,255,0.3)); }
+.axis-lines path { fill: none; stroke: rgba(255,255,255,0.22); stroke-width: 1.5; }
+.axis-lines text,
+.stage-labels text { fill: #c7d0db; font: 800 0.82rem Space Grotesk, sans-serif; text-anchor: middle; }
+.axis-lines text:first-of-type { fill: var(--accent); }
+.stage-labels text { fill: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; }
+
+.country-marker .connector {
+  fill: none;
+  stroke: rgba(247,183,51,0.8);
+  stroke-width: 2;
+  stroke-dasharray: 5 6;
+}
+
+.country-marker circle {
+  fill: var(--accent-2);
+  stroke: #fff;
+  stroke-width: 2;
+  filter: url(#markerGlow);
+}
+
+.curve-label {
+  display: grid;
+  gap: 2px;
+  padding: 8px 10px;
+  border: 1px solid rgba(247,183,51,0.34);
+  border-radius: 12px;
+  background: rgba(6,10,18,0.86);
+  color: var(--ink);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+}
+
+.curve-label strong { font: 800 0.82rem Space Grotesk, sans-serif; }
+.curve-label span { color: var(--accent); font: 800 0.68rem Space Grotesk, sans-serif; text-transform: uppercase; letter-spacing: 0.08em; }
+.curve-label em { color: #c7d0db; font-size: 0.68rem; font-style: normal; line-height: 1.25; }
+
+.diffusion-bell-curve figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.diffusion-detail-panels { margin-top: 12px; }
+.diffusion-detail-panels summary { display: grid; gap: 4px; }
+.diffusion-detail-panels summary span { color: var(--ink); font: 800 0.95rem Space Grotesk, sans-serif; }
+.diffusion-detail-panels summary small { color: var(--muted); line-height: 1.35; }
+.diffusion-detail-panels strong { display: block; margin-top: 10px; color: var(--accent-2); font: 800 0.86rem Space Grotesk, sans-serif; }
+.diffusion-detail-panels ul { margin: 0.65rem 0 0; padding-left: 1.1rem; color: #c7d0db; line-height: 1.5; }
+
+@media (max-width: 720px) {
+  .diffusion-bell-curve { padding: 10px; }
+  .diffusion-bell-curve svg { min-width: 780px; }
+}

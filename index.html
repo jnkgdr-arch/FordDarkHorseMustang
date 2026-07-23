@@ -404,22 +404,91 @@
         <section class="paper-section" aria-labelledby="diffusion-title">
           <div class="paper-heading"><div><div class="section-kicker">International adoption</div><h3 id="diffusion-title">Multinational Diffusion Theory</h3></div><p>The theory describes how innovations spread internationally by adapting to cultural, economic, regulatory, and technological conditions. Ford combines standardized innovation with regional adaptation.</p></div>
           <p class="support-text">The paper places the U.S. and Kuwait with early adopters because their audiences prioritize performance, personalization, luxury, appearance, and advanced safety; the U.K. is positioned with a cautious early majority because safety and emissions compliance are central.</p>
-          <div class="diffusion-timeline" aria-label="Innovation adoption timeline with market markers">
-            <div class="timeline-stage"><span>Innovators</span></div>
-            <div class="timeline-stage active"><span>Early Adopters</span><article data-market-row="usa"><strong>United States</strong><em>Performance, technology, and personalization</em></article><article data-market-row="kuwait"><strong>Kuwait</strong><em>Luxury, appearance, and advanced safety</em></article></div>
-            <div class="timeline-stage active"><span>Early Majority</span><article data-market-row="uk"><strong>United Kingdom</strong><em>Safety and emissions compliance</em></article></div>
-            <div class="timeline-stage"><span>Late Majority</span></div>
-            <div class="timeline-stage"><span>Laggards</span></div>
-          </div>
-          <div class="pricing-flow market-comparison-grid compact-detail-panels" aria-label="Pricing model and audience detail panels">
-            <details data-market-row="usa"><summary>United States market details</summary><strong>Rigid cost-plus pricing</strong><p>Early adopters · Standard model: $62,230 · Priorities: performance, technology, personalization</p></details>
-            <details data-market-row="uk"><summary>United Kingdom market details</summary><strong>Flexible cost-plus pricing</strong><p>Cautious early majority · Manual model: £70,740, approximately $94,320 · Priority: safety and emissions compliance</p></details>
-            <details data-market-row="kuwait"><summary>Kuwait market details</summary><strong>Dynamic incremental pricing</strong><p>Early adopters · Starting price: KWD 22,536.50, approximately $72,698 · Priorities: luxury, appearance, advanced safety</p></details>
-          </div>
-          <div class="details-grid market-comparison-grid">
-            <details><summary>United States supporting details</summary><ul><li>Premium model: $66,225</li><li>Additional destination charge</li><li>Incentives for military members, students, and people with disabilities</li><li>Promotion through television, digital platforms, dealerships, and targeted offers</li></ul></details>
-            <details><summary>United Kingdom supporting details</summary><ul><li>Automatic model: £72,740, approximately $96,987</li><li>Target audience: cautious early majority</li><li>Strong focus on safety and emissions compliance</li></ul></details>
-            <details><summary>Kuwait supporting details</summary><ul><li>Dynamic incremental pricing</li><li>Target audience: early adopters</li><li>Audience priorities: luxury, appearance, and advanced safety</li></ul></details>
+          <figure class="diffusion-bell-curve" aria-labelledby="diffusion-curve-title" aria-describedby="diffusion-curve-note">
+            <div class="bell-curve-scroll">
+              <svg viewBox="0 0 1100 430" role="img" aria-labelledby="diffusion-curve-title diffusion-curve-desc" focusable="false">
+                <title id="diffusion-curve-title">Diffusion of Innovation Bell Curve by Market</title>
+                <desc id="diffusion-curve-desc">Conceptual bell curve showing United States and Kuwait in Early Adopters and United Kingdom in Early Majority. The visualization is conceptual and does not show sales volume or measured percentages.</desc>
+                <defs>
+                  <linearGradient id="curveFill" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#2dd6ff" stop-opacity="0.08" />
+                    <stop offset="0.34" stop-color="#2dd6ff" stop-opacity="0.24" />
+                    <stop offset="0.52" stop-color="#f7b733" stop-opacity="0.28" />
+                    <stop offset="1" stop-color="#ffffff" stop-opacity="0.06" />
+                  </linearGradient>
+                  <filter id="markerGlow" x="-80%" y="-80%" width="260%" height="260%">
+                    <feGaussianBlur stdDeviation="5" result="blur" />
+                    <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                  </filter>
+                </defs>
+
+                <g class="stage-bands" aria-hidden="true">
+                  <rect x="70" y="54" width="130" height="286" class="stage-band" />
+                  <rect x="200" y="54" width="190" height="286" class="stage-band stage-band-active" />
+                  <rect x="390" y="54" width="250" height="286" class="stage-band stage-band-majority" />
+                  <rect x="640" y="54" width="250" height="286" class="stage-band" />
+                  <rect x="890" y="54" width="140" height="286" class="stage-band" />
+                </g>
+
+                <path class="bell-fill" d="M70 340 C150 338 190 315 230 270 C285 205 330 133 410 96 C495 57 585 57 670 96 C750 133 795 205 850 270 C890 315 950 338 1030 340 L70 340 Z" />
+                <path class="bell-line" d="M70 340 C150 338 190 315 230 270 C285 205 330 133 410 96 C495 57 585 57 670 96 C750 133 795 205 850 270 C890 315 950 338 1030 340" />
+
+                <g class="axis-lines" aria-hidden="true">
+                  <path d="M70 340H1038" />
+                  <path d="M70 340V58" />
+                  <text x="554" y="408">Market Adoption Progression</text>
+                  <text x="22" y="216" transform="rotate(-90 22 216)">Relative Number of Adopters</text>
+                </g>
+
+                <g class="stage-labels" aria-hidden="true">
+                  <text x="135" y="374">Innovators</text>
+                  <text x="295" y="374">Early Adopters</text>
+                  <text x="515" y="374">Early Majority</text>
+                  <text x="765" y="374">Late Majority</text>
+                  <text x="960" y="374">Laggards</text>
+                </g>
+
+                <g class="country-marker country-marker-usa" data-market-row="usa">
+                  <path class="connector" d="M258 236 L222 168" />
+                  <circle cx="258" cy="236" r="8" />
+                  <foreignObject x="120" y="112" width="210" height="58"><div xmlns="http://www.w3.org/1999/xhtml" class="curve-label"><strong>United States</strong><span>Early Adopters</span><em>Performance · technology · personalization</em></div></foreignObject>
+                </g>
+
+                <g class="country-marker country-marker-kuwait" data-market-row="kuwait">
+                  <path class="connector" d="M344 148 L384 82" />
+                  <circle cx="344" cy="148" r="8" />
+                  <foreignObject x="318" y="28" width="210" height="58"><div xmlns="http://www.w3.org/1999/xhtml" class="curve-label"><strong>Kuwait</strong><span>Early Adopters</span><em>Luxury · prestige · advanced safety</em></div></foreignObject>
+                </g>
+
+                <g class="country-marker country-marker-uk" data-market-row="uk">
+                  <path class="connector" d="M585 62 L660 104" />
+                  <circle cx="660" cy="104" r="8" />
+                  <foreignObject x="555" y="18" width="235" height="58"><div xmlns="http://www.w3.org/1999/xhtml" class="curve-label"><strong>United Kingdom</strong><span>Early Majority</span><em>Safety · compliance · road usability</em></div></foreignObject>
+                </g>
+              </svg>
+            </div>
+            <figcaption id="diffusion-curve-note">Conceptual summary only: the curve shows adoption-stage placement from the research, not actual sales volume or measured adoption percentages.</figcaption>
+          </figure>
+
+          <div class="diffusion-detail-panels market-comparison-grid compact-detail-panels" aria-label="Expandable diffusion market details">
+            <details data-market-row="usa">
+              <summary><span>United States</span><small>Adoption stage: Early Adopters · Appeal: Performance, technology, personalization</small></summary>
+              <strong>Rigid cost-plus pricing</strong>
+              <p>Early adopters · Standard model: $62,230 · Priorities: performance, technology, personalization</p>
+              <ul><li>Premium model: $66,225</li><li>Additional destination charge</li><li>Incentives for military members, students, and people with disabilities</li><li>Promotion through television, digital platforms, dealerships, and targeted offers</li></ul>
+            </details>
+            <details data-market-row="uk">
+              <summary><span>United Kingdom</span><small>Adoption stage: Early Majority · Appeal: Safety, compliance, road usability</small></summary>
+              <strong>Flexible cost-plus pricing</strong>
+              <p>Cautious early majority · Manual model: £70,740, approximately $94,320 · Priority: safety and emissions compliance</p>
+              <ul><li>Automatic model: £72,740, approximately $96,987</li><li>Target audience: cautious early majority</li><li>Strong focus on safety and emissions compliance</li></ul>
+            </details>
+            <details data-market-row="kuwait">
+              <summary><span>Kuwait</span><small>Adoption stage: Early Adopters · Appeal: Luxury, prestige, advanced safety</small></summary>
+              <strong>Dynamic incremental pricing</strong>
+              <p>Early adopters · Starting price: KWD 22,536.50, approximately $72,698 · Priorities: luxury, appearance, advanced safety</p>
+              <ul><li>Dynamic incremental pricing</li><li>Target audience: early adopters</li><li>Audience priorities: luxury, appearance, and advanced safety</li></ul>
+            </details>
           </div>
           <details class="comparison-details"><summary>View exact local prices</summary><div class="comparison-table" role="region" aria-label="Detailed local currency and approximate US dollar price comparison"><table><thead><tr><th>Variant</th><th>Local currency</th><th>Approx. USD equivalent</th></tr></thead><tbody><tr><td>U.S. standard</td><td>$62,230</td><td>$62,230</td></tr><tr><td>U.S. Premium</td><td>$66,225</td><td>$66,225</td></tr><tr><td>U.K. manual</td><td>£70,740</td><td>Approximately $94,320</td></tr><tr><td>U.K. automatic</td><td>£72,740</td><td>Approximately $96,987</td></tr><tr><td>Kuwait starting price</td><td>KWD 22,536.50</td><td>Approximately $72,698</td></tr></tbody></table></div></details>
         </section>
