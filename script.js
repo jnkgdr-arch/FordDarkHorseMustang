@@ -149,6 +149,63 @@ const viewConfig = {
   kuwait: { hash: "#kuwait", market: "kuwait", title: "Kuwait Market Focus" }
 };
 
+
+const sharedMustangFeatures = ["5.0L V8 engine", "Sport-tuned suspension", "Bold sports-car exterior styling", "Quad tailpipes", "Blue-knobbed gear shift", "Distinctive brake calipers", "Consistent luxury-performance positioning", "MagneRide Damping System"];
+
+const productAdaptationGroups = {
+  usa: [
+    { label: "Shared Mustang Features", details: sharedMustangFeatures },
+    { label: "Performance Adaptations", details: ["Performance positioning", "Driver-assist technologies", "Track aero story", "Coyote V8 proof point"] },
+    { label: "Appearance and Personalization", details: ["Interior luxury", "Handling package, appearance packs and track-day accessories", "Premium wheel package"] },
+    { label: "Track and Usability Features", details: ["Promotions tailored to specific consumer groups", "Personalization that makes the Dark Horse feel both rare and reachable"] }
+  ],
+  uk: [
+    { label: "Shared Mustang Features", details: sharedMustangFeatures },
+    { label: "Right-Hand-Drive Adaptation", details: ["Right-hand-drive appeal", "Right-hand-drive usability"] },
+    { label: "Safety and Regulatory Requirements", details: ["Slightly lower engine output because of stricter emissions requirements", "Pedestrian and cyclist detection", "Lane-keeping aid", "Adaptive cruise control", "Emergency braking systems", "Safety and emissions compliance emphasis"] },
+    { label: "Road and Climate Usability", details: ["MagneRide composure", "Options that suit narrower UK roads", "B-road handling tune"] },
+    { label: "Collector and Performance Features", details: ["Collector scarcity", "Collector specification", "Unmistakable V8 character"] }
+  ],
+  kuwait: [
+    { label: "Shared Mustang Features", details: sharedMustangFeatures },
+    { label: "Cooling and Climate Adaptation", details: ["GCC-ready cooling", "Summer reliability", "Cooling confidence", "Harsh desert climate considerations"] },
+    { label: "Safety Features", details: ["Child-restraint systems", "Crash-severity sensors", "Cross-traffic alert", "Pre-collision assist", "Forward-collision warning", "Advanced safety"] },
+    { label: "Luxury and Interior Adaptation", details: ["Luxury, visual presence, and safety emphasis", "Premium trims", "Premium interior focus"] },
+    { label: "Appearance and Road Presence", details: ["Visual customization", "Appearance packages with high visual presence", "High-impact stance"] }
+  ]
+};
+
+function makeProductAccordion(marketKey) {
+  const groups = productAdaptationGroups[marketKey];
+  return `<div class="product-accordion" data-product-accordion="${marketKey}"><div class="product-accordion-labels">${groups.map((group, index) => `<button type="button" class="product-accordion-toggle" data-product-group="${index}" aria-expanded="false" aria-controls="product-accordion-panel-${marketKey}"><span>${group.label}</span><small>${group.details.length} details</small><b aria-hidden="true">+</b></button>`).join("")}</div><div class="product-accordion-panel" id="product-accordion-panel-${marketKey}" hidden aria-live="polite"></div></div>`;
+}
+
+function openProductAccordion(button) {
+  const accordion = button.closest("[data-product-accordion]");
+  if (!accordion) return;
+  const marketKey = accordion.dataset.productAccordion;
+  const group = productAdaptationGroups[marketKey][Number(button.dataset.productGroup)];
+  const panel = accordion.querySelector(".product-accordion-panel");
+  const isOpen = button.getAttribute("aria-expanded") === "true";
+  accordion.querySelectorAll(".product-accordion-toggle").forEach((toggle) => {
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.classList.remove("active");
+    const indicator = toggle.querySelector("b");
+    if (indicator) indicator.textContent = "+";
+  });
+  if (isOpen) {
+    panel.hidden = true;
+    panel.innerHTML = "";
+    return;
+  }
+  button.setAttribute("aria-expanded", "true");
+  button.classList.add("active");
+  const indicator = button.querySelector("b");
+  if (indicator) indicator.textContent = "−";
+  panel.hidden = false;
+  panel.innerHTML = `<h5>${group.label}</h5>${makeList(group.details)}`;
+}
+
 const countryFocusData = {
   usa: {
     price: ["Standard model: $62,230", "Premium model: $66,225", "Additional destination charge", "Incentives for military members, students, and people with disabilities", "Promotion through television, digital platforms, dealerships, and targeted offers"],
@@ -284,7 +341,7 @@ function renderCountryFocus(marketKey) {
   }[marketKey];
   container.innerHTML = `
     <article class="country-story-card country-overview-card" id="country-overview"><h4>Market Overview</h4><div class="country-metric-grid">${overviewMetrics.map(([label, value]) => `<div><span>${label}</span><strong>${value}</strong></div>`).join("")}</div><div class="country-summary-band"><span>${market.summary}</span></div>${makeDetail("View Full Market Analysis", [market.subtitle, market.summary, market.headline])}</article>
-    <article class="country-story-card" id="country-product"><h4>Product Adaptation</h4><div class="feature-band-grid"><div><strong>Shared Global Features</strong><span>5.0L V8 engine</span><span>Sport-tuned suspension</span><span>MagneRide Damping System</span></div><div><strong>Country-Specific Adaptations</strong>${data.features.slice(0, 3).map((item) => `<span>${item}</span>`).join("")}</div><div><strong>Regulatory and Safety Requirements</strong>${data.features.filter((item) => /safety|emissions|assist|detection|crash|warning|braking|restraint|compliance/i.test(item)).slice(0, 4).map((item) => `<span>${item}</span>`).join("") || '<span>Not emphasized in this market section</span>'}</div><div><strong>Performance and Appearance Adjustments</strong>${data.features.filter((item) => /performance|visual|appearance|engine|luxury|interior|customization/i.test(item)).slice(0, 4).map((item) => `<span>${item}</span>`).join("") || '<span>Core Mustang performance identity retained</span>'}</div></div><div class="country-summary-band"><span>Shared Mustang identity remains the base while visible adaptations respond to local expectations.</span></div>${makeDetail("View Product Adaptation Details", data.features)}</article>
+    <article class="country-story-card" id="country-product"><h4>Product Adaptation</h4>${makeProductAccordion(marketKey)}<div class="country-summary-band"><span>Shared Mustang identity remains the base while visible adaptations respond to local expectations.</span></div>${makeDetail("View Product Adaptation Details", data.features)}</article>
     <article class="country-story-card" id="country-price"><h4>Local Price Visualization</h4>${makePriceBars(marketKey)}<p>Local price references remain tied to the project pricing notes and currency context.</p>${makeDetail("View Pricing Details", data.price)}</article>
     <article class="country-story-card" id="country-adoption"><h4>Adoption Stage</h4>${makeAdoptionStrip(marketKey)}${makeDetail("View Adoption Analysis", data.adoption)}</article>
     <article class="country-story-card" id="country-branding"><h4>Branding Strategy</h4>${makeBrandBranches(marketKey, data.branding)}<p>Brand positioning translates the global Mustang identity into market-specific emphasis.</p>${makeDetail("View Full Branding Strategy", data.branding)}</article>
@@ -690,6 +747,11 @@ document.addEventListener("DOMContentLoaded", () => {
     control.addEventListener("focus", () => showMatrixDetail(control.dataset.detail));
     control.addEventListener("mouseenter", () => showMatrixDetail(control.dataset.detail));
     control.addEventListener("click", () => showMatrixDetail(control.dataset.detail));
+  });
+
+  document.addEventListener("click", (event) => {
+    const productToggle = event.target.closest(".product-accordion-toggle");
+    if (productToggle) openProductAccordion(productToggle);
   });
 
   document.querySelectorAll("[data-pricing-driver]").forEach((button) => {
