@@ -396,25 +396,71 @@
           <blockquote class="brand-message">“Innovation, performance, heritage, and individuality.”</blockquote>
         </section>
 
-        <section class="paper-section" data-view="comparison" aria-labelledby="pricing-drivers-title">
-          <div class="paper-heading"><div><div class="section-kicker">Value pressure map</div><h3 id="pricing-drivers-title">Foreign-Market Pricing Drivers</h3></div><p>International value perception depends on regulation, macroeconomic pressure, import costs, and buyer expectations beyond the vehicle itself.</p></div>
-          <div class="pricing-driver-tabs" role="tablist" aria-label="Pricing-driver country selector">
-            <button type="button" role="tab" class="pricing-driver-tab active" data-pricing-driver="usa" aria-selected="true" aria-expanded="true" aria-controls="pricing-driver-panel">United States</button>
-            <button type="button" role="tab" class="pricing-driver-tab" data-pricing-driver="uk" aria-selected="false" aria-expanded="false" aria-controls="pricing-driver-panel">United Kingdom</button>
-            <button type="button" role="tab" class="pricing-driver-tab" data-pricing-driver="kuwait" aria-selected="false" aria-expanded="false" aria-controls="pricing-driver-panel">Kuwait</button>
-          </div>
-          <div class="pricing-driver-panel" id="pricing-driver-panel" role="tabpanel" aria-live="polite"></div>
-        </section>
+        <div class="strategy-two-column" data-view="comparison">
+          <section class="paper-section compact-strategy-section value-pressure-section" aria-labelledby="pricing-drivers-title">
+            <div class="paper-heading"><div><div class="section-kicker">Value pressure map</div><h3 id="pricing-drivers-title">Foreign-Market Pricing Drivers</h3></div><p>International value perception depends on regulation, macroeconomic pressure, import costs, and buyer expectations beyond the vehicle itself.</p></div>
+            <div class="strategy-accordion-group" data-accordion-group="pricing-drivers" aria-label="Pricing-driver country accordions">
+              <details class="strategy-accordion pricing-accordion" data-market-row="usa" open>
+                <summary>United States</summary>
+                <div class="accordion-inner">
+                  <p>The United States functions as the domestic pricing benchmark in this analysis. Foreign-market political, import, currency, regulatory, and taxation pressures were not evaluated for the U.S. market.</p>
+                  <ul class="supporting-pricing-list"><li>Standard model: $62,230</li><li>Premium model: $66,225</li><li>Additional destination charge</li><li>Relevant incentives and targeted offers</li></ul>
+                </div>
+              </details>
+              <details class="strategy-accordion pricing-accordion" data-market-row="uk">
+                <summary>United Kingdom</summary>
+                <div class="accordion-inner">
+                  <div class="driver-row-chart" role="img" aria-label="United Kingdom pricing-driver rows showing political, economic, import, and currency as not emphasized and environmental, taxation, and consumer value as applicable.">
+                    <div class="driver-scale" aria-hidden="true"><span></span><span><b>Not Emphasized</b><b>Applicable</b></span></div>
+                    <div class="driver-row not-emphasized"><strong>Political</strong><span><i></i></span></div>
+                    <div class="driver-row not-emphasized"><strong>Economic</strong><span><i></i></span></div>
+                    <div class="driver-row not-emphasized"><strong>Import</strong><span><i></i></span></div>
+                    <div class="driver-row not-emphasized"><strong>Currency</strong><span><i></i></span></div>
+                    <div class="driver-row applicable"><strong>Environmental</strong><span><i></i></span></div>
+                    <div class="driver-row applicable"><strong>Taxation</strong><span><i></i></span></div>
+                    <div class="driver-row applicable"><strong>Consumer value</strong><span><i></i></span></div>
+                  </div>
+                  <p>CO₂ regulations, first-year road tax, continuing annual charges, and environmental expectations affect higher ownership costs and value perception.</p>
+                </div>
+              </details>
+              <details class="strategy-accordion pricing-accordion" data-market-row="kuwait">
+                <summary>Kuwait</summary>
+                <div class="accordion-inner">
+                  <div class="driver-row-chart" role="img" aria-label="Kuwait pricing-driver rows showing political, economic, import, currency, and consumer value as applicable and environmental and taxation as not emphasized.">
+                    <div class="driver-scale" aria-hidden="true"><span></span><span><b>Not Emphasized</b><b>Applicable</b></span></div>
+                    <div class="driver-row applicable"><strong>Political</strong><span><i></i></span></div>
+                    <div class="driver-row applicable"><strong>Economic</strong><span><i></i></span></div>
+                    <div class="driver-row applicable"><strong>Import</strong><span><i></i></span></div>
+                    <div class="driver-row applicable"><strong>Currency</strong><span><i></i></span></div>
+                    <div class="driver-row not-emphasized"><strong>Environmental</strong><span><i></i></span></div>
+                    <div class="driver-row not-emphasized"><strong>Taxation</strong><span><i></i></span></div>
+                    <div class="driver-row applicable"><strong>Consumer value</strong><span><i></i></span></div>
+                  </div>
+                  <p>Political gridlock, reduced government spending, falling oil prices, tariffs and import costs, and currency fluctuations affect purchasing power and value perception.</p>
+                </div>
+              </details>
+            </div>
+          </section>
 
-        <section class="paper-section" data-view="comparison" aria-labelledby="production-title">
-          <div class="paper-heading"><div><div class="section-kicker">Market-entry structure</div><h3 id="production-title">Non-Cash Compensation and Production Strategy</h3></div><p>Strategic possibilities discussed in the paper; not claims that Ford currently manufactures the Dark Horse locally in Kuwait or the United Kingdom.</p></div>
-          <div class="production-detail-grid compact-detail-panels market-comparison-grid" aria-label="Production strategy benefit detail cards">
-            <details><summary>Export from the United States</summary><ul><li>Maintains quality control</li><li>Preserves brand consistency</li><li>Limits initial foreign-production investment</li></ul></details>
-            <details><summary>Potential Kuwait assembly</summary><ul><li>Possible tax breaks</li><li>Government incentives</li><li>Access to assembly facilities</li><li>Reduced entry barriers</li><li>Greater market integration</li></ul></details>
-            <details><summary>Potential United Kingdom assembly</summary><ul><li>Potentially lower labor and logistics costs</li><li>Direct access to regional suppliers</li><li>Improved consumer insights</li><li>More efficient operations</li><li>Better alignment with local preferences</li></ul></details>
-          </div>
-          <div class="chart-panel small-chart" role="img" aria-labelledby="production-chart-title"><h4 id="production-chart-title">Strategic Benefits Discussed by Production Option</h4><canvas id="production-chart" aria-label="Horizontal bar chart showing the number of potential benefits identified by production option; values are not performance ratings or recommendations."></canvas><p class="chart-fallback">Export from U.S.: 3; Kuwait local assembly possibility: 5; U.K. local assembly possibility: 5.</p></div>
-        </section>
+          <section class="paper-section compact-strategy-section market-entry-section" aria-labelledby="production-title">
+            <div class="paper-heading"><div><div class="section-kicker">Market-entry structure</div><h3 id="production-title">Non-Cash Compensation and Production Strategy</h3></div><p>Strategic possibilities discussed in the paper; not claims that Ford currently manufactures the Dark Horse locally in Kuwait or the United Kingdom.</p></div>
+            <div class="chart-panel small-chart compact-entry-chart" role="img" aria-labelledby="production-chart-title"><h4 id="production-chart-title">Strategic Benefits Discussed by Production Option</h4><canvas id="production-chart" aria-label="Horizontal bar chart showing the number of potential benefits identified by production option; values are not performance ratings or recommendations."></canvas><p class="chart-fallback">Export from U.S.: 3; Kuwait local assembly possibility: 5; U.K. local assembly possibility: 5.</p></div>
+            <div class="strategy-accordion-group" data-accordion-group="market-entry" aria-label="Market-entry country accordions">
+              <details class="strategy-accordion" data-market-row="usa">
+                <summary>United States</summary>
+                <div class="accordion-inner"><ul><li>Maintains quality control</li><li>Preserves brand consistency</li><li>Limits initial foreign-production investment</li></ul></div>
+              </details>
+              <details class="strategy-accordion" data-market-row="uk">
+                <summary>United Kingdom</summary>
+                <div class="accordion-inner"><ul><li>Potentially lower labor and logistics costs</li><li>Direct access to regional suppliers</li><li>Improved consumer insights</li><li>More efficient operations</li><li>Better alignment with local preferences</li></ul></div>
+              </details>
+              <details class="strategy-accordion" data-market-row="kuwait">
+                <summary>Kuwait</summary>
+                <div class="accordion-inner"><ul><li>Possible tax breaks</li><li>Government incentives</li><li>Access to assembly facilities</li><li>Reduced entry barriers</li><li>Greater market integration</li></ul></div>
+              </details>
+            </div>
+          </section>
+        </div>
 
         <section class="paper-section" data-view="comparison" aria-labelledby="imc-title">
           <div class="paper-heading"><div><div class="section-kicker">Communication constraints</div><h3 id="imc-title">Global IMC Constraints and Communication Tools</h3></div><p>Focus or activate a matrix cell to read how each explicitly mentioned channel is used, including advantages and constraints.</p></div>
@@ -473,11 +519,59 @@
               <p>Imported vehicles depend on port capacity, customs processing, careful handling, and protection from extreme heat.</p>
             </div>
           </div>
-          <details class="comparison-details full-logistics-comparison">
-            <summary>View Full Logistics Comparison</summary>
-            <div class="comparison-table" role="region" aria-label="Complete logistics comparison table"><table><thead><tr><th>Market</th><th>Primary logistics issue</th><th>Long-distance transportation</th><th>Distribution-center dependence</th><th>Urban congestion</th><th>Last-mile access</th><th>Emissions-zone restrictions</th><th>Climate exposure</th><th>Port infrastructure</th><th>Customs and handling delays</th></tr></thead><tbody><tr><td>United States</td><td>Scale and distance</td><td>Applicable</td><td>Applicable</td><td>Not emphasized</td><td>Not emphasized</td><td>Not emphasized</td><td>Not emphasized</td><td>Not emphasized</td><td>Not emphasized</td></tr><tr><td>United Kingdom</td><td>Urban access and emissions restrictions</td><td>Not emphasized</td><td>Not emphasized</td><td>Applicable</td><td>Applicable</td><td>Applicable</td><td>Not emphasized</td><td>Not emphasized</td><td>Not emphasized</td></tr><tr><td>Kuwait</td><td>Climate and port capacity</td><td>Not emphasized</td><td>Not emphasized</td><td>Not emphasized</td><td>Not emphasized</td><td>Not emphasized</td><td>Applicable</td><td>Applicable</td><td>Applicable</td></tr></tbody></table></div>
-          </details>
-          <div class="details-grid market-comparison-grid"><details><summary>U.S. logistics details</summary><ul><li>Vast distances between states</li><li>Long-haul transportation requirements</li><li>Dependence on regional distribution centers</li><li>Need for coordinated nationwide delivery</li></ul></details><details><summary>U.K. logistics details</summary><ul><li>Narrow streets</li><li>Urban congestion</li><li>Limited space in city centers</li><li>Complicated last-mile delivery</li><li>Dealership-access challenges</li><li>Strict emissions zones</li></ul></details><details><summary>Kuwait logistics details</summary><ul><li>Harsh desert climate</li><li>Limitations at Shuwaikh Port</li><li>Outdated equipment</li><li>Limited automation</li><li>Insufficient port facilities</li><li>Customs-clearance delays</li><li>Vehicle-handling delays</li><li>Frustration among clearing and forwarding agents</li></ul></details></div>
+          <div class="strategy-accordion-group logistics-accordion-group" data-accordion-group="logistics" aria-label="Logistics country accordions">
+            <details class="strategy-accordion logistics-accordion" data-market-row="usa" open>
+              <summary>United States · Scale and distance</summary>
+              <div class="accordion-inner">
+                <div class="driver-row-chart logistics-row-chart" role="img" aria-label="United States logistics rows showing long-distance transportation and distribution-center dependence as applicable and all other logistics factors as not emphasized.">
+                  <div class="driver-scale" aria-hidden="true"><span></span><span><b>Not Emphasized</b><b>Applicable</b></span></div>
+                  <div class="driver-row applicable"><strong>Long-distance transportation</strong><span><i></i></span></div>
+                  <div class="driver-row applicable"><strong>Distribution-center dependence</strong><span><i></i></span></div>
+                  <div class="driver-row not-emphasized"><strong>Urban congestion</strong><span><i></i></span></div>
+                  <div class="driver-row not-emphasized"><strong>Last-mile access</strong><span><i></i></span></div>
+                  <div class="driver-row not-emphasized"><strong>Emissions-zone restrictions</strong><span><i></i></span></div>
+                  <div class="driver-row not-emphasized"><strong>Climate exposure</strong><span><i></i></span></div>
+                  <div class="driver-row not-emphasized"><strong>Port infrastructure</strong><span><i></i></span></div>
+                  <div class="driver-row not-emphasized"><strong>Customs and handling delays</strong><span><i></i></span></div>
+                </div>
+                <ul><li>Vast distances between states</li><li>Long-haul transportation requirements</li><li>Dependence on regional distribution centers</li><li>Need for coordinated nationwide delivery</li></ul>
+              </div>
+            </details>
+            <details class="strategy-accordion logistics-accordion" data-market-row="uk">
+              <summary>United Kingdom · Urban access and emissions restrictions</summary>
+              <div class="accordion-inner">
+                <div class="driver-row-chart logistics-row-chart" role="img" aria-label="United Kingdom logistics rows showing urban congestion, last-mile access, and emissions-zone restrictions as applicable and all other logistics factors as not emphasized.">
+                  <div class="driver-scale" aria-hidden="true"><span></span><span><b>Not Emphasized</b><b>Applicable</b></span></div>
+                  <div class="driver-row not-emphasized"><strong>Long-distance transportation</strong><span><i></i></span></div>
+                  <div class="driver-row not-emphasized"><strong>Distribution-center dependence</strong><span><i></i></span></div>
+                  <div class="driver-row applicable"><strong>Urban congestion</strong><span><i></i></span></div>
+                  <div class="driver-row applicable"><strong>Last-mile access</strong><span><i></i></span></div>
+                  <div class="driver-row applicable"><strong>Emissions-zone restrictions</strong><span><i></i></span></div>
+                  <div class="driver-row not-emphasized"><strong>Climate exposure</strong><span><i></i></span></div>
+                  <div class="driver-row not-emphasized"><strong>Port infrastructure</strong><span><i></i></span></div>
+                  <div class="driver-row not-emphasized"><strong>Customs and handling delays</strong><span><i></i></span></div>
+                </div>
+                <ul><li>Narrow streets</li><li>Urban congestion</li><li>Limited space in city centers</li><li>Complicated last-mile delivery</li><li>Dealership-access challenges</li><li>Strict emissions zones</li></ul>
+              </div>
+            </details>
+            <details class="strategy-accordion logistics-accordion" data-market-row="kuwait">
+              <summary>Kuwait · Climate and port capacity</summary>
+              <div class="accordion-inner">
+                <div class="driver-row-chart logistics-row-chart" role="img" aria-label="Kuwait logistics rows showing climate exposure, port infrastructure, and customs and handling delays as applicable and all other logistics factors as not emphasized.">
+                  <div class="driver-scale" aria-hidden="true"><span></span><span><b>Not Emphasized</b><b>Applicable</b></span></div>
+                  <div class="driver-row not-emphasized"><strong>Long-distance transportation</strong><span><i></i></span></div>
+                  <div class="driver-row not-emphasized"><strong>Distribution-center dependence</strong><span><i></i></span></div>
+                  <div class="driver-row not-emphasized"><strong>Urban congestion</strong><span><i></i></span></div>
+                  <div class="driver-row not-emphasized"><strong>Last-mile access</strong><span><i></i></span></div>
+                  <div class="driver-row not-emphasized"><strong>Emissions-zone restrictions</strong><span><i></i></span></div>
+                  <div class="driver-row applicable"><strong>Climate exposure</strong><span><i></i></span></div>
+                  <div class="driver-row applicable"><strong>Port infrastructure</strong><span><i></i></span></div>
+                  <div class="driver-row applicable"><strong>Customs and handling delays</strong><span><i></i></span></div>
+                </div>
+                <ul><li>Harsh desert climate</li><li>Limitations at Shuwaikh Port</li><li>Outdated equipment</li><li>Limited automation</li><li>Insufficient port facilities</li><li>Customs-clearance delays</li><li>Vehicle-handling delays</li><li>Frustration among clearing and forwarding agents</li></ul>
+              </div>
+            </details>
+          </div>
         </section>
 
         <section class="paper-section conclusion" data-view="comparison" aria-labelledby="conclusion-title"><div class="paper-heading"><div><div class="section-kicker">Strategic Conclusion</div><h3 id="conclusion-title">Preserve identity, localize execution</h3></div><p>Ford preserves the Mustang Dark Horse’s global performance identity while adapting pricing, messaging, product features, and distribution to regional expectations.</p></div><blockquote class="brand-message">“Continued localization and innovation will be essential to the Mustang Dark Horse’s long-term international success.”</blockquote></section>
