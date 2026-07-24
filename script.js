@@ -84,21 +84,345 @@ const priceComparisons = [
 ];
 
 const chartDatasets = {
+  executive: [
+    { label: "Target markets", country: "global", value: 3 },
+    { label: "Standardized global features", country: "global", value: 8 },
+    { label: "Localized features discussed", country: "global", value: 16 },
+    { label: "Vehicle price variants", country: "global", value: 5 },
+    { label: "Pricing models", country: "global", value: 3 },
+    { label: "Adopter-stage categories", country: "global", value: 2 },
+    { label: "Logistics environments", country: "global", value: 3 }
+  ],
   standardization: [
-    { label: "Shared global features", country: "global", value: 8 },
-    { label: "U.S. localized features", country: "usa", value: 3 },
-    { label: "U.K. localized features", country: "uk", value: 6 },
+    { label: "Shared standardized features", country: "global", value: 8 },
+    { label: "United States localized features", country: "usa", value: 3 },
+    { label: "United Kingdom localized features", country: "uk", value: 6 },
     { label: "Kuwait localized features", country: "kuwait", value: 7 }
   ],
+  brandThemes: [
+    { label: "United States", country: "usa", value: 5 },
+    { label: "United Kingdom", country: "uk", value: 5 },
+    { label: "Kuwait", country: "kuwait", value: 4 }
+  ],
+  pricingPressures: [
+    { label: "Kuwait", country: "kuwait", value: 5 },
+    { label: "United Kingdom", country: "uk", value: 3 }
+  ],
   production: [
-    { label: "Export from U.S.", country: "usa", value: 3 },
-    { label: "Kuwait local assembly possibility", country: "kuwait", value: 5 },
-    { label: "U.K. local assembly possibility", country: "uk", value: 5 }
+    { label: "Export from the United States", country: "usa", value: 3 },
+    { label: "Potential Kuwait assembly", country: "kuwait", value: 5 },
+    { label: "Potential United Kingdom assembly", country: "uk", value: 5 }
+  ],
+  imcChannels: [
+    { label: "United States", country: "usa", value: 4 },
+    { label: "United Kingdom", country: "uk", value: 1 },
+    { label: "Kuwait", country: "kuwait", value: 7 }
+  ],
+  logisticsChallenges: [
+    { label: "United States", country: "usa", value: 2 },
+    { label: "United Kingdom", country: "uk", value: 3 },
+    { label: "Kuwait", country: "kuwait", value: 3 }
   ]
 };
 
 const chartInstances = {};
 let activeMarketKey = "usa";
+
+const recommendationTitles = {
+  product: "Product Adaptation",
+  pricing: "Pricing Strategy",
+  branding: "Branding",
+  imc: "IMC",
+  logistics: "Logistics",
+  drivers: "Market Drivers"
+};
+
+let activeRecommendationKey = null;
+
+const viewConfig = {
+  compare: {
+    hash: "#compare",
+    nav: [["Prices", "price-chart-title"], ["Framework", "framework-title"], ["Diffusion", "diffusion-title"], ["Branding", "branding-title"], ["Pricing Drivers", "pricing-drivers-title"], ["Production", "production-title"], ["IMC", "imc-title"], ["Logistics", "logistics-title"], ["Conclusion", "conclusion-title"]]
+  },
+  usa: { hash: "#united-states", market: "usa", title: "United States Market Focus" },
+  uk: { hash: "#united-kingdom", market: "uk", title: "United Kingdom Market Focus" },
+  kuwait: { hash: "#kuwait", market: "kuwait", title: "Kuwait Market Focus" }
+};
+
+
+const sharedMustangFeatures = ["5.0L V8 engine", "Sport-tuned suspension", "Bold sports-car exterior styling", "Quad tailpipes", "Blue-knobbed gear shift", "Distinctive brake calipers", "Consistent luxury-performance positioning", "MagneRide Damping System"];
+
+const productAdaptationGroups = {
+  usa: [
+    { label: "Shared Mustang Features", details: sharedMustangFeatures },
+    { label: "Performance Adaptations", details: ["Performance positioning", "Driver-assist technologies", "Track aero story", "Coyote V8 proof point"] },
+    { label: "Appearance and Personalization", details: ["Interior luxury", "Handling package, appearance packs and track-day accessories", "Premium wheel package"] },
+    { label: "Track and Usability Features", details: ["Promotions tailored to specific consumer groups", "Personalization that makes the Dark Horse feel both rare and reachable"] }
+  ],
+  uk: [
+    { label: "Shared Mustang Features", details: sharedMustangFeatures },
+    { label: "Right-Hand-Drive Adaptation", details: ["Right-hand-drive appeal", "Right-hand-drive usability"] },
+    { label: "Safety and Regulatory Requirements", details: ["Slightly lower engine output because of stricter emissions requirements", "Pedestrian and cyclist detection", "Lane-keeping aid", "Adaptive cruise control", "Emergency braking systems", "Safety and emissions compliance emphasis"] },
+    { label: "Road and Climate Usability", details: ["MagneRide composure", "Options that suit narrower UK roads", "B-road handling tune"] },
+    { label: "Collector and Performance Features", details: ["Collector scarcity", "Collector specification", "Unmistakable V8 character"] }
+  ],
+  kuwait: [
+    { label: "Shared Mustang Features", details: sharedMustangFeatures },
+    { label: "Cooling and Climate Adaptation", details: ["GCC-ready cooling", "Summer reliability", "Cooling confidence", "Harsh desert climate considerations"] },
+    { label: "Safety Features", details: ["Child-restraint systems", "Crash-severity sensors", "Cross-traffic alert", "Pre-collision assist", "Forward-collision warning", "Advanced safety"] },
+    { label: "Luxury and Interior Adaptation", details: ["Luxury, visual presence, and safety emphasis", "Premium trims", "Premium interior focus"] },
+    { label: "Appearance and Road Presence", details: ["Visual customization", "Appearance packages with high visual presence", "High-impact stance"] }
+  ]
+};
+
+function makeProductAccordion(marketKey) {
+  const groups = productAdaptationGroups[marketKey];
+  return `<div class="product-accordion" data-product-accordion="${marketKey}"><div class="product-accordion-labels">${groups.map((group, index) => `<button type="button" class="product-accordion-toggle" data-product-group="${index}" aria-expanded="false" aria-controls="product-accordion-panel-${marketKey}"><span>${group.label}</span><small>${group.details.length} details</small><b aria-hidden="true">+</b></button>`).join("")}</div><div class="product-accordion-panel" id="product-accordion-panel-${marketKey}" hidden aria-live="polite"></div></div>`;
+}
+
+function openProductAccordion(button) {
+  const accordion = button.closest("[data-product-accordion]");
+  if (!accordion) return;
+  const marketKey = accordion.dataset.productAccordion;
+  const group = productAdaptationGroups[marketKey][Number(button.dataset.productGroup)];
+  const panel = accordion.querySelector(".product-accordion-panel");
+  const isOpen = button.getAttribute("aria-expanded") === "true";
+  accordion.querySelectorAll(".product-accordion-toggle").forEach((toggle) => {
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.classList.remove("active");
+    const indicator = toggle.querySelector("b");
+    if (indicator) indicator.textContent = "+";
+  });
+  if (isOpen) {
+    panel.hidden = true;
+    panel.innerHTML = "";
+    return;
+  }
+  button.setAttribute("aria-expanded", "true");
+  button.classList.add("active");
+  const indicator = button.querySelector("b");
+  if (indicator) indicator.textContent = "−";
+  panel.hidden = false;
+  panel.innerHTML = `<h5>${group.label}</h5>${makeList(group.details)}`;
+}
+
+const countryFocusData = {
+  usa: {
+    price: ["Standard model: $62,230", "Premium model: $66,225", "Additional destination charge", "Incentives for military members, students, and people with disabilities", "Promotion through television, digital platforms, dealerships, and targeted offers"],
+    features: ["Interior luxury", "Driver-assist technologies", "Promotions tailored to specific consumer groups"],
+    adoption: ["Adoption stage: Early Adopters", "Appeal: Performance, technology, personalization", "Rigid cost-plus pricing"],
+    branding: ["Freedom", "Excitement", "Independence", "American car culture", "Aggressive styling", "Raw V8 power", "Personal expression", "Open-road and driving-thrill messaging"],
+    imc: ["Bold digital marketing. Advantage: reach, engagement, personalization, emotional impact. Constraint: saturation and short attention spans.", "Social media campaigns focused on power, individuality, and speed. Constraint: competing social content.", "Targeted public relations. Advantage: personalization and emotional impact.", "Television promotion. Advantage: awareness and reach."],
+    logistics: ["Vast distances between states", "Long-haul transportation requirements", "Dependence on regional distribution centers", "Need for coordinated nationwide delivery"],
+    pricingDrivers: ["Domestic benchmark", "Foreign-market political, import, currency, regulatory, and taxation pressures were not evaluated for the U.S. market."]
+  },
+  uk: {
+    price: ["Manual model: £70,740, approximately $94,320", "Automatic model: £72,740, approximately $96,987"],
+    features: ["Slightly lower engine output because of stricter emissions requirements", "Pedestrian and cyclist detection", "Lane-keeping aid", "Adaptive cruise control", "Emergency braking systems", "Safety and emissions compliance emphasis"],
+    adoption: ["Adoption stage: Early Majority", "Appeal: Safety, compliance, road usability", "Flexible cost-plus pricing"],
+    branding: ["Power", "Individuality", "Refined sensory driving experience", "Active valve exhaust and controllable vehicle sound", "Enhanced acceleration", "Performance balanced with regulatory responsibility"],
+    imc: ["Corporate social responsibility plus environmental responsibility. Advantage: trust and credibility. Limitation: reduced emotional appeal."],
+    logistics: ["Narrow streets", "Urban congestion", "Limited space in city centers", "Complicated last-mile delivery", "Dealership-access challenges", "Strict emissions zones"],
+    pricingDrivers: ["Environmental regulation: Applicable", "Vehicle taxation: Applicable", "Consumer value expectations: Applicable", "CO₂ regulations, first-year road tax, continuing annual charges, and environmental expectations affect higher ownership costs, compliance pressure, Mustang price, and value perception."]
+  },
+  kuwait: {
+    price: ["Starting price: KWD 22,536.50, approximately $72,698"],
+    features: ["Visual customization", "Child-restraint systems", "Crash-severity sensors", "Cross-traffic alert", "Pre-collision assist", "Forward-collision warning", "Luxury, visual presence, and safety emphasis"],
+    adoption: ["Adoption stage: Early Adopters", "Appeal: Luxury, prestige, advanced safety", "Dynamic incremental pricing"],
+    branding: ["Speed", "Durability", "Luxury", "Status", "High-performance vehicle culture", "Visual upgrades", "Powerful engine", "Advanced safety"],
+    imc: ["Targeted social media with cultural and regulatory localization. Constraint: language nuances and consumer-value differences.", "Targeted social media supports luxury, exclusivity, and road-safety messaging.", "Television supports localized luxury and road-safety messaging.", "Billboards support local influence and awareness.", "Print media supports localized awareness.", "Personal selling. Advantage: personalized selling and strong local influence. Limitation: more employees, time, and resources.", "Showroom experiences support personalized local influence."],
+    logistics: ["Harsh desert climate", "Limitations at Shuwaikh Port", "Outdated equipment", "Limited automation", "Insufficient port facilities", "Customs-clearance delays", "Vehicle-handling delays", "Frustration among clearing and forwarding agents"],
+    pricingDrivers: ["Political pressure: Applicable", "Economic pressure: Applicable", "Import costs: Applicable", "Currency pressure: Applicable", "Consumer value expectations: Applicable", "Political gridlock, reduced government spending, falling oil prices, tariffs and import costs, and currency fluctuations affect purchasing power, economic uncertainty, Mustang price, and value perception."]
+  }
+};
+
+const pricingDriverStates = {
+  usa: { title: "United States — Domestic Benchmark", states: ["not-assessed", "not-assessed", "not-assessed", "not-assessed", "not-assessed", "not-assessed", "not-assessed"], note: "The United States functions as the domestic pricing benchmark in this analysis. Foreign-market political, import, currency, regulatory, and taxation pressures were not evaluated for the U.S. market.", details: ["Standard model: $62,230", "Premium model: $66,225", "Additional destination charge", "Relevant incentives and targeted offers"] },
+  uk: { title: "United Kingdom — Foreign-Market Pricing Pressures", states: ["not-emphasized", "not-emphasized", "not-emphasized", "not-emphasized", "applicable", "applicable", "applicable"], note: "CO₂ regulations, first-year road tax, continuing annual charges, and environmental expectations affect higher ownership costs and value perception.", details: ["Environmental regulation: Applicable", "Vehicle taxation: Applicable", "Consumer value expectations: Applicable"] },
+  kuwait: { title: "Kuwait — Foreign-Market Pricing Pressures", states: ["applicable", "applicable", "applicable", "applicable", "not-emphasized", "not-emphasized", "applicable"], note: "Political gridlock, reduced government spending, falling oil prices, tariffs and import costs, and currency fluctuations affect purchasing power and value perception.", details: ["Political pressure: Applicable", "Economic pressure: Applicable", "Import costs: Applicable", "Currency pressure: Applicable", "Consumer value expectations: Applicable"] }
+};
+
+const pricingDriverLabels = [
+  ["Political", "Political pressure"], ["Economic", "Economic pressure"], ["Import", "Import costs"], ["Currency", "Currency pressure"], ["Environmental", "Environmental regulation"], ["Taxation", "Vehicle taxation"], ["Consumer value", "Consumer value expectations"]
+];
+
+let activeViewKey = "compare";
+let activePricingDriverKey = "usa";
+
+function renderPricingDriverPanel(marketKey) {
+  const panel = document.getElementById("pricing-driver-panel");
+  const data = pricingDriverStates[marketKey];
+  if (!panel || !data) return;
+  activePricingDriverKey = marketKey;
+  document.querySelectorAll("[data-pricing-driver]").forEach((button) => {
+    const isActive = button.dataset.pricingDriver === marketKey;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-selected", String(isActive));
+    button.setAttribute("aria-expanded", String(isActive));
+  });
+  const bars = data.states.map((state, index) => {
+    const [shortLabel, fullLabel] = pricingDriverLabels[index];
+    const label = state === "applicable" ? "Applicable" : state === "not-emphasized" ? "Not emphasized" : "Not assessed";
+    return `<div class="pricing-driver-bar ${state}" aria-label="${fullLabel}: ${label}" title="${fullLabel}: ${label}"><span></span><strong>${shortLabel}</strong><em>${label}</em></div>`;
+  }).join("");
+  panel.innerHTML = `<h4>${data.title}</h4><div class="pricing-driver-legend"><span class="applicable">Applicable</span><span class="not-emphasized">Not emphasized</span><span class="not-assessed">Not assessed</span></div><div class="pricing-driver-bars">${bars}</div><p>${data.note}</p><details><summary>View supporting pricing details</summary><ul>${data.details.map((item) => `<li>${item}</li>`).join("")}</ul></details>`;
+}
+
+function makeList(items) {
+  return `<ul>${items.map((item) => `<li>${item}</li>`).join("")}</ul>`;
+}
+
+function makeDetail(label, items) {
+  return `<details><summary>${label}</summary>${Array.isArray(items) ? makeList(items) : `<p>${items}</p>`}</details>`;
+}
+
+function makePriceBars(marketKey) {
+  const priceData = {
+    usa: [["Standard", "$62,230", 62230], ["Premium", "$66,225", 66225]],
+    uk: [["Manual", "£70,740 / ~$94,320", 70740], ["Automatic", "£72,740 / ~$96,987", 72740]],
+    kuwait: [["Starting price", "KWD 22,536.50 / ~$72,698", 22536.5]]
+  }[marketKey];
+  const max = Math.max(...priceData.map(([, , value]) => value));
+  return `<div class="country-price-bars">${priceData.map(([label, value, amount]) => `<div class="country-price-row"><strong>${label}</strong><span><i style="--bar:${Math.max((amount / max) * 100, 48)}%"></i></span><em>${value}</em></div>`).join("")}</div>`;
+}
+
+function makeAdoptionStrip(marketKey) {
+  const active = marketKey === "uk" ? "Early Majority" : "Early Adopters";
+  const markerX = marketKey === "uk" ? 560 : marketKey === "kuwait" ? 340 : 270;
+  const markerY = marketKey === "uk" ? 86 : marketKey === "kuwait" ? 132 : 210;
+  const label = markets[marketKey].title;
+  return `<figure class="mini-diffusion-curve" aria-label="${label} diffusion adoption curve marker"><svg viewBox="0 0 760 260" role="img" focusable="false"><path class="mini-curve-fill" d="M50 218 C120 216 150 188 190 150 C245 96 300 50 380 44 C460 50 515 96 570 150 C610 188 640 216 710 218 L50 218 Z"></path><path class="mini-curve-line" d="M50 218 C120 216 150 188 190 150 C245 96 300 50 380 44 C460 50 515 96 570 150 C610 188 640 216 710 218"></path><g class="mini-stages">${["Innovators", "Early Adopters", "Early Majority", "Late Majority", "Laggards"].map((stage, index) => `<text class="${stage === active ? "active" : ""}" x="${90 + index * 145}" y="244">${stage}</text>`).join("")}</g><line class="mini-marker-line" x1="${markerX}" y1="${markerY}" x2="${markerX}" y2="218"></line><circle class="mini-marker" cx="${markerX}" cy="${markerY}" r="8"></circle><text class="mini-marker-label" x="${markerX}" y="${markerY - 18}">${label}: ${active}</text></svg><figcaption>${active} placement summarizes this market's adoption role in the project analysis.</figcaption></figure>`;
+}
+
+function makeBrandBranches(marketKey, themes) {
+  return `<div class="country-brand-node"><strong>${markets[marketKey].title} Brand Position</strong><div>${themes.slice(0, 6).map((theme) => `<span>${theme}</span>`).join("")}</div></div>`;
+}
+
+function makePricingDriverBarsForCountry(marketKey) {
+  const data = pricingDriverStates[marketKey];
+  if (data.states.every((state) => state === "not-assessed")) {
+    return `<div class="not-assessed-panel"><strong>Not Assessed</strong><p>${data.note}</p></div>`;
+  }
+  return `<div class="pricing-driver-bars country-driver-bars">${data.states.map((state, index) => ({ state, index })).filter(({ state }) => state !== "not-assessed").map(({ state, index }) => {
+    const [shortLabel, fullLabel] = pricingDriverLabels[index];
+    const label = state === "applicable" ? "Applicable" : "Not emphasized";
+    return `<div class="pricing-driver-bar ${state}" aria-label="${fullLabel}: ${label}"><span></span><strong>${shortLabel}</strong><em>${label}</em></div>`;
+  }).join("")}</div><p>${data.note}</p>`;
+}
+
+function makeFlow(title, steps, constraint) {
+  return `<div class="country-flow"><strong>${title}</strong><div>${steps.map((step, index) => `${index ? '<i aria-hidden="true">→</i>' : ''}<span>${step}</span>`).join("")}</div><p>${constraint}</p></div>`;
+}
+
+function renderCountryFocus(marketKey) {
+  const container = document.getElementById("country-focus-grid");
+  const title = document.getElementById("country-focus-title");
+  const data = countryFocusData[marketKey];
+  const market = markets[marketKey];
+  if (!container || !title || !data || !market) return;
+  title.textContent = `${market.title} Visual Strategy Dashboard`;
+  const overviewMetrics = [
+    ["Market Position", market.subtitle],
+    ["Adoption Stage", data.adoption[0].replace("Adoption stage: ", "")],
+    ["Price", data.price[0]],
+    ["Pricing Model", data.adoption[2]],
+    ["Audience Priority", data.adoption[1].replace("Appeal: ", "")],
+    ["Market Play", market.headline]
+  ];
+  const imcSteps = {
+    usa: ["Performance audience", "Digital, social, television, public relations, dealer track events, creator test drives", "Awareness, engagement, and track-day aspiration", "Constraint: saturation and short attention spans"],
+    uk: ["Compliance-aware enthusiasts", "CSR, environmental responsibility, performance media, YouTube comparisons, CRM invitations, circuit experiences", "Trust with measured performance desire", "Constraint: balancing emotional appeal with responsibility and compliance"],
+    kuwait: ["Luxury-status buyers", "Social media, television, billboards, print, personal selling, showroom experiences, localized events", "Exclusivity, road-safety relevance, and high-visibility desire", "Constraint: cultural, language, and regulatory localization"]
+  }[marketKey];
+  const logisticsSteps = {
+    usa: ["Long-distance transportation", "Distribution-center dependence"],
+    uk: ["Urban congestion", "Last-mile access", "Emissions-zone restrictions"],
+    kuwait: ["Port infrastructure", "Customs and handling delays", "Climate exposure"]
+  }[marketKey];
+  container.innerHTML = `
+    <article class="country-story-card country-overview-card" id="country-overview"><h4>Market Overview</h4><div class="country-metric-grid">${overviewMetrics.map(([label, value]) => `<div><span>${label}</span><strong>${value}</strong></div>`).join("")}</div><div class="country-summary-band"><span>${market.summary}</span></div>${makeDetail("View Full Market Analysis", [market.subtitle, market.summary, market.headline])}</article>
+    <article class="country-story-card" id="country-product"><h4>Product Adaptation</h4>${makeProductAccordion(marketKey)}<div class="country-summary-band"><span>Shared Mustang identity remains the base while visible adaptations respond to local expectations.</span></div>${makeDetail("View Product Adaptation Details", data.features)}</article>
+    <article class="country-story-card" id="country-price"><h4>Local Price Visualization</h4>${makePriceBars(marketKey)}<p>Local price references remain tied to the project pricing notes and currency context.</p>${makeDetail("View Pricing Details", data.price)}</article>
+    <article class="country-story-card" id="country-adoption"><h4>Adoption Stage</h4>${makeAdoptionStrip(marketKey)}${makeDetail("View Adoption Analysis", data.adoption)}</article>
+    <article class="country-story-card" id="country-branding"><h4>Branding Strategy</h4>${makeBrandBranches(marketKey, data.branding)}<p>Brand positioning translates the global Mustang identity into market-specific emphasis.</p>${makeDetail("View Full Branding Strategy", data.branding)}</article>
+    <article class="country-story-card" id="country-pricing-drivers"><h4>Pricing-Driver Visualization</h4>${makePricingDriverBarsForCountry(marketKey)}${makeDetail("View Pricing-Driver Details", data.pricingDrivers)}</article>
+    <article class="country-story-card" id="country-imc"><h4>IMC Pathway</h4>${makeFlow("Audience Priority → Communication Tools → Intended Response → Constraint", imcSteps, imcSteps[3])}${makeDetail("View IMC Details", data.imc)}</article>
+    <article class="country-story-card" id="country-logistics"><h4>Logistics Flow</h4>${makeFlow("Logistics process", logisticsSteps, data.logistics[0])}${makeDetail("View Logistics Details", data.logistics)}</article>
+  `;
+}
+
+
+function updateSectionNav(viewKey) {
+  const nav = document.querySelector(".sidebar-section-nav");
+  if (!nav) return;
+  const countryNav = [["Overview", "country-overview"], ["Product", "country-product"], ["Price", "country-price"], ["Adoption", "country-adoption"], ["Branding", "country-branding"], ["Pricing Drivers", "country-pricing-drivers"], ["IMC", "country-imc"], ["Logistics", "country-logistics"], ["Recommendations", "recommendation-title"]];
+  const links = viewKey === "compare" ? viewConfig.compare.nav : countryNav;
+  nav.innerHTML = links.map(([label, id]) => `<a href="#${id}">${label}</a>`).join("");
+}
+
+function setDashboardView(viewKey, options = {}) {
+  const config = viewConfig[viewKey] || viewConfig.compare;
+  activeViewKey = viewKey in viewConfig ? viewKey : "compare";
+  const isCompare = activeViewKey === "compare";
+  document.querySelectorAll("[data-view='comparison']").forEach((node) => { node.hidden = !isCompare; });
+  document.querySelectorAll("[data-view='country']").forEach((node) => { node.hidden = isCompare; });
+  document.querySelectorAll("[data-view-toggle]").forEach((button) => {
+    const isActive = button.dataset.viewToggle === activeViewKey;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+  if (isCompare) {
+    setText("market-title", "Ford Mustang Dark Horse");
+    setText("market-subtitle", "A compact global marketing strategy dashboard comparing launch-market positioning, pricing, branding, IMC, logistics, and production considerations.");
+    setText("market-kicker", "Global strategy model");
+    setText("vehicle-headline", "Product × Price × Brand × Channel");
+    setText("vehicle-summary", "Use the comparison view to scan cross-market strategy patterns, then switch to a country view for focused visual storytelling and expandable research details.");
+    setText("metric-a", "3");
+    setText("metric-b", "Global");
+    setText("metric-c", "Visual");
+    document.querySelectorAll(".header-metrics small").forEach((node, index) => {
+      node.textContent = ["Priority markets", "Strategy lens", "Dashboard format"][index] || node.textContent;
+    });
+  } else if (config.market) {
+    setActiveMarket(config.market);
+    renderCountryFocus(config.market);
+  }
+  updateSectionNav(activeViewKey);
+  if (!options.skipHash) history.pushState({ view: activeViewKey }, "", config.hash);
+  if (!options.skipScroll) document.querySelector(".dashboard-shell")?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function viewFromHash() {
+  const hash = window.location.hash;
+  return Object.entries(viewConfig).find(([, config]) => config.hash === hash)?.[0] || "compare";
+}
+
+
+function updateRecommendationPanel(recommendationKey, forceOpen = false) {
+  const panel = document.getElementById("recommendation-detail-panel");
+  const title = document.getElementById("recommendation-detail-title");
+  const text = document.getElementById("recommendation-detail-text");
+  if (!panel || !title || !text) return;
+
+  const isClosing = activeRecommendationKey === recommendationKey && !panel.hidden && !forceOpen;
+  activeRecommendationKey = isClosing ? null : recommendationKey;
+  panel.hidden = !activeRecommendationKey;
+
+  document.querySelectorAll("[data-recommendation-toggle]").forEach((button) => {
+    const isActive = button.dataset.recommendationToggle === activeRecommendationKey;
+    button.setAttribute("aria-expanded", String(isActive));
+    button.textContent = isActive ? "Collapse Recommendation" : "View Full Recommendation";
+  });
+
+  document.querySelectorAll("[data-recommendation-card]").forEach((card) => {
+    card.classList.toggle("is-selected-recommendation", card.dataset.recommendationCard === activeRecommendationKey);
+  });
+
+  if (!activeRecommendationKey) return;
+  title.textContent = recommendationTitles[activeRecommendationKey];
+  text.textContent = markets[activeMarketKey].sections[activeRecommendationKey];
+}
+
 
 function formatUsd(value) {
   return new Intl.NumberFormat("en-US", {
@@ -119,6 +443,15 @@ function setText(id, value) {
   if (element && value !== undefined) {
     element.textContent = value;
   }
+}
+
+function summarizeRecommendation(value) {
+  if (!value) return "";
+  const semicolonIndex = value.indexOf(";");
+  if (semicolonIndex > -1) {
+    return `${value.slice(0, semicolonIndex)}.`;
+  }
+  return value;
 }
 
 function getAccentForCountry(country, activeCountry) {
@@ -208,7 +541,7 @@ function createHorizontalBarChart(canvasId, items, options = {}) {
           callbacks: {
             afterLabel(context) {
               const item = items[context.dataIndex];
-              return item.local ? `Local price: ${item.local}` : "Number of features explicitly discussed in the paper";
+              return item.local ? `Local price: ${item.local}` : (options.tooltipSuffix || "Number of items explicitly discussed in the paper");
             },
             label(context) {
               return options.valueFormatter ? options.valueFormatter(context.parsed.x, context.dataIndex) : `${context.parsed.x}`;
@@ -244,16 +577,50 @@ function renderPriceChart() {
 }
 
 function renderDerivedCharts() {
+  createHorizontalBarChart("executive-chart", chartDatasets.executive, {
+    valueFormatter: (value) => `${value}`,
+    barThickness: 18,
+    rightPadding: 50,
+    leftPadding: 12,
+    tooltipSuffix: "items discussed in the project"
+  });
+
   createHorizontalBarChart("standardization-chart", chartDatasets.standardization, {
     valueFormatter: (value) => `${value}`,
-    barThickness: 24,
+    barThickness: 22,
     rightPadding: 60,
-    leftPadding: 16
+    leftPadding: 16,
+    tooltipSuffix: "features explicitly discussed"
+  });
+
+  createHorizontalBarChart("brand-count-chart", chartDatasets.brandThemes, {
+    valueFormatter: (value) => `${value}`,
+    barThickness: 20,
+    tooltipSuffix: "brand themes emphasized; not a performance score"
+  });
+
+  createHorizontalBarChart("pricing-pressure-chart", chartDatasets.pricingPressures, {
+    valueFormatter: (value) => `${value}`,
+    barThickness: 20,
+    tooltipSuffix: "pricing pressures discussed; not a severity score"
   });
 
   createHorizontalBarChart("production-chart", chartDatasets.production, {
     valueFormatter: (value) => `${value}`,
-    barThickness: 24
+    barThickness: 22,
+    tooltipSuffix: "potential benefits identified; not a recommendation rating"
+  });
+
+  createHorizontalBarChart("imc-channel-chart", chartDatasets.imcChannels, {
+    valueFormatter: (value) => `${value}`,
+    barThickness: 20,
+    tooltipSuffix: "communication channels explicitly discussed"
+  });
+
+  createHorizontalBarChart("logistics-count-chart", chartDatasets.logisticsChallenges, {
+    valueFormatter: (value) => `${value}`,
+    barThickness: 20,
+    tooltipSuffix: "logistics challenges discussed; not a severity score"
   });
 }
 
@@ -302,6 +669,15 @@ function setActiveMarket(marketKey) {
     setText(id, getNestedValue(market, path));
   });
 
+  document.querySelectorAll("[data-summary-section]").forEach((node) => {
+    const value = market.sections[node.dataset.summarySection];
+    if (value) node.textContent = summarizeRecommendation(value);
+  });
+
+  if (activeRecommendationKey) {
+    updateRecommendationPanel(activeRecommendationKey, true);
+  }
+
   const metricIds = ["metric-a", "metric-b", "metric-c"];
 
   metricIds.forEach((id, index) => {
@@ -316,6 +692,7 @@ function setActiveMarket(marketKey) {
 
   const vehicleVisual = document.querySelector(".vehicle-visual");
   const vehicleImage = document.getElementById("vehicle-image");
+  const vehicleCaption = document.getElementById("vehicle-caption");
 
   if (vehicleVisual && vehicleImage) {
     vehicleVisual.classList.add("is-swapping");
@@ -323,6 +700,7 @@ function setActiveMarket(marketKey) {
     window.setTimeout(() => {
       vehicleImage.src = market.image;
       vehicleImage.alt = market.alt;
+      if (vehicleCaption) vehicleCaption.textContent = market.alt;
       vehicleVisual.classList.remove("is-swapping");
     }, 180);
   }
@@ -371,6 +749,33 @@ document.addEventListener("DOMContentLoaded", () => {
     control.addEventListener("click", () => showMatrixDetail(control.dataset.detail));
   });
 
+  document.addEventListener("click", (event) => {
+    const productToggle = event.target.closest(".product-accordion-toggle");
+    if (productToggle) openProductAccordion(productToggle);
+  });
+
+  document.querySelectorAll("[data-pricing-driver]").forEach((button) => {
+    button.addEventListener("click", () => renderPricingDriverPanel(button.dataset.pricingDriver));
+  });
+  renderPricingDriverPanel(activePricingDriverKey);
+
+  document.querySelectorAll("[data-view-toggle]").forEach((button) => {
+    button.addEventListener("click", () => setDashboardView(button.dataset.viewToggle));
+  });
+
+  window.addEventListener("popstate", () => setDashboardView(viewFromHash(), { skipHash: true, skipScroll: true }));
+
+  document.querySelectorAll("[data-recommendation-toggle]").forEach((button) => {
+    button.addEventListener("click", () => updateRecommendationPanel(button.dataset.recommendationToggle));
+  });
+
+  const recommendationClose = document.querySelector(".recommendation-detail-close");
+  if (recommendationClose) {
+    recommendationClose.addEventListener("click", () => {
+      if (activeRecommendationKey) updateRecommendationPanel(activeRecommendationKey);
+    });
+  }
+
   document.querySelectorAll("[data-market]").forEach((button) => {
     button.addEventListener("click", () => {
       setActiveMarket(button.dataset.market);
@@ -385,4 +790,5 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   setActiveMarket("usa");
+  setDashboardView(viewFromHash(), { skipHash: true, skipScroll: true });
 });
