@@ -317,17 +317,18 @@ body {
 .price-card-header h3 { margin: 8px 0 0; font: 800 clamp(1.5rem, 2.5vw, 2.35rem)/1 Space Grotesk, sans-serif; letter-spacing: -0.04em; }
 .price-card-header p { margin: 0; color: #bcc5d0; line-height: 1.55; font-size: 0.92rem; }
 
-.price-recommendation-row {
+.executive-recommendations-grid,
+.pricing-entry-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
-  gap: clamp(0.75rem, 1.2vw, 1rem);
-  align-items: stretch;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  width: 100%;
 }
 
-.price-recommendation-row .price-card,
-.price-recommendation-row .recommendation-intro {
+.executive-recommendations-grid > *,
+.pricing-entry-grid > * {
   min-width: 0;
-  height: 100%;
 }
 
 .price-vertical-chart-panel {
@@ -1827,11 +1828,12 @@ p { margin-block: 0 0.6rem; }
 .pricing-driver-panel summary { cursor: pointer; color: var(--accent); font: 800 0.8rem Space Grotesk, sans-serif; }
 .pricing-driver-panel ul { margin: 0.65rem 0 0; padding-left: 1.1rem; color: #c7d0db; }
 
-.strategy-two-column {
+.pricing-entry-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(0.75rem, 1.2vw, 1rem);
+  gap: 24px;
   align-items: start;
+  width: 100%;
 }
 
 .compact-strategy-section {
@@ -2009,8 +2011,17 @@ p { margin-block: 0 0.6rem; }
   height: 7.25rem !important;
 }
 
-.logistics-accordion-group {
+.logistics-country-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+  width: 100%;
   margin-top: 0.85rem;
+}
+
+.logistics-country-grid > * {
+  min-width: 0;
 }
 
 .logistics-row-chart .driver-row,
@@ -2018,9 +2029,10 @@ p { margin-block: 0 0.6rem; }
   grid-template-columns: minmax(12rem, 0.92fr) minmax(10rem, 1fr);
 }
 
-@media (max-width: 1100px) {
-  .strategy-two-column { grid-template-columns: 1fr; }
-  .price-recommendation-row { grid-template-columns: 1fr; }
+@media (max-width: 900px) {
+  .executive-recommendations-grid,
+  .pricing-entry-grid,
+  .logistics-country-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 560px) {

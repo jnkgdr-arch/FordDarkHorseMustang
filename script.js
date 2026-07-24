@@ -379,7 +379,7 @@ function setDashboardView(viewKey, options = {}) {
   if (isCompare) {
     setText("market-title", "Ford Mustang Dark Horse");
     setText("market-subtitle", "A compact global marketing strategy dashboard comparing launch-market positioning, pricing, branding, IMC, logistics, and production considerations.");
-    setText("market-kicker", "Global Marketing Strategy Dashboard");
+    setText("market-kicker", "Comparison dashboard");
     setText("vehicle-headline", "Ford Mustang Dark Horse");
     setText("vehicle-summary", "A compact global marketing strategy dashboard comparing launch-market positioning, pricing, branding, IMC, logistics, and production considerations.");
     setText("metric-a", "3");
@@ -416,7 +416,7 @@ function updateRecommendationPanel(recommendationKey, forceOpen = false) {
   document.querySelectorAll("[data-recommendation-toggle]").forEach((button) => {
     const isActive = button.dataset.recommendationToggle === activeRecommendationKey;
     button.setAttribute("aria-expanded", String(isActive));
-    button.textContent = isActive ? "Collapse Recommendation" : "View Full Recommendation";
+    button.textContent = isActive ? "Collapse Recommendation" : "Open Recommendation";
   });
 
   document.querySelectorAll("[data-recommendation-card]").forEach((card) => {
