@@ -54,7 +54,7 @@
 
       <main class="main-panel">
         <p id="matrix-live-region" class="sr-only" aria-live="polite"></p>
-        <section class="country-hero" aria-label="Selected market dashboard summary">
+        <section class="country-hero" data-view="country" hidden aria-label="Selected market dashboard summary">
         <header class="hero-header">
           <div>
             <div class="section-kicker">Global Marketing Strategy Dashboard</div>
@@ -126,54 +126,56 @@
           <div class="country-focus-grid dashboard-grid" id="country-focus-grid"></div>
         </section>
 
-        <section class="price-card full-width-section" data-view="comparison" aria-labelledby="price-chart-title">
-          <div class="price-card-header">
-            <div>
-              <div class="section-kicker">USD-equivalent MSRP benchmark</div>
-              <h3 id="price-chart-title">Global Price Comparison</h3>
+        <div class="price-recommendation-row" data-view="comparison">
+          <section class="price-card full-width-section" aria-labelledby="price-chart-title">
+            <div class="price-card-header">
+              <div>
+                <div class="section-kicker">USD-equivalent MSRP benchmark</div>
+                <h3 id="price-chart-title">Global Price Comparison</h3>
+              </div>
+
+              <p>
+                Base / starting prices from the strategy essay, normalized to USD for cross-market comparison.
+              </p>
             </div>
 
-            <p>
-              Base / starting prices from the strategy essay, normalized to USD for cross-market comparison.
-            </p>
-          </div>
+            <div class="chart-panel price-vertical-chart-panel" role="img" aria-labelledby="price-chart-title" aria-describedby="price-chart-note">
+              <canvas id="price-chart" aria-label="Vertical gradient bar chart comparing five Mustang Dark Horse price variants in approximate U.S. dollars."></canvas>
+              <p class="chart-fallback" id="price-chart-fallback">Price comparison: U.S. Standard $62,230; U.S. Premium $66,225; Kuwait Starting Price approximately $72,698; U.K. Manual approximately $94,320; U.K. Automatic approximately $96,987.</p>
+            </div>
+            <p class="chart-note" id="price-chart-note">U.K. and Kuwait prices are approximate U.S.-dollar equivalents; local prices are available in the expandable table below.</p>
+          </section>
 
-          <div class="chart-panel" role="img" aria-labelledby="price-chart-title" aria-describedby="price-chart-note">
-            <canvas id="price-chart" aria-label="Horizontal bar chart comparing five Mustang Dark Horse price variants in approximate U.S. dollars."></canvas>
-            <p class="chart-fallback" id="price-chart-fallback">Price comparison: U.S. Standard $62,230; U.S. Premium $66,225; Kuwait Starting Price approximately $72,698; U.K. Manual approximately $94,320; U.K. Automatic approximately $96,987.</p>
-          </div>
-          <p class="chart-note" id="price-chart-note">U.K. and Kuwait prices are approximate U.S.-dollar equivalents; local prices are available in the expandable table below.</p>
-        </section>
-
-        <section class="recommendation-intro recommendation-accordion-section" aria-labelledby="recommendation-title">
-          <h3 id="recommendation-title">Strategic Recommendations</h3>
-          <div class="recommendation-accordion-list" data-accordion-group="recommendations" aria-label="Strategic recommendation accordions">
-            <details class="strategy-accordion recommendation-accordion" data-recommendation-card="product">
-              <summary><span><b>1.</b> Product Adaptation</span><i aria-hidden="true">⌄</i></summary>
-              <div class="accordion-inner"><p class="recommendation-summary">Offer handling, appearance, and track-day accessory packages.</p><p id="product-text" class="recommendation-full-text">Offer handling package, appearance packs and track-day accessories; keep the manual-transmission narrative prominent for enthusiast credibility.</p></div>
-            </details>
-            <details class="strategy-accordion recommendation-accordion" data-recommendation-card="pricing">
-              <summary><span><b>2.</b> Pricing Strategy</span><i aria-hidden="true">⌄</i></summary>
-              <div class="accordion-inner"><p class="recommendation-summary">Use premium-plus pricing, finance offers, loyalty incentives, and personalization bundles.</p><p id="pricing-text" class="recommendation-full-text">Use premium-plus pricing above GT with finance offers tied to limited allocations, loyalty incentives and high-margin personalization bundles.</p></div>
-            </details>
-            <details class="strategy-accordion recommendation-accordion" data-recommendation-card="branding">
-              <summary><span><b>3.</b> Branding</span><i aria-hidden="true">⌄</i></summary>
-              <div class="accordion-inner"><p class="recommendation-summary">Position Dark Horse as the precise, modern evolution of American muscle.</p><p id="branding-text" class="recommendation-full-text">Frame Dark Horse as the modern evolution of American muscle: precise, serious and engineered for drivers who want a road-to-track halo.</p></div>
-            </details>
-            <details class="strategy-accordion recommendation-accordion" data-recommendation-card="imc">
-              <summary><span><b>4.</b> IMC</span><i aria-hidden="true">⌄</i></summary>
-              <div class="accordion-inner"><p class="recommendation-summary">Combine motorsport content, track events, creator drives, retargeting, and launch films.</p><p id="imc-text" class="recommendation-full-text">Blend motorsport content, dealer track events, creator test drives, configurator retargeting and launch films around V8 sound and lap-time proof.</p></div>
-            </details>
-            <details class="strategy-accordion recommendation-accordion" data-recommendation-card="logistics">
-              <summary><span><b>5.</b> Logistics</span><i aria-hidden="true">⌄</i></summary>
-              <div class="accordion-inner"><p class="recommendation-summary">Prioritize certified dealers, parts availability, and regional demand forecasting.</p><p id="logistics-text" class="recommendation-full-text">Prioritize allocation to performance-certified dealers, support quick parts availability and use regional events to forecast accessory demand.</p></div>
-            </details>
-            <details class="strategy-accordion recommendation-accordion" data-recommendation-card="drivers">
-              <summary><span><b>6.</b> Market Drivers</span><i aria-hidden="true">⌄</i></summary>
-              <div class="accordion-inner"><p class="recommendation-summary">Use heritage, V8 scarcity, customization, track culture, and home-market pride.</p><p id="drivers-text" class="recommendation-full-text">Home-market pride, track-day culture, customization, V8 scarcity and the emotional pull of Mustang heritage create high purchase intent.</p></div>
-            </details>
-          </div>
-        </section>
+          <section class="recommendation-intro recommendation-accordion-section" aria-labelledby="recommendation-title">
+            <h3 id="recommendation-title">Strategic Recommendations</h3>
+            <div class="recommendation-accordion-list" data-accordion-group="recommendations" aria-label="Strategic recommendation accordions">
+              <details class="strategy-accordion recommendation-accordion" data-recommendation-card="product">
+                <summary><span><b>1.</b> Product Adaptation</span><i aria-hidden="true">⌄</i></summary>
+                <div class="accordion-inner"><p class="recommendation-summary">Offer handling, appearance, and track-day accessory packages.</p><p id="product-text" class="recommendation-full-text">Offer handling package, appearance packs and track-day accessories; keep the manual-transmission narrative prominent for enthusiast credibility.</p></div>
+              </details>
+              <details class="strategy-accordion recommendation-accordion" data-recommendation-card="pricing">
+                <summary><span><b>2.</b> Pricing Strategy</span><i aria-hidden="true">⌄</i></summary>
+                <div class="accordion-inner"><p class="recommendation-summary">Use premium-plus pricing, finance offers, loyalty incentives, and personalization bundles.</p><p id="pricing-text" class="recommendation-full-text">Use premium-plus pricing above GT with finance offers tied to limited allocations, loyalty incentives and high-margin personalization bundles.</p></div>
+              </details>
+              <details class="strategy-accordion recommendation-accordion" data-recommendation-card="branding">
+                <summary><span><b>3.</b> Branding</span><i aria-hidden="true">⌄</i></summary>
+                <div class="accordion-inner"><p class="recommendation-summary">Position Dark Horse as the precise, modern evolution of American muscle.</p><p id="branding-text" class="recommendation-full-text">Frame Dark Horse as the modern evolution of American muscle: precise, serious and engineered for drivers who want a road-to-track halo.</p></div>
+              </details>
+              <details class="strategy-accordion recommendation-accordion" data-recommendation-card="imc">
+                <summary><span><b>4.</b> IMC</span><i aria-hidden="true">⌄</i></summary>
+                <div class="accordion-inner"><p class="recommendation-summary">Combine motorsport content, track events, creator drives, retargeting, and launch films.</p><p id="imc-text" class="recommendation-full-text">Blend motorsport content, dealer track events, creator test drives, configurator retargeting and launch films around V8 sound and lap-time proof.</p></div>
+              </details>
+              <details class="strategy-accordion recommendation-accordion" data-recommendation-card="logistics">
+                <summary><span><b>5.</b> Logistics</span><i aria-hidden="true">⌄</i></summary>
+                <div class="accordion-inner"><p class="recommendation-summary">Prioritize certified dealers, parts availability, and regional demand forecasting.</p><p id="logistics-text" class="recommendation-full-text">Prioritize allocation to performance-certified dealers, support quick parts availability and use regional events to forecast accessory demand.</p></div>
+              </details>
+              <details class="strategy-accordion recommendation-accordion" data-recommendation-card="drivers">
+                <summary><span><b>6.</b> Market Drivers</span><i aria-hidden="true">⌄</i></summary>
+                <div class="accordion-inner"><p class="recommendation-summary">Use heritage, V8 scarcity, customization, track culture, and home-market pride.</p><p id="drivers-text" class="recommendation-full-text">Home-market pride, track-day culture, customization, V8 scarcity and the emotional pull of Mustang heritage create high purchase intent.</p></div>
+              </details>
+            </div>
+          </section>
+        </div>
 
         <section class="paper-section executive-summary" data-view="comparison" aria-labelledby="executive-title">
           <div class="paper-heading"><div><div class="section-kicker">Visual Executive Summary</div><h3 id="executive-title">Paper-derived dashboard counts</h3></div><p>These counts summarize items explicitly discussed in the original paper and do not imply market performance rankings.</p></div>

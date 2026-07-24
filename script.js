@@ -480,6 +480,17 @@ function createPriceGradient(context) {
   return gradient;
 }
 
+function createVerticalPriceGradient(context) {
+  const chart = context.chart;
+  const { chartArea, ctx } = chart;
+  if (!chartArea) return "rgba(45, 214, 255, 0.9)";
+  const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+  gradient.addColorStop(0, "rgba(45, 214, 255, 0.28)");
+  gradient.addColorStop(0.56, "rgba(45, 214, 255, 0.9)");
+  gradient.addColorStop(1, "rgba(247, 183, 51, 0.95)");
+  return gradient;
+}
+
 const valueLabelPlugin = {
   id: "valueLabelPlugin",
   afterDatasetsDraw(chart) {
@@ -493,7 +504,13 @@ const valueLabelPlugin = {
     meta.data.forEach((bar, index) => {
       const value = dataset.data[index];
       const label = dataset.valueFormatter ? dataset.valueFormatter(value, index) : String(value);
-      ctx.fillText(label, bar.x + 8, bar.y);
+      if (dataset.labelOrientation === "vertical") {
+        ctx.textAlign = "center";
+        ctx.fillText(label, bar.x, bar.y - 10);
+      } else {
+        ctx.textAlign = "left";
+        ctx.fillText(label, bar.x + 8, bar.y);
+      }
     });
     ctx.restore();
   }
@@ -573,11 +590,75 @@ function createHorizontalBarChart(canvasId, items, options = {}) {
 }
 
 function renderPriceChart() {
-  createHorizontalBarChart("price-chart", priceComparisons, {
-    valueFormatter: (value) => formatUsd(value),
-    barThickness: 26,
-    useGradient: true,
-    rightPadding: 120
+  const canvas = document.getElementById("price-chart");
+  if (!canvas) return;
+  if (typeof Chart === "undefined") {
+    const panel = canvas.closest(".chart-panel");
+    if (panel) panel.classList.add("chart-unavailable");
+    return;
+  }
+
+  if (chartInstances["price-chart"]) {
+    chartInstances["price-chart"].destroy();
+  }
+
+  chartInstances["price-chart"] = new Chart(canvas, {
+    type: "bar",
+    data: {
+      labels: priceComparisons.map((item) => item.market),
+      datasets: [{
+        data: priceComparisons.map((item) => item.value),
+        countries: priceComparisons.map((item) => item.country),
+        valueFormatter: (value) => formatUsd(value),
+        labelOrientation: "vertical",
+        backgroundColor: (context) => createVerticalPriceGradient(context),
+        borderColor: priceComparisons.map((item) => getBorderForCountry(item.country, activeMarketKey)),
+        borderWidth: 1.5,
+        borderRadius: 12,
+        barPercentage: 0.72,
+        categoryPercentage: 0.72,
+        useGradient: true
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? false : { duration: 700 },
+      layout: { padding: { top: 24, right: 8, left: 0, bottom: 0 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            afterLabel(context) {
+              return `Local price: ${priceComparisons[context.dataIndex].local}`;
+            },
+            label(context) {
+              return formatUsd(context.parsed.y);
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: {
+            color: "#f6f8fb",
+            font: { weight: "700", size: 10 },
+            maxRotation: 0,
+            minRotation: 0,
+            callback(value) {
+              return String(this.getLabelForValue(value)).split(" ");
+            }
+          }
+        },
+        y: {
+          beginAtZero: true,
+          grid: { color: "rgba(255,255,255,0.08)" },
+          ticks: { color: "#95a0ad", font: { size: 10 }, callback: (value) => formatUsd(value).replace(".00", "") }
+        }
+      }
+    },
+    plugins: [valueLabelPlugin]
   });
 }
 
