@@ -260,6 +260,10 @@ function renderPricingDriverPanel(marketKey) {
     button.setAttribute("aria-selected", String(isActive));
     button.setAttribute("aria-expanded", String(isActive));
   });
+  if (marketKey === "usa") {
+    panel.innerHTML = `<h4>${data.title}</h4><p>${data.note}</p><ul class="supporting-pricing-list">${data.details.map((item) => `<li>${item}</li>`).join("")}</ul>`;
+    return;
+  }
   const bars = data.states.map((state, index) => {
     const [shortLabel, fullLabel] = pricingDriverLabels[index];
     const label = state === "applicable" ? "Applicable" : state === "not-emphasized" ? "Not emphasized" : "Not assessed";
@@ -301,7 +305,7 @@ function makeBrandBranches(marketKey, themes) {
 function makePricingDriverBarsForCountry(marketKey) {
   const data = pricingDriverStates[marketKey];
   if (data.states.every((state) => state === "not-assessed")) {
-    return `<div class="not-assessed-panel"><strong>Not Assessed</strong><p>${data.note}</p></div>`;
+    return `<p>${data.note}</p><ul class="supporting-pricing-list">${data.details.map((item) => `<li>${item}</li>`).join("")}</ul>`;
   }
   return `<div class="pricing-driver-bars country-driver-bars">${data.states.map((state, index) => ({ state, index })).filter(({ state }) => state !== "not-assessed").map(({ state, index }) => {
     const [shortLabel, fullLabel] = pricingDriverLabels[index];
@@ -339,13 +343,14 @@ function renderCountryFocus(marketKey) {
     uk: ["Urban congestion", "Last-mile access", "Emissions-zone restrictions"],
     kuwait: ["Port infrastructure", "Customs and handling delays", "Climate exposure"]
   }[marketKey];
+  const pricingDriverDetail = marketKey === "usa" ? "" : makeDetail("View Pricing-Driver Details", data.pricingDrivers);
   container.innerHTML = `
     <article class="country-story-card country-overview-card" id="country-overview"><h4>Market Overview</h4><div class="country-metric-grid">${overviewMetrics.map(([label, value]) => `<div><span>${label}</span><strong>${value}</strong></div>`).join("")}</div><div class="country-summary-band"><span>${market.summary}</span></div>${makeDetail("View Full Market Analysis", [market.subtitle, market.summary, market.headline])}</article>
     <article class="country-story-card" id="country-product"><h4>Product Adaptation</h4>${makeProductAccordion(marketKey)}<div class="country-summary-band"><span>Shared Mustang identity remains the base while visible adaptations respond to local expectations.</span></div>${makeDetail("View Product Adaptation Details", data.features)}</article>
     <article class="country-story-card" id="country-price"><h4>Local Price Visualization</h4>${makePriceBars(marketKey)}<p>Local price references remain tied to the project pricing notes and currency context.</p>${makeDetail("View Pricing Details", data.price)}</article>
     <article class="country-story-card" id="country-adoption"><h4>Adoption Stage</h4>${makeAdoptionStrip(marketKey)}${makeDetail("View Adoption Analysis", data.adoption)}</article>
     <article class="country-story-card" id="country-branding"><h4>Branding Strategy</h4>${makeBrandBranches(marketKey, data.branding)}<p>Brand positioning translates the global Mustang identity into market-specific emphasis.</p>${makeDetail("View Full Branding Strategy", data.branding)}</article>
-    <article class="country-story-card" id="country-pricing-drivers"><h4>Pricing-Driver Visualization</h4>${makePricingDriverBarsForCountry(marketKey)}${makeDetail("View Pricing-Driver Details", data.pricingDrivers)}</article>
+    <article class="country-story-card" id="country-pricing-drivers"><h4>Pricing-Driver Visualization</h4>${makePricingDriverBarsForCountry(marketKey)}${pricingDriverDetail}</article>
     <article class="country-story-card" id="country-imc"><h4>IMC Pathway</h4>${makeFlow("Audience Priority → Communication Tools → Intended Response → Constraint", imcSteps, imcSteps[3])}${makeDetail("View IMC Details", data.imc)}</article>
     <article class="country-story-card" id="country-logistics"><h4>Logistics Flow</h4>${makeFlow("Logistics process", logisticsSteps, data.logistics[0])}${makeDetail("View Logistics Details", data.logistics)}</article>
   `;
@@ -374,9 +379,9 @@ function setDashboardView(viewKey, options = {}) {
   if (isCompare) {
     setText("market-title", "Ford Mustang Dark Horse");
     setText("market-subtitle", "A compact global marketing strategy dashboard comparing launch-market positioning, pricing, branding, IMC, logistics, and production considerations.");
-    setText("market-kicker", "Global strategy model");
-    setText("vehicle-headline", "Product × Price × Brand × Channel");
-    setText("vehicle-summary", "Use the comparison view to scan cross-market strategy patterns, then switch to a country view for focused visual storytelling and expandable research details.");
+    setText("market-kicker", "Global Marketing Strategy Dashboard");
+    setText("vehicle-headline", "Ford Mustang Dark Horse");
+    setText("vehicle-summary", "A compact global marketing strategy dashboard comparing launch-market positioning, pricing, branding, IMC, logistics, and production considerations.");
     setText("metric-a", "3");
     setText("metric-b", "Global");
     setText("metric-c", "Visual");
@@ -475,6 +480,17 @@ function createPriceGradient(context) {
   return gradient;
 }
 
+function createVerticalPriceGradient(context) {
+  const chart = context.chart;
+  const { chartArea, ctx } = chart;
+  if (!chartArea) return "rgba(45, 214, 255, 0.9)";
+  const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+  gradient.addColorStop(0, "rgba(45, 214, 255, 0.28)");
+  gradient.addColorStop(0.56, "rgba(45, 214, 255, 0.9)");
+  gradient.addColorStop(1, "rgba(247, 183, 51, 0.95)");
+  return gradient;
+}
+
 const valueLabelPlugin = {
   id: "valueLabelPlugin",
   afterDatasetsDraw(chart) {
@@ -488,7 +504,13 @@ const valueLabelPlugin = {
     meta.data.forEach((bar, index) => {
       const value = dataset.data[index];
       const label = dataset.valueFormatter ? dataset.valueFormatter(value, index) : String(value);
-      ctx.fillText(label, bar.x + 8, bar.y);
+      if (dataset.labelOrientation === "vertical") {
+        ctx.textAlign = "center";
+        ctx.fillText(label, bar.x, bar.y - 10);
+      } else {
+        ctx.textAlign = "left";
+        ctx.fillText(label, bar.x + 8, bar.y);
+      }
     });
     ctx.restore();
   }
@@ -553,11 +575,11 @@ function createHorizontalBarChart(canvasId, items, options = {}) {
         x: {
           beginAtZero: true,
           grid: { color: "rgba(255,255,255,0.08)" },
-          ticks: { color: "#95a0ad" }
+          ticks: { color: "#95a0ad", font: { size: options.xTickFontSize || 12 } }
         },
         y: {
           grid: { display: false },
-          ticks: { color: "#f6f8fb", font: { weight: "700" } }
+          ticks: { color: "#f6f8fb", font: { weight: "700", size: options.yTickFontSize || 12 } }
         }
       }
     },
@@ -568,11 +590,75 @@ function createHorizontalBarChart(canvasId, items, options = {}) {
 }
 
 function renderPriceChart() {
-  createHorizontalBarChart("price-chart", priceComparisons, {
-    valueFormatter: (value) => formatUsd(value),
-    barThickness: 26,
-    useGradient: true,
-    rightPadding: 120
+  const canvas = document.getElementById("price-chart");
+  if (!canvas) return;
+  if (typeof Chart === "undefined") {
+    const panel = canvas.closest(".chart-panel");
+    if (panel) panel.classList.add("chart-unavailable");
+    return;
+  }
+
+  if (chartInstances["price-chart"]) {
+    chartInstances["price-chart"].destroy();
+  }
+
+  chartInstances["price-chart"] = new Chart(canvas, {
+    type: "bar",
+    data: {
+      labels: priceComparisons.map((item) => item.market),
+      datasets: [{
+        data: priceComparisons.map((item) => item.value),
+        countries: priceComparisons.map((item) => item.country),
+        valueFormatter: (value) => formatUsd(value),
+        labelOrientation: "vertical",
+        backgroundColor: (context) => createVerticalPriceGradient(context),
+        borderColor: priceComparisons.map((item) => getBorderForCountry(item.country, activeMarketKey)),
+        borderWidth: 1.5,
+        borderRadius: 12,
+        barPercentage: 0.72,
+        categoryPercentage: 0.72,
+        useGradient: true
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? false : { duration: 700 },
+      layout: { padding: { top: 24, right: 8, left: 0, bottom: 0 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            afterLabel(context) {
+              return `Local price: ${priceComparisons[context.dataIndex].local}`;
+            },
+            label(context) {
+              return formatUsd(context.parsed.y);
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: {
+            color: "#f6f8fb",
+            font: { weight: "700", size: 10 },
+            maxRotation: 0,
+            minRotation: 0,
+            callback(value) {
+              return String(this.getLabelForValue(value)).split(" ");
+            }
+          }
+        },
+        y: {
+          beginAtZero: true,
+          grid: { color: "rgba(255,255,255,0.08)" },
+          ticks: { color: "#95a0ad", font: { size: 10 }, callback: (value) => formatUsd(value).replace(".00", "") }
+        }
+      }
+    },
+    plugins: [valueLabelPlugin]
   });
 }
 
@@ -607,7 +693,11 @@ function renderDerivedCharts() {
 
   createHorizontalBarChart("production-chart", chartDatasets.production, {
     valueFormatter: (value) => `${value}`,
-    barThickness: 22,
+    barThickness: 14,
+    rightPadding: 28,
+    leftPadding: 0,
+    xTickFontSize: 10,
+    yTickFontSize: 10,
     tooltipSuffix: "potential benefits identified; not a recommendation rating"
   });
 
@@ -643,6 +733,21 @@ function showMatrixDetail(message) {
   if (!message) return;
   const live = document.getElementById("matrix-live-region");
   if (live) live.textContent = message;
+}
+
+function setupExclusiveAccordions() {
+  document.querySelectorAll("[data-accordion-group]").forEach((group) => {
+    group.addEventListener("toggle", (event) => {
+      const activeAccordion = event.target;
+      if (!activeAccordion.matches("details[open]")) return;
+      group.querySelectorAll("details[open]").forEach((accordion) => {
+        if (accordion !== activeAccordion) accordion.removeAttribute("open");
+      });
+      window.setTimeout(() => {
+        Object.values(chartInstances).forEach((chart) => chart.resize());
+      }, 260);
+    }, true);
+  });
 }
 
 
@@ -758,6 +863,7 @@ document.addEventListener("DOMContentLoaded", () => {
     button.addEventListener("click", () => renderPricingDriverPanel(button.dataset.pricingDriver));
   });
   renderPricingDriverPanel(activePricingDriverKey);
+  setupExclusiveAccordions();
 
   document.querySelectorAll("[data-view-toggle]").forEach((button) => {
     button.addEventListener("click", () => setDashboardView(button.dataset.viewToggle));
