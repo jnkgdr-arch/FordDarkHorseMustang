@@ -13,6 +13,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { min-height: 100%; background: #06080d; }
 body {
   min-height: 100vh;
@@ -1884,7 +1885,7 @@ p { margin-block: 0 0.6rem; }
 
 .strategy-accordion summary::-webkit-details-marker { display: none; }
 
-.strategy-accordion summary::after {
+.strategy-accordion:not(.recommendation-accordion) > summary::after {
   content: "+";
   color: var(--accent);
   font-size: 1rem;
@@ -1897,7 +1898,7 @@ p { margin-block: 0 0.6rem; }
   background: rgba(45,214,255,0.08);
 }
 
-.strategy-accordion[open] summary::after {
+.strategy-accordion:not(.recommendation-accordion)[open] > summary::after {
   content: "−";
   transform: rotate(180deg);
 }
@@ -2684,4 +2685,53 @@ p { margin-block: 0 0.6rem; }
   .market-play-specs {
     grid-template-columns: 1fr;
   }
+}
+
+.country-hero[hidden],
+.country-focus-section[hidden],
+[data-view="country"][hidden],
+[data-view="comparison"][hidden] {
+  display: none !important;
+}
+
+/* Strategic Recommendations: use only the right-aligned HTML chevron */
+details.strategy-accordion.recommendation-accordion > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+details.strategy-accordion.recommendation-accordion
+  > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.strategy-accordion.recommendation-accordion > summary::before,
+details.strategy-accordion.recommendation-accordion > summary::after,
+details.strategy-accordion.recommendation-accordion[open] > summary::before,
+details.strategy-accordion.recommendation-accordion[open] > summary::after {
+  content: none !important;
+  display: none !important;
+}
+
+details.strategy-accordion.recommendation-accordion > summary > span {
+  min-width: 0;
+  flex: 1 1 auto;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+details.strategy-accordion.recommendation-accordion > summary > i {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  margin-left: auto;
+  font-style: normal;
+  color: var(--accent);
+  transition: transform 0.24s ease;
+}
+
+details.strategy-accordion.recommendation-accordion[open] > summary > i {
+  transform: rotate(180deg);
 }

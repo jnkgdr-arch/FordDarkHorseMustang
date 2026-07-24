@@ -376,19 +376,7 @@ function setDashboardView(viewKey, options = {}) {
     button.classList.toggle("active", isActive);
     button.setAttribute("aria-pressed", String(isActive));
   });
-  if (isCompare) {
-    setText("market-title", "Ford Mustang Dark Horse");
-    setText("market-subtitle", "A compact global marketing strategy dashboard comparing launch-market positioning, pricing, branding, IMC, logistics, and production considerations.");
-    setText("market-kicker", "Comparison dashboard");
-    setText("vehicle-headline", "Ford Mustang Dark Horse");
-    setText("vehicle-summary", "A compact global marketing strategy dashboard comparing launch-market positioning, pricing, branding, IMC, logistics, and production considerations.");
-    setText("metric-a", "3");
-    setText("metric-b", "Global");
-    setText("metric-c", "Visual");
-    document.querySelectorAll(".header-metrics small").forEach((node, index) => {
-      node.textContent = ["Priority markets", "Strategy lens", "Dashboard format"][index] || node.textContent;
-    });
-  } else if (config.market) {
+  if (!isCompare && config.market) {
     setActiveMarket(config.market);
     renderCountryFocus(config.market);
   }
