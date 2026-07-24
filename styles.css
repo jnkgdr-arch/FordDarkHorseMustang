@@ -2735,3 +2735,38 @@ details.strategy-accordion.recommendation-accordion > summary > i {
 details.strategy-accordion.recommendation-accordion[open] > summary > i {
   transform: rotate(180deg);
 }
+
+#country-focus-note {
+  display: grid;
+  gap: 0.35rem;
+}
+
+#country-focus-note strong {
+  color: var(--ink);
+  font: 800 clamp(0.95rem, 1vw, 1.08rem)/1.35 Space Grotesk, sans-serif;
+}
+
+#country-focus-note em {
+  color: #c7d0db;
+  font-style: italic;
+  line-height: 1.45;
+}
+
+.overview-adoption-curve {
+  min-width: 0;
+  margin: 0.75rem 0;
+}
+
+.overview-adoption-curve h5 {
+  margin: 0 0 0.45rem;
+  color: var(--accent);
+  font: 800 0.82rem Space Grotesk, sans-serif;
+}
+
+.overview-adoption-curve .mini-diffusion-curve {
+  overflow: hidden;
+}
+
+.overview-adoption-curve .mini-diffusion-curve svg {
+  max-width: 100%;
+}

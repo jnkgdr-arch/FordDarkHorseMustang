@@ -321,18 +321,26 @@ function makeFlow(title, steps, constraint) {
 function renderCountryFocus(marketKey) {
   const container = document.getElementById("country-focus-grid");
   const title = document.getElementById("country-focus-title");
+  const note = document.getElementById("country-focus-note");
   const data = countryFocusData[marketKey];
   const market = markets[marketKey];
   if (!container || !title || !data || !market) return;
-  title.textContent = `${market.title} Visual Strategy Dashboard`;
+  title.textContent = marketKey === "kuwait" ? "Kuwait Strategy: Hot Climate Adaptor" : `${market.title} Visual Strategy Dashboard`;
+  if (note) {
+    note.innerHTML = marketKey === "kuwait"
+      ? `<strong>${market.subtitle}</strong><em>Country-specific strategy details gathered from the dashboard research.</em>`
+      : "Country-specific strategy details gathered from the dashboard research.";
+  }
   const overviewMetrics = [
     ["Market Position", market.subtitle],
-    ["Adoption Stage", data.adoption[0].replace("Adoption stage: ", "")],
     ["Price", data.price[0]],
     ["Pricing Model", data.adoption[2]],
     ["Audience Priority", data.adoption[1].replace("Appeal: ", "")],
     ["Market Play", market.headline]
   ];
+  if (marketKey !== "kuwait") {
+    overviewMetrics.splice(1, 0, ["Adoption Stage", data.adoption[0].replace("Adoption stage: ", "")]);
+  }
   const imcSteps = {
     usa: ["Performance audience", "Digital, social, television, public relations, dealer track events, creator test drives", "Awareness, engagement, and track-day aspiration", "Constraint: saturation and short attention spans"],
     uk: ["Compliance-aware enthusiasts", "CSR, environmental responsibility, performance media, YouTube comparisons, CRM invitations, circuit experiences", "Trust with measured performance desire", "Constraint: balancing emotional appeal with responsibility and compliance"],
@@ -344,11 +352,13 @@ function renderCountryFocus(marketKey) {
     kuwait: ["Port infrastructure", "Customs and handling delays", "Climate exposure"]
   }[marketKey];
   const pricingDriverDetail = marketKey === "usa" ? "" : makeDetail("View Pricing-Driver Details", data.pricingDrivers);
+  const overviewAdoptionVisual = marketKey === "kuwait" ? `<div class="overview-adoption-curve"><h5>Kuwait Adoption Bell Curve</h5>${makeAdoptionStrip("kuwait")}</div>` : "";
+  const adoptionCard = marketKey === "kuwait" ? "" : `<article class="country-story-card" id="country-adoption"><h4>Adoption Stage</h4>${makeAdoptionStrip(marketKey)}${makeDetail("View Adoption Analysis", data.adoption)}</article>`;
   container.innerHTML = `
-    <article class="country-story-card country-overview-card" id="country-overview"><h4>Market Overview</h4><div class="country-metric-grid">${overviewMetrics.map(([label, value]) => `<div><span>${label}</span><strong>${value}</strong></div>`).join("")}</div><div class="country-summary-band"><span>${market.summary}</span></div>${makeDetail("View Full Market Analysis", [market.subtitle, market.summary, market.headline])}</article>
+    <article class="country-story-card country-overview-card" id="country-overview"><h4>Market Overview</h4><div class="country-metric-grid">${overviewMetrics.map(([label, value]) => `<div><span>${label}</span><strong>${value}</strong></div>`).join("")}</div>${overviewAdoptionVisual}<div class="country-summary-band"><span>${market.summary}</span></div>${makeDetail("View Full Market Analysis", [market.subtitle, market.summary, market.headline])}</article>
     <article class="country-story-card" id="country-product"><h4>Product Adaptation</h4>${makeProductAccordion(marketKey)}<div class="country-summary-band"><span>Shared Mustang identity remains the base while visible adaptations respond to local expectations.</span></div>${makeDetail("View Product Adaptation Details", data.features)}</article>
     <article class="country-story-card" id="country-price"><h4>Local Price Visualization</h4>${makePriceBars(marketKey)}<p>Local price references remain tied to the project pricing notes and currency context.</p>${makeDetail("View Pricing Details", data.price)}</article>
-    <article class="country-story-card" id="country-adoption"><h4>Adoption Stage</h4>${makeAdoptionStrip(marketKey)}${makeDetail("View Adoption Analysis", data.adoption)}</article>
+    ${adoptionCard}
     <article class="country-story-card" id="country-branding"><h4>Branding Strategy</h4>${makeBrandBranches(marketKey, data.branding)}<p>Brand positioning translates the global Mustang identity into market-specific emphasis.</p>${makeDetail("View Full Branding Strategy", data.branding)}</article>
     <article class="country-story-card" id="country-pricing-drivers"><h4>Pricing-Driver Visualization</h4>${makePricingDriverBarsForCountry(marketKey)}${pricingDriverDetail}</article>
     <article class="country-story-card" id="country-imc"><h4>IMC Pathway</h4>${makeFlow("Audience Priority → Communication Tools → Intended Response → Constraint", imcSteps, imcSteps[3])}${makeDetail("View IMC Details", data.imc)}</article>
@@ -361,8 +371,10 @@ function updateSectionNav(viewKey) {
   const nav = document.querySelector(".sidebar-section-nav");
   if (!nav) return;
   const countryNav = [["Overview", "country-overview"], ["Product", "country-product"], ["Price", "country-price"], ["Adoption", "country-adoption"], ["Branding", "country-branding"], ["Pricing Drivers", "country-pricing-drivers"], ["IMC", "country-imc"], ["Logistics", "country-logistics"], ["Recommendations", "recommendation-title"]];
+  const activeCountryNav = activeMarketKey === "kuwait" ? countryNav.filter(([, id]) => id !== "country-adoption") : countryNav;
   const links = viewKey === "compare" ? viewConfig.compare.nav : countryNav;
-  nav.innerHTML = links.map(([label, id]) => `<a href="#${id}">${label}</a>`).join("");
+  const resolvedLinks = viewKey === "compare" ? links : activeCountryNav;
+  nav.innerHTML = resolvedLinks.map(([label, id]) => `<a href="#${id}">${label}</a>`).join("");
 }
 
 function setDashboardView(viewKey, options = {}) {
