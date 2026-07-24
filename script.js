@@ -260,6 +260,10 @@ function renderPricingDriverPanel(marketKey) {
     button.setAttribute("aria-selected", String(isActive));
     button.setAttribute("aria-expanded", String(isActive));
   });
+  if (marketKey === "usa") {
+    panel.innerHTML = `<h4>${data.title}</h4><p>${data.note}</p><ul class="supporting-pricing-list">${data.details.map((item) => `<li>${item}</li>`).join("")}</ul>`;
+    return;
+  }
   const bars = data.states.map((state, index) => {
     const [shortLabel, fullLabel] = pricingDriverLabels[index];
     const label = state === "applicable" ? "Applicable" : state === "not-emphasized" ? "Not emphasized" : "Not assessed";
@@ -301,7 +305,7 @@ function makeBrandBranches(marketKey, themes) {
 function makePricingDriverBarsForCountry(marketKey) {
   const data = pricingDriverStates[marketKey];
   if (data.states.every((state) => state === "not-assessed")) {
-    return `<div class="not-assessed-panel"><strong>Not Assessed</strong><p>${data.note}</p></div>`;
+    return `<p>${data.note}</p><ul class="supporting-pricing-list">${data.details.map((item) => `<li>${item}</li>`).join("")}</ul>`;
   }
   return `<div class="pricing-driver-bars country-driver-bars">${data.states.map((state, index) => ({ state, index })).filter(({ state }) => state !== "not-assessed").map(({ state, index }) => {
     const [shortLabel, fullLabel] = pricingDriverLabels[index];
@@ -339,13 +343,14 @@ function renderCountryFocus(marketKey) {
     uk: ["Urban congestion", "Last-mile access", "Emissions-zone restrictions"],
     kuwait: ["Port infrastructure", "Customs and handling delays", "Climate exposure"]
   }[marketKey];
+  const pricingDriverDetail = marketKey === "usa" ? "" : makeDetail("View Pricing-Driver Details", data.pricingDrivers);
   container.innerHTML = `
     <article class="country-story-card country-overview-card" id="country-overview"><h4>Market Overview</h4><div class="country-metric-grid">${overviewMetrics.map(([label, value]) => `<div><span>${label}</span><strong>${value}</strong></div>`).join("")}</div><div class="country-summary-band"><span>${market.summary}</span></div>${makeDetail("View Full Market Analysis", [market.subtitle, market.summary, market.headline])}</article>
     <article class="country-story-card" id="country-product"><h4>Product Adaptation</h4>${makeProductAccordion(marketKey)}<div class="country-summary-band"><span>Shared Mustang identity remains the base while visible adaptations respond to local expectations.</span></div>${makeDetail("View Product Adaptation Details", data.features)}</article>
     <article class="country-story-card" id="country-price"><h4>Local Price Visualization</h4>${makePriceBars(marketKey)}<p>Local price references remain tied to the project pricing notes and currency context.</p>${makeDetail("View Pricing Details", data.price)}</article>
     <article class="country-story-card" id="country-adoption"><h4>Adoption Stage</h4>${makeAdoptionStrip(marketKey)}${makeDetail("View Adoption Analysis", data.adoption)}</article>
     <article class="country-story-card" id="country-branding"><h4>Branding Strategy</h4>${makeBrandBranches(marketKey, data.branding)}<p>Brand positioning translates the global Mustang identity into market-specific emphasis.</p>${makeDetail("View Full Branding Strategy", data.branding)}</article>
-    <article class="country-story-card" id="country-pricing-drivers"><h4>Pricing-Driver Visualization</h4>${makePricingDriverBarsForCountry(marketKey)}${makeDetail("View Pricing-Driver Details", data.pricingDrivers)}</article>
+    <article class="country-story-card" id="country-pricing-drivers"><h4>Pricing-Driver Visualization</h4>${makePricingDriverBarsForCountry(marketKey)}${pricingDriverDetail}</article>
     <article class="country-story-card" id="country-imc"><h4>IMC Pathway</h4>${makeFlow("Audience Priority → Communication Tools → Intended Response → Constraint", imcSteps, imcSteps[3])}${makeDetail("View IMC Details", data.imc)}</article>
     <article class="country-story-card" id="country-logistics"><h4>Logistics Flow</h4>${makeFlow("Logistics process", logisticsSteps, data.logistics[0])}${makeDetail("View Logistics Details", data.logistics)}</article>
   `;
@@ -374,9 +379,9 @@ function setDashboardView(viewKey, options = {}) {
   if (isCompare) {
     setText("market-title", "Ford Mustang Dark Horse");
     setText("market-subtitle", "A compact global marketing strategy dashboard comparing launch-market positioning, pricing, branding, IMC, logistics, and production considerations.");
-    setText("market-kicker", "Global strategy model");
-    setText("vehicle-headline", "Product × Price × Brand × Channel");
-    setText("vehicle-summary", "Use the comparison view to scan cross-market strategy patterns, then switch to a country view for focused visual storytelling and expandable research details.");
+    setText("market-kicker", "Global Marketing Strategy Dashboard");
+    setText("vehicle-headline", "Ford Mustang Dark Horse");
+    setText("vehicle-summary", "A compact global marketing strategy dashboard comparing launch-market positioning, pricing, branding, IMC, logistics, and production considerations.");
     setText("metric-a", "3");
     setText("metric-b", "Global");
     setText("metric-c", "Visual");
