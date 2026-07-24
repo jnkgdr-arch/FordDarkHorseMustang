@@ -331,12 +331,14 @@ function renderCountryFocus(marketKey) {
   if (countryFocusHeading) countryFocusHeading.hidden = marketKey === "kuwait";
   const overviewMetrics = [
     ["Market Position", market.subtitle],
-    ["Adoption Stage", data.adoption[0].replace("Adoption stage: ", "")],
     ["Price", data.price[0]],
     ["Pricing Model", data.adoption[2]],
     ["Audience Priority", data.adoption[1].replace("Appeal: ", "")],
     ["Market Play", market.headline]
   ];
+  if (marketKey !== "kuwait") {
+    overviewMetrics.splice(1, 0, ["Adoption Stage", data.adoption[0].replace("Adoption stage: ", "")]);
+  }
   const imcSteps = {
     usa: ["Performance audience", "Digital, social, television, public relations, dealer track events, creator test drives", "Awareness, engagement, and track-day aspiration", "Constraint: saturation and short attention spans"],
     uk: ["Compliance-aware enthusiasts", "CSR, environmental responsibility, performance media, YouTube comparisons, CRM invitations, circuit experiences", "Trust with measured performance desire", "Constraint: balancing emotional appeal with responsibility and compliance"],
