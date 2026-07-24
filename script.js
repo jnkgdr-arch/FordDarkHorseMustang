@@ -739,9 +739,15 @@ function setupExclusiveAccordions() {
   document.querySelectorAll("[data-accordion-group]").forEach((group) => {
     group.addEventListener("toggle", (event) => {
       const activeAccordion = event.target;
+      group.querySelectorAll("details > summary[aria-expanded]").forEach((summary) => {
+        summary.setAttribute("aria-expanded", String(summary.parentElement?.open));
+      });
       if (!activeAccordion.matches("details[open]")) return;
       group.querySelectorAll("details[open]").forEach((accordion) => {
         if (accordion !== activeAccordion) accordion.removeAttribute("open");
+      });
+      group.querySelectorAll("details > summary[aria-expanded]").forEach((summary) => {
+        summary.setAttribute("aria-expanded", String(summary.parentElement?.open));
       });
       window.setTimeout(() => {
         Object.values(chartInstances).forEach((chart) => chart.resize());

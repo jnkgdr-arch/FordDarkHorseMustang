@@ -39,7 +39,6 @@
         <nav class="section-nav sidebar-section-nav" aria-label="Dashboard section navigation">
           <a href="#price-chart-title">Prices</a>
           <a href="#recommendation-title">Recommendations</a>
-          <a href="#executive-title">Executive Summary</a>
           <a href="#framework-title">Framework</a>
           <a href="#diffusion-title">Diffusion</a>
           <a href="#branding-title">Branding</a>
@@ -71,10 +70,8 @@
             <p id="vehicle-summary">
               Lead with authentic American performance, motorsport credibility and personalization that makes the Dark Horse feel both rare and reachable.
             </p>
-          </div>
 
-
-          <div class="header-metrics" aria-label="Market summary metrics">
+          <div class="header-metrics market-play-specs" aria-label="Market summary metrics">
             <div>
               <span id="metric-a">5.0L</span>
               <small>Coyote V8 hero</small>
@@ -90,6 +87,9 @@
               <small>Positioning edge</small>
             </div>
           </div>
+
+          </div>
+
 
         <figure class="vehicle-visual mustang-figure">
   <div class="mustang-image-wrapper">
@@ -125,6 +125,14 @@
           <div class="country-focus-grid dashboard-grid" id="country-focus-grid"></div>
         </section>
 
+        <section class="comparison-dashboard" data-view="comparison" aria-label="Compare Markets dashboard statistics">
+          <div class="comparison-dashboard-stats">
+            <div><span>3</span><small>Priority Markets</small></div>
+            <div><span>Global</span><small>Strategy Lens</small></div>
+            <div><span>Visual</span><small>Dashboard Format</small></div>
+          </div>
+        </section>
+
         <section class="price-card full-width-section" data-view="comparison" aria-labelledby="price-chart-title">
             <div class="price-card-header">
               <div>
@@ -145,99 +153,90 @@
           <details class="comparison-details"><summary>View exact local prices</summary><div class="comparison-table" role="region" aria-label="Detailed local currency and approximate US dollar price comparison"><table><thead><tr><th>Variant</th><th>Local currency</th><th>Approx. USD equivalent</th></tr></thead><tbody><tr><td>U.S. standard</td><td>$62,230</td><td>$62,230</td></tr><tr><td>U.S. Premium</td><td>$66,225</td><td>$66,225</td></tr><tr><td>U.K. manual</td><td>£70,740</td><td>Approximately $94,320</td></tr><tr><td>U.K. automatic</td><td>£72,740</td><td>Approximately $96,987</td></tr><tr><td>Kuwait starting price</td><td>KWD 22,536.50</td><td>Approximately $72,698</td></tr></tbody></table></div></details>
         </section>
 
-        <div class="executive-recommendations-grid" data-view="comparison">
-          <section class="paper-section executive-summary" data-view="comparison" aria-labelledby="executive-title">
-            <div class="paper-heading"><div><div class="section-kicker">Visual Executive Summary</div><h3 id="executive-title">Paper-derived dashboard counts</h3></div><p>These counts summarize items explicitly discussed in the original paper and do not imply market performance rankings.</p></div>
-            <div class="chart-panel executive-chart-panel" role="img" aria-labelledby="executive-chart-title" aria-describedby="executive-chart-note">
-              <h4 id="executive-chart-title">Global Strategy Research Coverage</h4>
-              <canvas id="executive-chart" aria-label="Horizontal bar chart showing project research coverage counts: target markets 3, standardized global features 8, localized features discussed 16, vehicle price variants 5, pricing models 3, adopter-stage categories 2, and logistics environments 3."></canvas>
-              <p class="chart-fallback">Target markets: 3; Standardized global features: 8; Localized features discussed: 16; Vehicle price variants: 5; Pricing models: 3; Adopter-stage categories: 2; Logistics environments: 3.</p>
-            </div>
-            <p class="chart-note" id="executive-chart-note">These counts summarize items explicitly discussed in the original paper and do not imply market performance rankings.</p>
-          </section>
-
+        <div class="recommendations-framework-grid">
           <section class="recommendation-intro recommendation-accordion-section" aria-labelledby="recommendation-title">
             <h3 id="recommendation-title">Strategic Recommendations</h3>
             <div class="recommendation-accordion-list" data-accordion-group="recommendations" aria-label="Strategic recommendation accordions">
               <details class="strategy-accordion recommendation-accordion" data-recommendation-card="product">
-                <summary><span><b>1.</b> Product Adaptation</span><i aria-hidden="true">⌄</i></summary>
+                <summary aria-expanded="false"><span><b>1.</b> Product Adaptation</span><i aria-hidden="true">⌄</i></summary>
                 <div class="accordion-inner"><p class="recommendation-summary">Offer handling, appearance, and track-day accessory packages.</p><p id="product-text" class="recommendation-full-text">Offer handling package, appearance packs and track-day accessories; keep the manual-transmission narrative prominent for enthusiast credibility.</p></div>
               </details>
               <details class="strategy-accordion recommendation-accordion" data-recommendation-card="pricing">
-                <summary><span><b>2.</b> Pricing Strategy</span><i aria-hidden="true">⌄</i></summary>
+                <summary aria-expanded="false"><span><b>2.</b> Pricing Strategy</span><i aria-hidden="true">⌄</i></summary>
                 <div class="accordion-inner"><p class="recommendation-summary">Use premium-plus pricing, finance offers, loyalty incentives, and personalization bundles.</p><p id="pricing-text" class="recommendation-full-text">Use premium-plus pricing above GT with finance offers tied to limited allocations, loyalty incentives and high-margin personalization bundles.</p></div>
               </details>
               <details class="strategy-accordion recommendation-accordion" data-recommendation-card="branding">
-                <summary><span><b>3.</b> Branding</span><i aria-hidden="true">⌄</i></summary>
+                <summary aria-expanded="false"><span><b>3.</b> Branding</span><i aria-hidden="true">⌄</i></summary>
                 <div class="accordion-inner"><p class="recommendation-summary">Position Dark Horse as the precise, modern evolution of American muscle.</p><p id="branding-text" class="recommendation-full-text">Frame Dark Horse as the modern evolution of American muscle: precise, serious and engineered for drivers who want a road-to-track halo.</p></div>
               </details>
               <details class="strategy-accordion recommendation-accordion" data-recommendation-card="imc">
-                <summary><span><b>4.</b> IMC</span><i aria-hidden="true">⌄</i></summary>
+                <summary aria-expanded="false"><span><b>4.</b> IMC</span><i aria-hidden="true">⌄</i></summary>
                 <div class="accordion-inner"><p class="recommendation-summary">Combine motorsport content, track events, creator drives, retargeting, and launch films.</p><p id="imc-text" class="recommendation-full-text">Blend motorsport content, dealer track events, creator test drives, configurator retargeting and launch films around V8 sound and lap-time proof.</p></div>
               </details>
               <details class="strategy-accordion recommendation-accordion" data-recommendation-card="logistics">
-                <summary><span><b>5.</b> Logistics</span><i aria-hidden="true">⌄</i></summary>
+                <summary aria-expanded="false"><span><b>5.</b> Logistics</span><i aria-hidden="true">⌄</i></summary>
                 <div class="accordion-inner"><p class="recommendation-summary">Prioritize certified dealers, parts availability, and regional demand forecasting.</p><p id="logistics-text" class="recommendation-full-text">Prioritize allocation to performance-certified dealers, support quick parts availability and use regional events to forecast accessory demand.</p></div>
               </details>
               <details class="strategy-accordion recommendation-accordion" data-recommendation-card="drivers">
-                <summary><span><b>6.</b> Market Drivers</span><i aria-hidden="true">⌄</i></summary>
+                <summary aria-expanded="false"><span><b>6.</b> Market Drivers</span><i aria-hidden="true">⌄</i></summary>
                 <div class="accordion-inner"><p class="recommendation-summary">Use heritage, V8 scarcity, customization, track culture, and home-market pride.</p><p id="drivers-text" class="recommendation-full-text">Home-market pride, track-day culture, customization, V8 scarcity and the emotional pull of Mustang heritage create high purchase intent.</p></div>
               </details>
             </div>
           </section>
+
+            <section class="paper-section compact-framework-section" aria-labelledby="framework-title">
+            <div class="paper-heading">
+              <div>
+                <div class="section-kicker">Paper-backed framework</div>
+                <h3 id="framework-title">Global Strategy Framework</h3>
+              </div>
+              <p>Ford balances one recognizable Mustang Dark Horse identity with market-specific feature, safety, pricing, and promotional adaptation.</p>
+            </div>
+
+            <div class="flow-diagram" aria-label="Global Mustang Identity to Local Market Adaptation to Regional Relevance">
+              <span>Global Mustang Identity</span>
+              <strong aria-hidden="true">→</strong>
+              <span>Local Market Adaptation</span>
+              <strong aria-hidden="true">→</strong>
+              <span>Regional Relevance</span>
+            </div>
+
+            <div class="standardization-bars" role="img" aria-labelledby="standardization-bars-title" aria-describedby="standardization-bars-note">
+              <h4 id="standardization-bars-title">Global Standardization vs. Local Market Adaptation</h4>
+              <div class="stacked-comparison" aria-label="Feature-count stacked bars by market">
+                <div class="stacked-row" data-market-row="usa">
+                  <strong>United States</strong>
+                  <div class="stacked-bar" style="--shared-p: 72.7%; --local-p: 27.3%;">
+                    <span class="shared-segment">Shared Global Features · 8</span>
+                    <span class="local-segment">Localized Market Features · 3</span>
+                  </div>
+                </div>
+                <div class="stacked-row" data-market-row="uk">
+                  <strong>United Kingdom</strong>
+                  <div class="stacked-bar" style="--shared-p: 57.1%; --local-p: 42.9%;">
+                    <span class="shared-segment">Shared Global Features · 8</span>
+                    <span class="local-segment">Localized Market Features · 6</span>
+                  </div>
+                </div>
+                <div class="stacked-row" data-market-row="kuwait">
+                  <strong>Kuwait</strong>
+                  <div class="stacked-bar" style="--shared-p: 53.3%; --local-p: 46.7%;">
+                    <span class="shared-segment">Shared Global Features · 8</span>
+                    <span class="local-segment">Localized Market Features · 7</span>
+                  </div>
+                </div>
+              </div>
+              <p id="standardization-bars-note" class="chart-note">Values represent the number of features discussed in the project, not market-performance scores. Ford maintains a consistent global Mustang identity across all three markets, while the United Kingdom and Kuwait require more localized adaptations than the United States.</p>
+            </div>
+            <div class="details-grid market-comparison-grid">
+              <details><summary>Shared standardized features</summary><ul><li>5.0L V8 engine</li><li>Sport-tuned suspension</li><li>Bold sports-car exterior styling</li><li>Quad tailpipes</li><li>Blue-knobbed gear shift</li><li>Distinctive brake calipers</li><li>Consistent luxury-performance positioning</li><li>MagneRide Damping System</li></ul></details>
+              <details><summary>United States localized features</summary><ul><li>Interior luxury</li><li>Driver-assist technologies</li><li>Promotions tailored to specific consumer groups</li></ul></details>
+              <details><summary>United Kingdom localized features</summary><ul><li>Slightly lower engine output because of stricter emissions requirements</li><li>Pedestrian and cyclist detection</li><li>Lane-keeping aid</li><li>Adaptive cruise control</li><li>Emergency braking systems</li><li>Safety and emissions compliance emphasis</li></ul></details>
+              <details><summary>Kuwait localized features</summary><ul><li>Visual customization</li><li>Child-restraint systems</li><li>Crash-severity sensors</li><li>Cross-traffic alert</li><li>Pre-collision assist</li><li>Forward-collision warning</li><li>Luxury, visual presence, and safety emphasis</li></ul></details>
+            </div>
+          </section>
+
         </div>
-
-        <section class="paper-section" data-view="comparison" aria-labelledby="framework-title">
-          <div class="paper-heading">
-            <div>
-              <div class="section-kicker">Paper-backed framework</div>
-              <h3 id="framework-title">Global Strategy Framework</h3>
-            </div>
-            <p>Ford balances one recognizable Mustang Dark Horse identity with market-specific feature, safety, pricing, and promotional adaptation.</p>
-          </div>
-
-          <div class="flow-diagram" aria-label="Global Mustang Identity to Local Market Adaptation to Regional Relevance">
-            <span>Global Mustang Identity</span>
-            <strong aria-hidden="true">→</strong>
-            <span>Local Market Adaptation</span>
-            <strong aria-hidden="true">→</strong>
-            <span>Regional Relevance</span>
-          </div>
-
-          <div class="standardization-bars" role="img" aria-labelledby="standardization-bars-title" aria-describedby="standardization-bars-note">
-            <h4 id="standardization-bars-title">Global Standardization vs. Local Market Adaptation</h4>
-            <div class="stacked-comparison" aria-label="Feature-count stacked bars by market">
-              <div class="stacked-row" data-market-row="usa">
-                <strong>United States</strong>
-                <div class="stacked-bar" style="--shared-p: 72.7%; --local-p: 27.3%;">
-                  <span class="shared-segment">Shared Global Features · 8</span>
-                  <span class="local-segment">Localized Market Features · 3</span>
-                </div>
-              </div>
-              <div class="stacked-row" data-market-row="uk">
-                <strong>United Kingdom</strong>
-                <div class="stacked-bar" style="--shared-p: 57.1%; --local-p: 42.9%;">
-                  <span class="shared-segment">Shared Global Features · 8</span>
-                  <span class="local-segment">Localized Market Features · 6</span>
-                </div>
-              </div>
-              <div class="stacked-row" data-market-row="kuwait">
-                <strong>Kuwait</strong>
-                <div class="stacked-bar" style="--shared-p: 53.3%; --local-p: 46.7%;">
-                  <span class="shared-segment">Shared Global Features · 8</span>
-                  <span class="local-segment">Localized Market Features · 7</span>
-                </div>
-              </div>
-            </div>
-            <p id="standardization-bars-note" class="chart-note">Values represent the number of features discussed in the project, not market-performance scores. Ford maintains a consistent global Mustang identity across all three markets, while the United Kingdom and Kuwait require more localized adaptations than the United States.</p>
-          </div>
-          <div class="details-grid market-comparison-grid">
-            <details><summary>Shared standardized features</summary><ul><li>5.0L V8 engine</li><li>Sport-tuned suspension</li><li>Bold sports-car exterior styling</li><li>Quad tailpipes</li><li>Blue-knobbed gear shift</li><li>Distinctive brake calipers</li><li>Consistent luxury-performance positioning</li><li>MagneRide Damping System</li></ul></details>
-            <details><summary>United States localized features</summary><ul><li>Interior luxury</li><li>Driver-assist technologies</li><li>Promotions tailored to specific consumer groups</li></ul></details>
-            <details><summary>United Kingdom localized features</summary><ul><li>Slightly lower engine output because of stricter emissions requirements</li><li>Pedestrian and cyclist detection</li><li>Lane-keeping aid</li><li>Adaptive cruise control</li><li>Emergency braking systems</li><li>Safety and emissions compliance emphasis</li></ul></details>
-            <details><summary>Kuwait localized features</summary><ul><li>Visual customization</li><li>Child-restraint systems</li><li>Crash-severity sensors</li><li>Cross-traffic alert</li><li>Pre-collision assist</li><li>Forward-collision warning</li><li>Luxury, visual presence, and safety emphasis</li></ul></details>
-          </div>
-        </section>
 
         <section class="paper-section" data-view="comparison" aria-labelledby="diffusion-title">
           <div class="paper-heading"><div><div class="section-kicker">International adoption</div><h3 id="diffusion-title">Multinational Diffusion Theory</h3></div><p>The theory describes how innovations spread internationally by adapting to cultural, economic, regulatory, and technological conditions. Ford combines standardized innovation with regional adaptation.</p></div>
