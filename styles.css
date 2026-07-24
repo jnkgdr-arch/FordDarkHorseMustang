@@ -2096,3 +2096,155 @@ p { margin-block: 0 0.6rem; }
     grid-template-columns: 1fr;
   }
 }
+
+/* Requested country dashboard refinements: brand-like product labels, vertical price bars, full-width dense visuals */
+#country-pricing-drivers,
+#country-imc,
+#country-logistics {
+  grid-column: 1 / -1;
+}
+
+.product-accordion-labels {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  align-items: stretch;
+}
+
+.product-accordion-toggle {
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "label indicator";
+  min-height: 3.1rem;
+  border-radius: 18px;
+  padding: 0.75rem 0.85rem;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.product-accordion-toggle span {
+  color: var(--accent);
+  font: 800 0.95rem/1.25 Space Grotesk, sans-serif;
+}
+
+.product-accordion-toggle small {
+  display: none;
+}
+
+.product-accordion-toggle b {
+  align-self: center;
+}
+
+.product-accordion-panel {
+  border-radius: 18px;
+  padding: clamp(0.9rem, 1.1vw, 1.15rem);
+}
+
+.country-price-bars-vertical {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  align-items: end;
+  gap: 0.8rem;
+  min-height: 12rem;
+}
+
+.country-price-bars-vertical .country-price-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto minmax(7rem, 1fr) auto;
+  justify-items: center;
+  align-items: end;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.country-price-bars-vertical .country-price-row em {
+  color: var(--ink);
+  font: 800 0.78rem/1.25 Space Grotesk, sans-serif;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.country-price-bars-vertical .country-price-row strong {
+  color: #d8dee7;
+  font: 800 0.78rem/1.25 Space Grotesk, sans-serif;
+  text-align: center;
+}
+
+.country-price-bars-vertical .country-price-row span {
+  width: min(4.4rem, 70%);
+  height: 100%;
+  min-height: 7rem;
+  border-radius: 999px 999px 12px 12px;
+  display: flex;
+  align-items: end;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.country-price-bars-vertical .country-price-row i {
+  width: 100%;
+  height: var(--bar);
+  border-radius: inherit;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+}
+
+.country-driver-bars {
+  grid-template-columns: repeat(auto-fit, minmax(122px, 1fr));
+  gap: 0.65rem;
+  align-items: stretch;
+}
+
+.country-driver-bars .pricing-driver-bar {
+  min-width: 0;
+  padding-inline: 0.45rem;
+}
+
+.country-driver-bars .pricing-driver-bar strong,
+.country-driver-bars .pricing-driver-bar em {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
+  line-height: 1.25;
+}
+
+#country-imc .country-flow,
+#country-logistics .country-flow {
+  width: 100%;
+  overflow: visible;
+}
+
+#country-imc .country-flow div,
+#country-logistics .country-flow div {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+  align-items: stretch;
+  gap: 0.55rem;
+}
+
+#country-imc .country-flow i,
+#country-logistics .country-flow i {
+  display: none;
+}
+
+#country-imc .country-flow span,
+#country-logistics .country-flow span {
+  border-radius: 14px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.3;
+}
+
+@media (max-width: 720px) {
+  .country-price-bars-vertical {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .country-price-bars-vertical .country-price-row {
+    grid-template-rows: auto minmax(6rem, 8rem) auto;
+  }
+
+  .product-accordion-labels,
+  .country-driver-bars,
+  #country-imc .country-flow div,
+  #country-logistics .country-flow div {
+    grid-template-columns: 1fr;
+  }
+}

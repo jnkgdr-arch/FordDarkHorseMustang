@@ -156,28 +156,28 @@ const productAdaptationGroups = {
   usa: [
     { label: "Shared Mustang Features", details: sharedMustangFeatures },
     { label: "Performance Adaptations", details: ["Performance positioning", "Driver-assist technologies", "Track aero story", "Coyote V8 proof point"] },
-    { label: "Appearance and Personalization", details: ["Interior luxury", "Handling package, appearance packs and track-day accessories", "Premium wheel package"] },
-    { label: "Track and Usability Features", details: ["Promotions tailored to specific consumer groups", "Personalization that makes the Dark Horse feel both rare and reachable"] }
+    { label: "Appearance & Personalization", details: ["Interior luxury", "Handling package, appearance packs and track-day accessories", "Premium wheel package"] },
+    { label: "Track & Usability Features", details: ["Promotions tailored to specific consumer groups", "Personalization that makes the Dark Horse feel both rare and reachable"] }
   ],
   uk: [
     { label: "Shared Mustang Features", details: sharedMustangFeatures },
     { label: "Right-Hand-Drive Adaptation", details: ["Right-hand-drive appeal", "Right-hand-drive usability"] },
-    { label: "Safety and Regulatory Requirements", details: ["Slightly lower engine output because of stricter emissions requirements", "Pedestrian and cyclist detection", "Lane-keeping aid", "Adaptive cruise control", "Emergency braking systems", "Safety and emissions compliance emphasis"] },
-    { label: "Road and Climate Usability", details: ["MagneRide composure", "Options that suit narrower UK roads", "B-road handling tune"] },
-    { label: "Collector and Performance Features", details: ["Collector scarcity", "Collector specification", "Unmistakable V8 character"] }
+    { label: "Safety & Regulatory Requirements", details: ["Slightly lower engine output because of stricter emissions requirements", "Pedestrian and cyclist detection", "Lane-keeping aid", "Adaptive cruise control", "Emergency braking systems", "Safety and emissions compliance emphasis"] },
+    { label: "Road & Climate Usability", details: ["MagneRide composure", "Options that suit narrower UK roads", "B-road handling tune"] },
+    { label: "Collector & Performance Features", details: ["Collector scarcity", "Collector specification", "Unmistakable V8 character"] }
   ],
   kuwait: [
     { label: "Shared Mustang Features", details: sharedMustangFeatures },
-    { label: "Cooling and Climate Adaptation", details: ["GCC-ready cooling", "Summer reliability", "Cooling confidence", "Harsh desert climate considerations"] },
+    { label: "Cooling & Climate Adaptation", details: ["GCC-ready cooling", "Summer reliability", "Cooling confidence", "Harsh desert climate considerations"] },
     { label: "Safety Features", details: ["Child-restraint systems", "Crash-severity sensors", "Cross-traffic alert", "Pre-collision assist", "Forward-collision warning", "Advanced safety"] },
-    { label: "Luxury and Interior Adaptation", details: ["Luxury, visual presence, and safety emphasis", "Premium trims", "Premium interior focus"] },
-    { label: "Appearance and Road Presence", details: ["Visual customization", "Appearance packages with high visual presence", "High-impact stance"] }
+    { label: "Luxury & Interior Adaptation", details: ["Luxury, visual presence, and safety emphasis", "Premium trims", "Premium interior focus"] },
+    { label: "Appearance & Road Presence", details: ["Visual customization", "Appearance packages with high visual presence", "High-impact stance"] }
   ]
 };
 
 function makeProductAccordion(marketKey) {
   const groups = productAdaptationGroups[marketKey];
-  return `<div class="product-accordion" data-product-accordion="${marketKey}"><div class="product-accordion-labels">${groups.map((group, index) => `<button type="button" class="product-accordion-toggle" data-product-group="${index}" aria-expanded="false" aria-controls="product-accordion-panel-${marketKey}"><span>${group.label}</span><small>${group.details.length} details</small><b aria-hidden="true">+</b></button>`).join("")}</div><div class="product-accordion-panel" id="product-accordion-panel-${marketKey}" hidden aria-live="polite"></div></div>`;
+  return `<div class="product-accordion" data-product-accordion="${marketKey}"><div class="product-accordion-labels">${groups.map((group, index) => `<button type="button" class="product-accordion-toggle" data-product-group="${index}" aria-expanded="false" aria-controls="product-accordion-panel-${marketKey}"><span>${group.label} (${group.details.length})</span><b aria-hidden="true">+</b></button>`).join("")}</div><div class="product-accordion-panel" id="product-accordion-panel-${marketKey}" hidden aria-live="polite"></div></div>`;
 }
 
 function openProductAccordion(button) {
@@ -283,7 +283,7 @@ function makePriceBars(marketKey) {
     kuwait: [["Starting price", "KWD 22,536.50 / ~$72,698", 22536.5]]
   }[marketKey];
   const max = Math.max(...priceData.map(([, , value]) => value));
-  return `<div class="country-price-bars">${priceData.map(([label, value, amount]) => `<div class="country-price-row"><strong>${label}</strong><span><i style="--bar:${Math.max((amount / max) * 100, 48)}%"></i></span><em>${value}</em></div>`).join("")}</div>`;
+  return `<div class="country-price-bars country-price-bars-vertical">${priceData.map(([label, value, amount]) => `<div class="country-price-row"><em>${value}</em><span><i style="--bar:${Math.max((amount / max) * 100, 48)}%"></i></span><strong>${label}</strong></div>`).join("")}</div>`;
 }
 
 function makeAdoptionStrip(marketKey) {
