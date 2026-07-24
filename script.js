@@ -52,7 +52,7 @@ const markets = {
   kuwait: {
     title: "Kuwait",
     subtitle: "Elevate Dark Horse as a status-led performance coupe engineered for heat, premium personalization and high-visibility urban cruising.",
-    kicker: "Kuwait market play",
+    kicker: "Kuwait Market Play: Hot Climate Adaptor",
     headline: "Fuse V8 theatre with luxury-performance status.",
     summary: "The Kuwait launch should combine desert-climate confidence, premium concierge retail and bold visual packages that turn the Dark Horse into a social statement.",
     image: "assets/kuwait-mustang.png",
@@ -325,12 +325,10 @@ function renderCountryFocus(marketKey) {
   const data = countryFocusData[marketKey];
   const market = markets[marketKey];
   if (!container || !title || !data || !market) return;
-  title.textContent = marketKey === "kuwait" ? "Kuwait Strategy: Hot Climate Adaptor" : `${market.title} Visual Strategy Dashboard`;
-  if (note) {
-    note.innerHTML = marketKey === "kuwait"
-      ? `<strong>${market.subtitle}</strong><em>Country-specific strategy details gathered from the dashboard research.</em>`
-      : "Country-specific strategy details gathered from the dashboard research.";
-  }
+  title.textContent = `${market.title} Visual Strategy Dashboard`;
+  if (note) note.textContent = "Country-specific strategy details gathered from the dashboard research.";
+  const countryFocusHeading = document.getElementById("country-focus")?.querySelector(":scope > .paper-heading");
+  if (countryFocusHeading) countryFocusHeading.hidden = marketKey === "kuwait";
   const overviewMetrics = [
     ["Market Position", market.subtitle],
     ["Price", data.price[0]],
@@ -352,10 +350,11 @@ function renderCountryFocus(marketKey) {
     kuwait: ["Port infrastructure", "Customs and handling delays", "Climate exposure"]
   }[marketKey];
   const pricingDriverDetail = marketKey === "usa" ? "" : makeDetail("View Pricing-Driver Details", data.pricingDrivers);
-  const overviewAdoptionVisual = marketKey === "kuwait" ? `<div class="overview-adoption-curve"><h5>Kuwait Adoption Bell Curve</h5>${makeAdoptionStrip("kuwait")}</div>` : "";
-  const adoptionCard = marketKey === "kuwait" ? "" : `<article class="country-story-card" id="country-adoption"><h4>Adoption Stage</h4>${makeAdoptionStrip(marketKey)}${makeDetail("View Adoption Analysis", data.adoption)}</article>`;
+  const overviewCard = marketKey === "kuwait" ? "" : `<article class="country-story-card country-overview-card" id="country-overview"><h4>Market Overview</h4><div class="country-metric-grid">${overviewMetrics.map(([label, value]) => `<div><span>${label}</span><strong>${value}</strong></div>`).join("")}</div><div class="country-summary-band"><span>${market.summary}</span></div>${makeDetail("View Full Market Analysis", [market.subtitle, market.summary, market.headline])}</article>`;
+  const adoptionCardClass = marketKey === "kuwait" ? " kuwait-adoption-card" : "";
+  const adoptionCard = `<article class="country-story-card${adoptionCardClass}" id="country-adoption"><h4>Adoption Stage</h4>${makeAdoptionStrip(marketKey)}${makeDetail("View Adoption Analysis", data.adoption)}</article>`;
   container.innerHTML = `
-    <article class="country-story-card country-overview-card" id="country-overview"><h4>Market Overview</h4><div class="country-metric-grid">${overviewMetrics.map(([label, value]) => `<div><span>${label}</span><strong>${value}</strong></div>`).join("")}</div>${overviewAdoptionVisual}<div class="country-summary-band"><span>${market.summary}</span></div>${makeDetail("View Full Market Analysis", [market.subtitle, market.summary, market.headline])}</article>
+    ${overviewCard}
     <article class="country-story-card" id="country-product"><h4>Product Adaptation</h4>${makeProductAccordion(marketKey)}<div class="country-summary-band"><span>Shared Mustang identity remains the base while visible adaptations respond to local expectations.</span></div>${makeDetail("View Product Adaptation Details", data.features)}</article>
     <article class="country-story-card" id="country-price"><h4>Local Price Visualization</h4>${makePriceBars(marketKey)}<p>Local price references remain tied to the project pricing notes and currency context.</p>${makeDetail("View Pricing Details", data.price)}</article>
     ${adoptionCard}
@@ -370,11 +369,10 @@ function renderCountryFocus(marketKey) {
 function updateSectionNav(viewKey) {
   const nav = document.querySelector(".sidebar-section-nav");
   if (!nav) return;
-  const countryNav = [["Overview", "country-overview"], ["Product", "country-product"], ["Price", "country-price"], ["Adoption", "country-adoption"], ["Branding", "country-branding"], ["Pricing Drivers", "country-pricing-drivers"], ["IMC", "country-imc"], ["Logistics", "country-logistics"], ["Recommendations", "recommendation-title"]];
-  const activeCountryNav = activeMarketKey === "kuwait" ? countryNav.filter(([, id]) => id !== "country-adoption") : countryNav;
-  const links = viewKey === "compare" ? viewConfig.compare.nav : countryNav;
-  const resolvedLinks = viewKey === "compare" ? links : activeCountryNav;
-  nav.innerHTML = resolvedLinks.map(([label, id]) => `<a href="#${id}">${label}</a>`).join("");
+  const standardCountryNav = [["Overview", "country-overview"], ["Product", "country-product"], ["Price", "country-price"], ["Adoption", "country-adoption"], ["Branding", "country-branding"], ["Pricing Drivers", "country-pricing-drivers"], ["IMC", "country-imc"], ["Logistics", "country-logistics"], ["Recommendations", "recommendation-title"]];
+  const kuwaitCountryNav = [["Product", "country-product"], ["Price", "country-price"], ["Adoption", "country-adoption"], ["Branding", "country-branding"], ["Pricing Drivers", "country-pricing-drivers"], ["IMC", "country-imc"], ["Logistics", "country-logistics"], ["Recommendations", "recommendation-title"]];
+  const links = viewKey === "compare" ? viewConfig.compare.nav : viewKey === "kuwait" ? kuwaitCountryNav : standardCountryNav;
+  nav.innerHTML = links.map(([label, id]) => `<a href="#${id}">${label}</a>`).join("");
 }
 
 function setDashboardView(viewKey, options = {}) {
@@ -775,6 +773,10 @@ function setActiveMarket(marketKey) {
   const market = markets[marketKey];
   if (!market) return;
   activeMarketKey = marketKey;
+  const countryHeroHeader = document.querySelector(".country-hero > .hero-header");
+  if (countryHeroHeader) {
+    countryHeroHeader.hidden = marketKey === "kuwait";
+  }
 
   Object.entries(textBindings).forEach(([id, path]) => {
     setText(id, getNestedValue(market, path));
