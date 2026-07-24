@@ -558,11 +558,11 @@ function createHorizontalBarChart(canvasId, items, options = {}) {
         x: {
           beginAtZero: true,
           grid: { color: "rgba(255,255,255,0.08)" },
-          ticks: { color: "#95a0ad" }
+          ticks: { color: "#95a0ad", font: { size: options.xTickFontSize || 12 } }
         },
         y: {
           grid: { display: false },
-          ticks: { color: "#f6f8fb", font: { weight: "700" } }
+          ticks: { color: "#f6f8fb", font: { weight: "700", size: options.yTickFontSize || 12 } }
         }
       }
     },
@@ -612,7 +612,11 @@ function renderDerivedCharts() {
 
   createHorizontalBarChart("production-chart", chartDatasets.production, {
     valueFormatter: (value) => `${value}`,
-    barThickness: 22,
+    barThickness: 14,
+    rightPadding: 28,
+    leftPadding: 0,
+    xTickFontSize: 10,
+    yTickFontSize: 10,
     tooltipSuffix: "potential benefits identified; not a recommendation rating"
   });
 
@@ -648,6 +652,21 @@ function showMatrixDetail(message) {
   if (!message) return;
   const live = document.getElementById("matrix-live-region");
   if (live) live.textContent = message;
+}
+
+function setupExclusiveAccordions() {
+  document.querySelectorAll("[data-accordion-group]").forEach((group) => {
+    group.addEventListener("toggle", (event) => {
+      const activeAccordion = event.target;
+      if (!activeAccordion.matches("details[open]")) return;
+      group.querySelectorAll("details[open]").forEach((accordion) => {
+        if (accordion !== activeAccordion) accordion.removeAttribute("open");
+      });
+      window.setTimeout(() => {
+        Object.values(chartInstances).forEach((chart) => chart.resize());
+      }, 260);
+    }, true);
+  });
 }
 
 
@@ -763,6 +782,7 @@ document.addEventListener("DOMContentLoaded", () => {
     button.addEventListener("click", () => renderPricingDriverPanel(button.dataset.pricingDriver));
   });
   renderPricingDriverPanel(activePricingDriverKey);
+  setupExclusiveAccordions();
 
   document.querySelectorAll("[data-view-toggle]").forEach((button) => {
     button.addEventListener("click", () => setDashboardView(button.dataset.viewToggle));
