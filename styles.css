@@ -13,6 +13,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { min-height: 100%; background: #06080d; }
 body {
   min-height: 100vh;
@@ -316,6 +317,28 @@ body {
 .price-card-header { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(220px, 0.55fr); gap: 18px; align-items: end; margin-bottom: 18px; }
 .price-card-header h3 { margin: 8px 0 0; font: 800 clamp(1.5rem, 2.5vw, 2.35rem)/1 Space Grotesk, sans-serif; letter-spacing: -0.04em; }
 .price-card-header p { margin: 0; color: #bcc5d0; line-height: 1.55; font-size: 0.92rem; }
+
+.recommendations-framework-grid,
+.pricing-entry-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  width: 100%;
+}
+
+.recommendations-framework-grid > *,
+.pricing-entry-grid > * {
+  min-width: 0;
+}
+
+.price-vertical-chart-panel {
+  min-height: clamp(18rem, 28vw, 24rem);
+}
+
+.price-vertical-chart-panel canvas {
+  height: clamp(15.5rem, 24vw, 20.5rem) !important;
+}
 .price-chart { display: grid; gap: 14px; width: 100%; min-width: 0; overflow: visible; }
 .price-row { display: grid; grid-template-columns: minmax(92px, 130px) minmax(0, 1fr) minmax(84px, auto); gap: 12px; align-items: center; min-width: 0; }
 .price-label { color: var(--ink); font: 800 0.9rem Space Grotesk, sans-serif; }
@@ -1589,6 +1612,85 @@ p { margin-block: 0 0.75rem; }
 .recommendation-detail-panel p { margin: 0; color: #d8dee7; line-height: 1.5; }
 .recommendation-detail-close { flex: 0 0 auto; margin-top: 0; }
 
+.recommendation-accordion-section {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.recommendation-accordion-section h3 {
+  margin: 0;
+}
+
+.recommendation-accordion-list {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.recommendation-accordion summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: center;
+  padding: 0.75rem 0.85rem;
+}
+
+.recommendation-accordion summary::after {
+  content: none;
+}
+
+.recommendation-accordion summary span {
+  min-width: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  color: var(--ink);
+  font: 800 clamp(0.86rem, 1vw, 1rem)/1.25 Space Grotesk, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.recommendation-accordion summary b {
+  flex: 0 0 auto;
+  color: var(--accent-2);
+  font: inherit;
+}
+
+.recommendation-accordion summary i {
+  width: 1.75rem;
+  height: 1.75rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(45,214,255,0.34);
+  border-radius: 999px;
+  color: var(--accent);
+  background: rgba(45,214,255,0.08);
+  font-style: normal;
+  line-height: 1;
+  transition: transform 0.24s ease, border-color 0.24s ease, color 0.24s ease;
+}
+
+.recommendation-accordion[open] summary i {
+  color: var(--accent-2);
+  border-color: rgba(247,183,51,0.48);
+  transform: rotate(180deg);
+}
+
+.recommendation-accordion .accordion-inner {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.recommendation-accordion .recommendation-summary {
+  margin: 0;
+  color: #c7d0db;
+}
+
+.recommendation-full-text {
+  margin: 0;
+  color: #d8dee7;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
 .logistics-lane-diagram {
   border: 1px solid var(--line);
   border-radius: 20px;
@@ -1653,6 +1755,8 @@ h3 { font-size: clamp(0.95rem, 0.7vw + 0.65rem, 1.25rem); }
 .references-section { padding: clamp(0.85rem, 1vw + 0.35rem, 1.25rem); }
 .chart-panel { min-height: clamp(13rem, 24vw, 18rem); }
 .chart-panel canvas { height: clamp(11rem, 20vw, 15rem) !important; }
+.price-vertical-chart-panel { min-height: clamp(18rem, 28vw, 24rem); }
+.price-vertical-chart-panel canvas { height: clamp(15.5rem, 24vw, 20.5rem) !important; }
 p { margin-block: 0 0.6rem; }
 
 .site-view-selector {
@@ -1724,6 +1828,225 @@ p { margin-block: 0 0.6rem; }
 .pricing-driver-panel details { margin-top: 0.75rem; border: 1px solid var(--line); border-radius: 14px; padding: 0.75rem; background: rgba(255,255,255,0.035); }
 .pricing-driver-panel summary { cursor: pointer; color: var(--accent); font: 800 0.8rem Space Grotesk, sans-serif; }
 .pricing-driver-panel ul { margin: 0.65rem 0 0; padding-left: 1.1rem; color: #c7d0db; }
+
+.pricing-entry-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  width: 100%;
+}
+
+.compact-strategy-section {
+  min-width: 0;
+  height: 100%;
+  padding: clamp(0.75rem, 0.8vw + 0.35rem, 1rem);
+}
+
+.compact-strategy-section .paper-heading {
+  gap: 0.55rem;
+  margin-bottom: 0.75rem;
+}
+
+.compact-strategy-section .paper-heading h3 {
+  font-size: clamp(1rem, 1.15vw, 1.25rem);
+}
+
+.compact-strategy-section .paper-heading p,
+.compact-strategy-section p,
+.compact-strategy-section li {
+  font-size: 0.78rem;
+  line-height: 1.42;
+}
+
+.strategy-accordion-group {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.strategy-accordion {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.035);
+  overflow: hidden;
+}
+
+.strategy-accordion summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.68rem 0.8rem;
+  color: var(--ink);
+  font: 800 0.82rem Space Grotesk, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.strategy-accordion summary::-webkit-details-marker { display: none; }
+
+.strategy-accordion:not(.recommendation-accordion) > summary::after {
+  content: "+";
+  color: var(--accent);
+  font-size: 1rem;
+  line-height: 1;
+  transition: transform 0.24s ease;
+}
+
+.strategy-accordion[open] summary {
+  border-bottom: 1px solid var(--line);
+  background: rgba(45,214,255,0.08);
+}
+
+.strategy-accordion:not(.recommendation-accordion)[open] > summary::after {
+  content: "−";
+  transform: rotate(180deg);
+}
+
+.accordion-inner {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0 0.8rem;
+  transition: max-height 0.28s ease, opacity 0.22s ease, padding 0.28s ease;
+}
+
+.strategy-accordion[open] .accordion-inner {
+  max-height: 32rem;
+  opacity: 1;
+  padding: 0.7rem 0.8rem 0.8rem;
+}
+
+.accordion-inner ul,
+.supporting-pricing-list {
+  margin: 0.55rem 0 0;
+  padding-left: 1rem;
+  color: #c7d0db;
+}
+
+.driver-row-chart {
+  display: grid;
+  gap: 0.36rem;
+  min-width: 0;
+  margin-bottom: 0.65rem;
+}
+
+.driver-scale,
+.driver-row {
+  display: grid;
+  grid-template-columns: minmax(7.5rem, 0.95fr) minmax(9rem, 1.4fr);
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.driver-scale {
+  color: var(--muted);
+  font: 800 0.62rem Space Grotesk, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.driver-scale span:last-child {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  text-align: center;
+}
+
+.driver-scale b {
+  min-width: 0;
+  font: inherit;
+}
+
+.driver-row strong {
+  min-width: 0;
+  font-size: 0.68rem;
+  line-height: 1.2;
+}
+
+.driver-row strong {
+  color: var(--ink);
+  overflow-wrap: normal;
+}
+
+.driver-row span {
+  position: relative;
+  height: 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.055) 0 50%, rgba(45,214,255,0.08) 50% 100%);
+  overflow: hidden;
+}
+
+.driver-row span::before {
+  content: "";
+  position: absolute;
+  inset-block: -0.15rem;
+  left: 50%;
+  border-left: 1px solid rgba(255,255,255,0.18);
+}
+
+.driver-row i {
+  position: absolute;
+  top: 50%;
+  width: 0.78rem;
+  height: 0.78rem;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  background: rgba(255,255,255,0.76);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.08);
+}
+
+.driver-row.not-emphasized i { left: 25%; }
+.driver-row.applicable i {
+  left: 75%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px rgba(45,214,255,0.16);
+}
+
+.compact-entry-chart {
+  min-height: 9.5rem;
+  margin-bottom: 0.65rem;
+}
+
+.compact-entry-chart canvas {
+  height: 7.25rem !important;
+}
+
+.logistics-country-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+  width: 100%;
+  margin-top: 0.85rem;
+}
+
+.logistics-country-grid > * {
+  min-width: 0;
+}
+
+.logistics-row-chart .driver-row,
+.logistics-row-chart .driver-scale {
+  grid-template-columns: minmax(12rem, 0.92fr) minmax(10rem, 1fr);
+}
+
+@media (max-width: 900px) {
+  .recommendations-framework-grid,
+  .pricing-entry-grid,
+  .logistics-country-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  .driver-scale,
+  .driver-row {
+    grid-template-columns: minmax(6.2rem, 0.9fr) minmax(7rem, 1fr);
+  }
+  .driver-scale b { font-size: 0.54rem; }
+  .logistics-row-chart .driver-row,
+  .logistics-row-chart .driver-scale {
+    grid-template-columns: minmax(8.4rem, 0.9fr) minmax(6.5rem, 1fr);
+  }
+}
 
 .country-focus-section { border: 1px solid var(--line); border-radius: 20px; background: var(--panel-strong); box-shadow: var(--shadow); backdrop-filter: blur(22px); padding: clamp(0.85rem, 1vw + 0.35rem, 1.25rem); }
 .country-focus-card { border: 1px solid var(--line); border-radius: 16px; padding: 0.9rem; background: rgba(255,255,255,0.04); }
@@ -2246,5 +2569,323 @@ p { margin-block: 0 0.6rem; }
   #country-imc .country-flow div,
   #country-logistics .country-flow div {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Comparison dashboard and compact country market-play specs */
+.comparison-dashboard {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: clamp(0.75rem, 0.8vw + 0.35rem, 1rem);
+  background: var(--panel-strong);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(22px);
+}
+
+.comparison-dashboard-stats,
+.market-play-specs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+
+.comparison-dashboard-stats > *,
+.market-play-specs > * {
+  min-width: 0;
+}
+
+.comparison-dashboard-stats div,
+.market-play-specs div {
+  min-height: 0;
+  padding: 0.7rem 0.75rem;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.055);
+  border: 1px solid var(--line);
+  display: grid;
+  gap: 0.28rem;
+  align-content: center;
+}
+
+.comparison-dashboard-stats span,
+.market-play-specs span {
+  color: var(--accent);
+  font: 800 clamp(1rem, 1.35vw, 1.35rem)/1 Space Grotesk, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.comparison-dashboard-stats small,
+.market-play-specs small {
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.25;
+}
+
+.market-play-specs {
+  margin-top: 16px;
+}
+
+.country-hero {
+  grid-template-columns: minmax(240px, 0.85fr) minmax(0, 1.45fr);
+}
+
+.vehicle-copy {
+  grid-column: 2;
+}
+
+.vehicle-visual {
+  grid-column: 1;
+}
+
+.recommendations-framework-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  width: 100%;
+}
+
+.recommendations-framework-grid > * {
+  min-width: 0;
+}
+
+.compact-framework-section .paper-heading,
+.compact-framework-section .details-grid {
+  grid-template-columns: 1fr;
+}
+
+.compact-framework-section .flow-diagram {
+  gap: 0.45rem;
+  padding: 0.65rem;
+}
+
+.compact-framework-section .stacked-row {
+  gap: 0.35rem;
+}
+
+.recommendation-accordion[open] summary i {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 900px) {
+  .recommendations-framework-grid,
+  .pricing-entry-grid,
+  .logistics-country-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vehicle-copy,
+  .vehicle-visual {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .comparison-dashboard-stats,
+  .market-play-specs {
+    grid-template-columns: 1fr;
+  }
+}
+
+.country-hero[hidden],
+.country-focus-section[hidden],
+[data-view="country"][hidden],
+[data-view="comparison"][hidden] {
+  display: none !important;
+}
+
+/* Strategic Recommendations: use only the right-aligned HTML chevron */
+details.strategy-accordion.recommendation-accordion > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+details.strategy-accordion.recommendation-accordion
+  > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.strategy-accordion.recommendation-accordion > summary::before,
+details.strategy-accordion.recommendation-accordion > summary::after,
+details.strategy-accordion.recommendation-accordion[open] > summary::before,
+details.strategy-accordion.recommendation-accordion[open] > summary::after {
+  content: none !important;
+  display: none !important;
+}
+
+details.strategy-accordion.recommendation-accordion > summary > span {
+  min-width: 0;
+  flex: 1 1 auto;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+details.strategy-accordion.recommendation-accordion > summary > i {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  margin-left: auto;
+  font-style: normal;
+  color: var(--accent);
+  transition: transform 0.24s ease;
+}
+
+details.strategy-accordion.recommendation-accordion[open] > summary > i {
+  transform: rotate(180deg);
+}
+
+#country-focus-note {
+  display: grid;
+  gap: 0.35rem;
+}
+
+#country-focus-note strong {
+  color: var(--ink);
+  font: 800 clamp(0.95rem, 1vw, 1.08rem)/1.35 Space Grotesk, sans-serif;
+}
+
+#country-focus-note em {
+  color: #c7d0db;
+  font-style: italic;
+  line-height: 1.45;
+}
+
+.kuwait-adoption-card .mini-diffusion-curve {
+  width: min(100%, 520px);
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 0.45rem;
+  border-radius: 12px;
+}
+
+.kuwait-adoption-card .mini-diffusion-curve svg {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  max-height: 175px;
+  margin: 0 auto;
+}
+
+.kuwait-adoption-card .mini-diffusion-curve figcaption {
+  max-width: 500px;
+  margin: 0.35rem auto 0;
+  font-size: 0.72rem;
+  line-height: 1.3;
+  text-align: center;
+}
+
+#vehicle-summary,
+.vehicle-position {
+  color: #c0c8d3;
+  line-height: 1.55;
+}
+
+.vehicle-position {
+  margin: 0.55rem 0 0;
+  padding-top: 0.55rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-style: italic;
+}
+
+.country-hero.uk-market-play #vehicle-summary {
+  font-style: italic;
+}
+
+.kuwait-visible-facts,
+.country-visible-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.65rem;
+}
+
+.kuwait-visible-facts span,
+.country-visible-facts span,
+.kuwait-visible-information,
+.country-visible-information {
+  min-width: 0;
+  border: 1px solid rgba(45, 214, 255, 0.2);
+  border-radius: 10px;
+  background: rgba(8, 16, 26, 0.58);
+}
+
+.kuwait-visible-facts span,
+.country-visible-facts span {
+  padding: 0.55rem 0.65rem;
+  color: #d9e2ec;
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
+.kuwait-visible-facts strong,
+.country-visible-facts strong,
+.kuwait-visible-information > strong,
+.country-visible-information > strong {
+  color: var(--accent);
+}
+
+.kuwait-visible-information,
+.country-visible-information {
+  margin-top: 0.7rem;
+  padding: 0.7rem 0.8rem;
+}
+
+.kuwait-visible-information > strong,
+.country-visible-information > strong {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+}
+
+.kuwait-visible-information ul,
+.country-visible-information ul {
+  columns: 2 15rem;
+  column-gap: 1.5rem;
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.kuwait-visible-information li,
+.country-visible-information li {
+  break-inside: avoid;
+  margin-bottom: 0.35rem;
+  color: #d3dce6;
+  font-size: 0.74rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+  .kuwait-visible-facts,
+  .country-visible-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .kuwait-visible-information ul,
+  .country-visible-information ul {
+    columns: 1;
+  }
+
+  .kuwait-adoption-card .mini-diffusion-curve {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.35rem;
+  }
+
+  .kuwait-adoption-card .mini-diffusion-curve svg {
+    width: 100%;
+    max-width: 100%;
+    max-height: 145px;
+  }
+
+  .kuwait-adoption-card .mini-stages text {
+    font-size: 0.56rem;
+  }
+
+  .kuwait-adoption-card .mini-marker-label {
+    font-size: 0.64rem;
   }
 }
