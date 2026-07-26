@@ -877,6 +877,8 @@ const textBindings = {
   "drivers-text": ["sections", "drivers"]
 };
 
+let countryHeroHeaderMarkup = "";
+
 function setActiveMarket(marketKey) {
   const market = markets[marketKey];
   if (!market) return;
