@@ -52,7 +52,7 @@ const markets = {
   kuwait: {
     title: "Kuwait",
     subtitle: "Elevate Dark Horse as a status-led performance coupe engineered for heat, premium personalization and high-visibility urban cruising.",
-    kicker: "Kuwait market play",
+    kicker: "Kuwait Market Play: Hot Climate Adaptor",
     headline: "Fuse V8 theatre with luxury-performance status.",
     summary: "The Kuwait launch should combine desert-climate confidence, premium concierge retail and bold visual packages that turn the Dark Horse into a social statement.",
     image: "assets/kuwait-mustang.png",
@@ -260,6 +260,10 @@ function renderPricingDriverPanel(marketKey) {
     button.setAttribute("aria-selected", String(isActive));
     button.setAttribute("aria-expanded", String(isActive));
   });
+  if (marketKey === "usa") {
+    panel.innerHTML = `<h4>${data.title}</h4><p>${data.note}</p><ul class="supporting-pricing-list">${data.details.map((item) => `<li>${item}</li>`).join("")}</ul>`;
+    return;
+  }
   const bars = data.states.map((state, index) => {
     const [shortLabel, fullLabel] = pricingDriverLabels[index];
     const label = state === "applicable" ? "Applicable" : state === "not-emphasized" ? "Not emphasized" : "Not assessed";
@@ -295,13 +299,14 @@ function makeAdoptionStrip(marketKey) {
 }
 
 function makeBrandBranches(marketKey, themes) {
-  return `<div class="country-brand-node"><strong>${markets[marketKey].title} Brand Position</strong><div>${themes.slice(0, 6).map((theme) => `<span>${theme}</span>`).join("")}</div></div>`;
+  const visibleThemes = marketKey === "kuwait" ? themes : themes.slice(0, 6);
+  return `<div class="country-brand-node"><strong>${markets[marketKey].title} Brand Position</strong><div>${visibleThemes.map((theme) => `<span>${theme}</span>`).join("")}</div></div>`;
 }
 
 function makePricingDriverBarsForCountry(marketKey) {
   const data = pricingDriverStates[marketKey];
   if (data.states.every((state) => state === "not-assessed")) {
-    return `<div class="not-assessed-panel"><strong>Not Assessed</strong><p>${data.note}</p></div>`;
+    return `<p>${data.note}</p><ul class="supporting-pricing-list">${data.details.map((item) => `<li>${item}</li>`).join("")}</ul>`;
   }
   return `<div class="pricing-driver-bars country-driver-bars">${data.states.map((state, index) => ({ state, index })).filter(({ state }) => state !== "not-assessed").map(({ state, index }) => {
     const [shortLabel, fullLabel] = pricingDriverLabels[index];
@@ -317,10 +322,15 @@ function makeFlow(title, steps, constraint) {
 function renderCountryFocus(marketKey) {
   const container = document.getElementById("country-focus-grid");
   const title = document.getElementById("country-focus-title");
+  const note = document.getElementById("country-focus-note");
   const data = countryFocusData[marketKey];
   const market = markets[marketKey];
+  const isKuwait = marketKey === "kuwait";
   if (!container || !title || !data || !market) return;
   title.textContent = `${market.title} Visual Strategy Dashboard`;
+  if (note) note.textContent = "Country-specific strategy details gathered from the dashboard research.";
+  const countryFocusHeading = document.getElementById("country-focus")?.querySelector(":scope > .paper-heading");
+  if (countryFocusHeading) countryFocusHeading.hidden = marketKey === "kuwait";
   const overviewMetrics = [
     ["Market Position", market.subtitle],
     ["Adoption Stage", data.adoption[0].replace("Adoption stage: ", "")],
@@ -339,15 +349,34 @@ function renderCountryFocus(marketKey) {
     uk: ["Urban congestion", "Last-mile access", "Emissions-zone restrictions"],
     kuwait: ["Port infrastructure", "Customs and handling delays", "Climate exposure"]
   }[marketKey];
+  const productDetails = isKuwait ? "" : makeDetail("View Product Adaptation Details", data.features);
+  const priceDetails = isKuwait ? "" : makeDetail("View Pricing Details", data.price);
+  const adoptionDetails = isKuwait ? "" : makeDetail("View Adoption Analysis", data.adoption);
+  const brandingDetails = isKuwait ? "" : makeDetail("View Full Branding Strategy", data.branding);
+  const pricingDriverDetail = marketKey === "usa" || isKuwait ? "" : makeDetail("View Pricing-Driver Details", data.pricingDrivers);
+  const imcDetails = isKuwait ? "" : makeDetail("View IMC Details", data.imc);
+  const logisticsDetails = isKuwait ? "" : makeDetail("View Logistics Details", data.logistics);
+  const kuwaitAdoptionLabels = isKuwait ? `<div class="kuwait-visible-facts"><span><strong>Early Adopters</strong></span><span><strong>Audience priority:</strong> Luxury, prestige, advanced safety</span><span><strong>Pricing model:</strong> Dynamic incremental pricing</span></div>` : "";
+  const kuwaitImcInformation = isKuwait ? `<div class="kuwait-visible-information" aria-label="Complete Kuwait IMC information"><strong>Channels, localization, and execution considerations</strong>${makeList([
+    ...data.imc,
+    "Arabic-first social films, mall displays, influencer night drives, and Ramadan-season CRM",
+    "Invite-only previews for high-net-worth prospects",
+    "Cultural boundaries must be considered alongside language nuances and consumer-value differences",
+    "Staffing, time, and resource limitations related to personal selling"
+  ])}</div>` : "";
+  const kuwaitLogisticsInformation = isKuwait ? `<div class="kuwait-visible-information" aria-label="Complete Kuwait logistics information"><strong>Supporting logistics factors</strong>${makeList(data.logistics)}</div>` : "";
+  const overviewCard = isKuwait ? "" : `<article class="country-story-card country-overview-card" id="country-overview"><h4>Market Overview</h4><div class="country-metric-grid">${overviewMetrics.map(([label, value]) => `<div><span>${label}</span><strong>${value}</strong></div>`).join("")}</div><div class="country-summary-band"><span>${market.summary}</span></div>${makeDetail("View Full Market Analysis", [market.subtitle, market.summary, market.headline])}</article>`;
+  const adoptionCardClass = isKuwait ? " kuwait-adoption-card" : "";
+  const adoptionCard = `<article class="country-story-card${adoptionCardClass}" id="country-adoption"><h4>Adoption Stage</h4>${makeAdoptionStrip(marketKey)}${kuwaitAdoptionLabels}${adoptionDetails}</article>`;
   container.innerHTML = `
-    <article class="country-story-card country-overview-card" id="country-overview"><h4>Market Overview</h4><div class="country-metric-grid">${overviewMetrics.map(([label, value]) => `<div><span>${label}</span><strong>${value}</strong></div>`).join("")}</div><div class="country-summary-band"><span>${market.summary}</span></div>${makeDetail("View Full Market Analysis", [market.subtitle, market.summary, market.headline])}</article>
-    <article class="country-story-card" id="country-product"><h4>Product Adaptation</h4>${makeProductAccordion(marketKey)}<div class="country-summary-band"><span>Shared Mustang identity remains the base while visible adaptations respond to local expectations.</span></div>${makeDetail("View Product Adaptation Details", data.features)}</article>
-    <article class="country-story-card" id="country-price"><h4>Local Price Visualization</h4>${makePriceBars(marketKey)}<p>Local price references remain tied to the project pricing notes and currency context.</p>${makeDetail("View Pricing Details", data.price)}</article>
-    <article class="country-story-card" id="country-adoption"><h4>Adoption Stage</h4>${makeAdoptionStrip(marketKey)}${makeDetail("View Adoption Analysis", data.adoption)}</article>
-    <article class="country-story-card" id="country-branding"><h4>Branding Strategy</h4>${makeBrandBranches(marketKey, data.branding)}<p>Brand positioning translates the global Mustang identity into market-specific emphasis.</p>${makeDetail("View Full Branding Strategy", data.branding)}</article>
-    <article class="country-story-card" id="country-pricing-drivers"><h4>Pricing-Driver Visualization</h4>${makePricingDriverBarsForCountry(marketKey)}${makeDetail("View Pricing-Driver Details", data.pricingDrivers)}</article>
-    <article class="country-story-card" id="country-imc"><h4>IMC Pathway</h4>${makeFlow("Audience Priority → Communication Tools → Intended Response → Constraint", imcSteps, imcSteps[3])}${makeDetail("View IMC Details", data.imc)}</article>
-    <article class="country-story-card" id="country-logistics"><h4>Logistics Flow</h4>${makeFlow("Logistics process", logisticsSteps, data.logistics[0])}${makeDetail("View Logistics Details", data.logistics)}</article>
+    ${overviewCard}
+    <article class="country-story-card" id="country-product"><h4>Product Adaptation</h4>${makeProductAccordion(marketKey)}<div class="country-summary-band"><span>Shared Mustang identity remains the base while visible adaptations respond to local expectations.</span></div>${productDetails}</article>
+    <article class="country-story-card" id="country-price"><h4>Local Price Visualization</h4>${makePriceBars(marketKey)}<p>Local price references remain tied to the project pricing notes and currency context.</p>${priceDetails}</article>
+    ${adoptionCard}
+    <article class="country-story-card" id="country-branding"><h4>Branding Strategy</h4>${makeBrandBranches(marketKey, data.branding)}<p>Brand positioning translates the global Mustang identity into market-specific emphasis.</p>${brandingDetails}</article>
+    <article class="country-story-card" id="country-pricing-drivers"><h4>Pricing-Driver Visualization</h4>${makePricingDriverBarsForCountry(marketKey)}${pricingDriverDetail}</article>
+    <article class="country-story-card" id="country-imc"><h4>IMC Pathway</h4>${makeFlow("Audience Priority → Communication Tools → Intended Response → Constraint", imcSteps, imcSteps[3])}${kuwaitImcInformation}${imcDetails}</article>
+    <article class="country-story-card" id="country-logistics"><h4>Logistics Flow</h4>${makeFlow("Logistics process", logisticsSteps, data.logistics[0])}${kuwaitLogisticsInformation}${logisticsDetails}</article>
   `;
 }
 
@@ -355,15 +384,77 @@ function renderCountryFocus(marketKey) {
 function updateSectionNav(viewKey) {
   const nav = document.querySelector(".sidebar-section-nav");
   if (!nav) return;
-  const countryNav = [["Overview", "country-overview"], ["Product", "country-product"], ["Price", "country-price"], ["Adoption", "country-adoption"], ["Branding", "country-branding"], ["Pricing Drivers", "country-pricing-drivers"], ["IMC", "country-imc"], ["Logistics", "country-logistics"], ["Recommendations", "recommendation-title"]];
-  const links = viewKey === "compare" ? viewConfig.compare.nav : countryNav;
+  const standardCountryNav = [["Overview", "country-overview"], ["Product", "country-product"], ["Price", "country-price"], ["Adoption", "country-adoption"], ["Branding", "country-branding"], ["Pricing Drivers", "country-pricing-drivers"], ["IMC", "country-imc"], ["Logistics", "country-logistics"], ["Recommendations", "recommendation-title"]];
+  const kuwaitCountryNav = [["Product", "country-product"], ["Price", "country-price"], ["Adoption", "country-adoption"], ["Branding", "country-branding"], ["Pricing Drivers", "country-pricing-drivers"], ["IMC", "country-imc"], ["Logistics", "country-logistics"], ["Recommendations", "recommendation-title"]];
+  const links = viewKey === "compare" ? viewConfig.compare.nav : viewKey === "kuwait" ? kuwaitCountryNav : standardCountryNav;
   nav.innerHTML = links.map(([label, id]) => `<a href="#${id}">${label}</a>`).join("");
+}
+
+let globalFrameworkMarkup = "";
+
+function renderGlobalFramework() {
+  return globalFrameworkMarkup;
+}
+
+function renderKuwaitFramework() {
+  return `
+    <div class="paper-heading">
+      <div>
+        <div class="section-kicker">Paper-backed framework</div>
+        <h3 id="framework-title">Global Strategy Framework</h3>
+      </div>
+      <p>Ford balances a recognizable global Mustang identity with Kuwait-specific feature, safety, pricing, and climate adaptation.</p>
+    </div>
+
+    <div class="flow-diagram" aria-label="Global Mustang Identity to Kuwait Local Market Adaptation to Regional Relevance">
+      <span>Global Mustang Identity</span>
+      <strong aria-hidden="true">→</strong>
+      <span>Kuwait Local Market Adaptation</span>
+      <strong aria-hidden="true">→</strong>
+      <span>Regional Relevance</span>
+    </div>
+
+    <div class="standardization-bars" role="img" aria-labelledby="standardization-bars-title" aria-describedby="standardization-bars-note">
+      <h4 id="standardization-bars-title">Global Standardization vs. Local Market Adaptation</h4>
+      <div class="stacked-comparison" aria-label="Feature-count comparison between the United States benchmark and Kuwait">
+        <div class="stacked-row" data-market-row="usa">
+          <strong>United States — Home-Market Benchmark</strong>
+          <div class="stacked-bar" style="--shared-p: 72.7%; --local-p: 27.3%;">
+            <span class="shared-segment">Shared Global Features · 8</span>
+            <span class="local-segment">Localized Market Features · 3</span>
+          </div>
+        </div>
+        <div class="stacked-row" data-market-row="kuwait">
+          <strong>Kuwait — Local Market Adaptation</strong>
+          <div class="stacked-bar" style="--shared-p: 53.3%; --local-p: 46.7%;">
+            <span class="shared-segment">Shared Global Features · 8</span>
+            <span class="local-segment">Localized Market Features · 7</span>
+          </div>
+        </div>
+      </div>
+      <p id="standardization-bars-note" class="chart-note">Values represent the number of features discussed in the project, not market-performance scores. Ford maintains a consistent global Mustang identity across the United States and Kuwait, while Kuwait requires more localized adaptations than the United States home-market benchmark.</p>
+    </div>
+
+    <div class="details-grid market-comparison-grid">
+      <details><summary>Shared Standardized Features</summary><ul><li>5.0L V8 engine</li><li>Sport-tuned suspension</li><li>Bold sports-car exterior styling</li><li>Quad tailpipes</li><li>Blue-knobbed gear shift</li><li>Distinctive brake calipers</li><li>Consistent luxury-performance positioning</li><li>MagneRide Damping System</li></ul></details>
+      <details><summary>United States Localized Features</summary><ul><li>Interior luxury</li><li>Driver-assist technologies</li><li>Promotions tailored to specific consumer groups</li></ul></details>
+      <details><summary>Kuwait Localized Features</summary><ul><li>Visual customization</li><li>Child-restraint systems</li><li>Crash-severity sensors</li><li>Cross-traffic alert</li><li>Pre-collision assist</li><li>Forward-collision warning</li><li>Luxury, visual presence, and safety emphasis</li></ul></details>
+    </div>
+  `;
+}
+
+function renderFrameworkForView(viewKey) {
+  const framework = document.getElementById("framework-view");
+  if (!framework) return;
+  if (!globalFrameworkMarkup) globalFrameworkMarkup = framework.innerHTML;
+  framework.innerHTML = viewKey === "kuwait" ? renderKuwaitFramework() : renderGlobalFramework();
 }
 
 function setDashboardView(viewKey, options = {}) {
   const config = viewConfig[viewKey] || viewConfig.compare;
   activeViewKey = viewKey in viewConfig ? viewKey : "compare";
   const isCompare = activeViewKey === "compare";
+  renderFrameworkForView(activeViewKey);
   document.querySelectorAll("[data-view='comparison']").forEach((node) => { node.hidden = !isCompare; });
   document.querySelectorAll("[data-view='country']").forEach((node) => { node.hidden = isCompare; });
   document.querySelectorAll("[data-view-toggle]").forEach((button) => {
@@ -371,19 +462,7 @@ function setDashboardView(viewKey, options = {}) {
     button.classList.toggle("active", isActive);
     button.setAttribute("aria-pressed", String(isActive));
   });
-  if (isCompare) {
-    setText("market-title", "Ford Mustang Dark Horse");
-    setText("market-subtitle", "A compact global marketing strategy dashboard comparing launch-market positioning, pricing, branding, IMC, logistics, and production considerations.");
-    setText("market-kicker", "Global strategy model");
-    setText("vehicle-headline", "Product × Price × Brand × Channel");
-    setText("vehicle-summary", "Use the comparison view to scan cross-market strategy patterns, then switch to a country view for focused visual storytelling and expandable research details.");
-    setText("metric-a", "3");
-    setText("metric-b", "Global");
-    setText("metric-c", "Visual");
-    document.querySelectorAll(".header-metrics small").forEach((node, index) => {
-      node.textContent = ["Priority markets", "Strategy lens", "Dashboard format"][index] || node.textContent;
-    });
-  } else if (config.market) {
+  if (!isCompare && config.market) {
     setActiveMarket(config.market);
     renderCountryFocus(config.market);
   }
@@ -411,7 +490,7 @@ function updateRecommendationPanel(recommendationKey, forceOpen = false) {
   document.querySelectorAll("[data-recommendation-toggle]").forEach((button) => {
     const isActive = button.dataset.recommendationToggle === activeRecommendationKey;
     button.setAttribute("aria-expanded", String(isActive));
-    button.textContent = isActive ? "Collapse Recommendation" : "View Full Recommendation";
+    button.textContent = isActive ? "Collapse Recommendation" : "Open Recommendation";
   });
 
   document.querySelectorAll("[data-recommendation-card]").forEach((card) => {
@@ -475,6 +554,17 @@ function createPriceGradient(context) {
   return gradient;
 }
 
+function createVerticalPriceGradient(context) {
+  const chart = context.chart;
+  const { chartArea, ctx } = chart;
+  if (!chartArea) return "rgba(45, 214, 255, 0.9)";
+  const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+  gradient.addColorStop(0, "rgba(45, 214, 255, 0.28)");
+  gradient.addColorStop(0.56, "rgba(45, 214, 255, 0.9)");
+  gradient.addColorStop(1, "rgba(247, 183, 51, 0.95)");
+  return gradient;
+}
+
 const valueLabelPlugin = {
   id: "valueLabelPlugin",
   afterDatasetsDraw(chart) {
@@ -488,7 +578,13 @@ const valueLabelPlugin = {
     meta.data.forEach((bar, index) => {
       const value = dataset.data[index];
       const label = dataset.valueFormatter ? dataset.valueFormatter(value, index) : String(value);
-      ctx.fillText(label, bar.x + 8, bar.y);
+      if (dataset.labelOrientation === "vertical") {
+        ctx.textAlign = "center";
+        ctx.fillText(label, bar.x, bar.y - 10);
+      } else {
+        ctx.textAlign = "left";
+        ctx.fillText(label, bar.x + 8, bar.y);
+      }
     });
     ctx.restore();
   }
@@ -553,11 +649,11 @@ function createHorizontalBarChart(canvasId, items, options = {}) {
         x: {
           beginAtZero: true,
           grid: { color: "rgba(255,255,255,0.08)" },
-          ticks: { color: "#95a0ad" }
+          ticks: { color: "#95a0ad", font: { size: options.xTickFontSize || 12 } }
         },
         y: {
           grid: { display: false },
-          ticks: { color: "#f6f8fb", font: { weight: "700" } }
+          ticks: { color: "#f6f8fb", font: { weight: "700", size: options.yTickFontSize || 12 } }
         }
       }
     },
@@ -568,11 +664,75 @@ function createHorizontalBarChart(canvasId, items, options = {}) {
 }
 
 function renderPriceChart() {
-  createHorizontalBarChart("price-chart", priceComparisons, {
-    valueFormatter: (value) => formatUsd(value),
-    barThickness: 26,
-    useGradient: true,
-    rightPadding: 120
+  const canvas = document.getElementById("price-chart");
+  if (!canvas) return;
+  if (typeof Chart === "undefined") {
+    const panel = canvas.closest(".chart-panel");
+    if (panel) panel.classList.add("chart-unavailable");
+    return;
+  }
+
+  if (chartInstances["price-chart"]) {
+    chartInstances["price-chart"].destroy();
+  }
+
+  chartInstances["price-chart"] = new Chart(canvas, {
+    type: "bar",
+    data: {
+      labels: priceComparisons.map((item) => item.market),
+      datasets: [{
+        data: priceComparisons.map((item) => item.value),
+        countries: priceComparisons.map((item) => item.country),
+        valueFormatter: (value) => formatUsd(value),
+        labelOrientation: "vertical",
+        backgroundColor: (context) => createVerticalPriceGradient(context),
+        borderColor: priceComparisons.map((item) => getBorderForCountry(item.country, activeMarketKey)),
+        borderWidth: 1.5,
+        borderRadius: 12,
+        barPercentage: 0.72,
+        categoryPercentage: 0.72,
+        useGradient: true
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? false : { duration: 700 },
+      layout: { padding: { top: 24, right: 8, left: 0, bottom: 0 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            afterLabel(context) {
+              return `Local price: ${priceComparisons[context.dataIndex].local}`;
+            },
+            label(context) {
+              return formatUsd(context.parsed.y);
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: {
+            color: "#f6f8fb",
+            font: { weight: "700", size: 10 },
+            maxRotation: 0,
+            minRotation: 0,
+            callback(value) {
+              return String(this.getLabelForValue(value)).split(" ");
+            }
+          }
+        },
+        y: {
+          beginAtZero: true,
+          grid: { color: "rgba(255,255,255,0.08)" },
+          ticks: { color: "#95a0ad", font: { size: 10 }, callback: (value) => formatUsd(value).replace(".00", "") }
+        }
+      }
+    },
+    plugins: [valueLabelPlugin]
   });
 }
 
@@ -607,7 +767,11 @@ function renderDerivedCharts() {
 
   createHorizontalBarChart("production-chart", chartDatasets.production, {
     valueFormatter: (value) => `${value}`,
-    barThickness: 22,
+    barThickness: 14,
+    rightPadding: 28,
+    leftPadding: 0,
+    xTickFontSize: 10,
+    yTickFontSize: 10,
     tooltipSuffix: "potential benefits identified; not a recommendation rating"
   });
 
@@ -645,6 +809,27 @@ function showMatrixDetail(message) {
   if (live) live.textContent = message;
 }
 
+function setupExclusiveAccordions() {
+  document.querySelectorAll("[data-accordion-group]").forEach((group) => {
+    group.addEventListener("toggle", (event) => {
+      const activeAccordion = event.target;
+      group.querySelectorAll("details > summary[aria-expanded]").forEach((summary) => {
+        summary.setAttribute("aria-expanded", String(summary.parentElement?.open));
+      });
+      if (!activeAccordion.matches("details[open]")) return;
+      group.querySelectorAll("details[open]").forEach((accordion) => {
+        if (accordion !== activeAccordion) accordion.removeAttribute("open");
+      });
+      group.querySelectorAll("details > summary[aria-expanded]").forEach((summary) => {
+        summary.setAttribute("aria-expanded", String(summary.parentElement?.open));
+      });
+      window.setTimeout(() => {
+        Object.values(chartInstances).forEach((chart) => chart.resize());
+      }, 260);
+    }, true);
+  });
+}
+
 
 const textBindings = {
   "market-title": "title",
@@ -664,6 +849,10 @@ function setActiveMarket(marketKey) {
   const market = markets[marketKey];
   if (!market) return;
   activeMarketKey = marketKey;
+  const countryHeroHeader = document.querySelector(".country-hero > .hero-header");
+  if (countryHeroHeader) {
+    countryHeroHeader.hidden = marketKey === "kuwait";
+  }
 
   Object.entries(textBindings).forEach(([id, path]) => {
     setText(id, getNestedValue(market, path));
@@ -758,6 +947,7 @@ document.addEventListener("DOMContentLoaded", () => {
     button.addEventListener("click", () => renderPricingDriverPanel(button.dataset.pricingDriver));
   });
   renderPricingDriverPanel(activePricingDriverKey);
+  setupExclusiveAccordions();
 
   document.querySelectorAll("[data-view-toggle]").forEach((button) => {
     button.addEventListener("click", () => setDashboardView(button.dataset.viewToggle));
