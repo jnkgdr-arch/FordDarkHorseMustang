@@ -299,7 +299,8 @@ function makeAdoptionStrip(marketKey) {
 }
 
 function makeBrandBranches(marketKey, themes) {
-  return `<div class="country-brand-node"><strong>${markets[marketKey].title} Brand Position</strong><div>${themes.slice(0, 6).map((theme) => `<span>${theme}</span>`).join("")}</div></div>`;
+  const visibleThemes = marketKey === "kuwait" ? themes : themes.slice(0, 6);
+  return `<div class="country-brand-node"><strong>${markets[marketKey].title} Brand Position</strong><div>${visibleThemes.map((theme) => `<span>${theme}</span>`).join("")}</div></div>`;
 }
 
 function makePricingDriverBarsForCountry(marketKey) {
@@ -324,6 +325,7 @@ function renderCountryFocus(marketKey) {
   const note = document.getElementById("country-focus-note");
   const data = countryFocusData[marketKey];
   const market = markets[marketKey];
+  const isKuwait = marketKey === "kuwait";
   if (!container || !title || !data || !market) return;
   title.textContent = `${market.title} Visual Strategy Dashboard`;
   if (note) note.textContent = "Country-specific strategy details gathered from the dashboard research.";
@@ -349,19 +351,34 @@ function renderCountryFocus(marketKey) {
     uk: ["Urban congestion", "Last-mile access", "Emissions-zone restrictions"],
     kuwait: ["Port infrastructure", "Customs and handling delays", "Climate exposure"]
   }[marketKey];
-  const pricingDriverDetail = marketKey === "usa" ? "" : makeDetail("View Pricing-Driver Details", data.pricingDrivers);
-  const overviewCard = marketKey === "kuwait" ? "" : `<article class="country-story-card country-overview-card" id="country-overview"><h4>Market Overview</h4><div class="country-metric-grid">${overviewMetrics.map(([label, value]) => `<div><span>${label}</span><strong>${value}</strong></div>`).join("")}</div><div class="country-summary-band"><span>${market.summary}</span></div>${makeDetail("View Full Market Analysis", [market.subtitle, market.summary, market.headline])}</article>`;
-  const adoptionCardClass = marketKey === "kuwait" ? " kuwait-adoption-card" : "";
-  const adoptionCard = `<article class="country-story-card${adoptionCardClass}" id="country-adoption"><h4>Adoption Stage</h4>${makeAdoptionStrip(marketKey)}${makeDetail("View Adoption Analysis", data.adoption)}</article>`;
+  const productDetails = isKuwait ? "" : makeDetail("View Product Adaptation Details", data.features);
+  const priceDetails = isKuwait ? "" : makeDetail("View Pricing Details", data.price);
+  const adoptionDetails = isKuwait ? "" : makeDetail("View Adoption Analysis", data.adoption);
+  const brandingDetails = isKuwait ? "" : makeDetail("View Full Branding Strategy", data.branding);
+  const pricingDriverDetail = marketKey === "usa" || isKuwait ? "" : makeDetail("View Pricing-Driver Details", data.pricingDrivers);
+  const imcDetails = isKuwait ? "" : makeDetail("View IMC Details", data.imc);
+  const logisticsDetails = isKuwait ? "" : makeDetail("View Logistics Details", data.logistics);
+  const kuwaitAdoptionLabels = isKuwait ? `<div class="kuwait-visible-facts"><span><strong>Early Adopters</strong></span><span><strong>Audience priority:</strong> Luxury, prestige, advanced safety</span><span><strong>Pricing model:</strong> Dynamic incremental pricing</span></div>` : "";
+  const kuwaitImcInformation = isKuwait ? `<div class="kuwait-visible-information" aria-label="Complete Kuwait IMC information"><strong>Channels, localization, and execution considerations</strong>${makeList([
+    ...data.imc,
+    "Arabic-first social films, mall displays, influencer night drives, and Ramadan-season CRM",
+    "Invite-only previews for high-net-worth prospects",
+    "Cultural boundaries must be considered alongside language nuances and consumer-value differences",
+    "Staffing, time, and resource limitations related to personal selling"
+  ])}</div>` : "";
+  const kuwaitLogisticsInformation = isKuwait ? `<div class="kuwait-visible-information" aria-label="Complete Kuwait logistics information"><strong>Supporting logistics factors</strong>${makeList(data.logistics)}</div>` : "";
+  const overviewCard = isKuwait ? "" : `<article class="country-story-card country-overview-card" id="country-overview"><h4>Market Overview</h4><div class="country-metric-grid">${overviewMetrics.map(([label, value]) => `<div><span>${label}</span><strong>${value}</strong></div>`).join("")}</div><div class="country-summary-band"><span>${market.summary}</span></div>${makeDetail("View Full Market Analysis", [market.subtitle, market.summary, market.headline])}</article>`;
+  const adoptionCardClass = isKuwait ? " kuwait-adoption-card" : "";
+  const adoptionCard = `<article class="country-story-card${adoptionCardClass}" id="country-adoption"><h4>Adoption Stage</h4>${makeAdoptionStrip(marketKey)}${kuwaitAdoptionLabels}${adoptionDetails}</article>`;
   container.innerHTML = `
     ${overviewCard}
-    <article class="country-story-card" id="country-product"><h4>Product Adaptation</h4>${makeProductAccordion(marketKey)}<div class="country-summary-band"><span>Shared Mustang identity remains the base while visible adaptations respond to local expectations.</span></div>${makeDetail("View Product Adaptation Details", data.features)}</article>
-    <article class="country-story-card" id="country-price"><h4>Local Price Visualization</h4>${makePriceBars(marketKey)}<p>Local price references remain tied to the project pricing notes and currency context.</p>${makeDetail("View Pricing Details", data.price)}</article>
+    <article class="country-story-card" id="country-product"><h4>Product Adaptation</h4>${makeProductAccordion(marketKey)}<div class="country-summary-band"><span>Shared Mustang identity remains the base while visible adaptations respond to local expectations.</span></div>${productDetails}</article>
+    <article class="country-story-card" id="country-price"><h4>Local Price Visualization</h4>${makePriceBars(marketKey)}<p>Local price references remain tied to the project pricing notes and currency context.</p>${priceDetails}</article>
     ${adoptionCard}
-    <article class="country-story-card" id="country-branding"><h4>Branding Strategy</h4>${makeBrandBranches(marketKey, data.branding)}<p>Brand positioning translates the global Mustang identity into market-specific emphasis.</p>${makeDetail("View Full Branding Strategy", data.branding)}</article>
+    <article class="country-story-card" id="country-branding"><h4>Branding Strategy</h4>${makeBrandBranches(marketKey, data.branding)}<p>Brand positioning translates the global Mustang identity into market-specific emphasis.</p>${brandingDetails}</article>
     <article class="country-story-card" id="country-pricing-drivers"><h4>Pricing-Driver Visualization</h4>${makePricingDriverBarsForCountry(marketKey)}${pricingDriverDetail}</article>
-    <article class="country-story-card" id="country-imc"><h4>IMC Pathway</h4>${makeFlow("Audience Priority → Communication Tools → Intended Response → Constraint", imcSteps, imcSteps[3])}${makeDetail("View IMC Details", data.imc)}</article>
-    <article class="country-story-card" id="country-logistics"><h4>Logistics Flow</h4>${makeFlow("Logistics process", logisticsSteps, data.logistics[0])}${makeDetail("View Logistics Details", data.logistics)}</article>
+    <article class="country-story-card" id="country-imc"><h4>IMC Pathway</h4>${makeFlow("Audience Priority → Communication Tools → Intended Response → Constraint", imcSteps, imcSteps[3])}${kuwaitImcInformation}${imcDetails}</article>
+    <article class="country-story-card" id="country-logistics"><h4>Logistics Flow</h4>${makeFlow("Logistics process", logisticsSteps, data.logistics[0])}${kuwaitLogisticsInformation}${logisticsDetails}</article>
   `;
 }
 

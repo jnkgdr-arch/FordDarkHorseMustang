@@ -2777,7 +2777,69 @@ details.strategy-accordion.recommendation-accordion[open] > summary > i {
   text-align: center;
 }
 
+.kuwait-visible-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.65rem;
+}
+
+.kuwait-visible-facts span,
+.kuwait-visible-information {
+  min-width: 0;
+  border: 1px solid rgba(45, 214, 255, 0.2);
+  border-radius: 10px;
+  background: rgba(8, 16, 26, 0.58);
+}
+
+.kuwait-visible-facts span {
+  padding: 0.55rem 0.65rem;
+  color: #d9e2ec;
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
+.kuwait-visible-facts strong,
+.kuwait-visible-information > strong {
+  color: var(--accent);
+}
+
+.kuwait-visible-information {
+  margin-top: 0.7rem;
+  padding: 0.7rem 0.8rem;
+}
+
+.kuwait-visible-information > strong {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+}
+
+.kuwait-visible-information ul {
+  columns: 2 15rem;
+  column-gap: 1.5rem;
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.kuwait-visible-information li {
+  break-inside: avoid;
+  margin-bottom: 0.35rem;
+  color: #d3dce6;
+  font-size: 0.74rem;
+  line-height: 1.4;
+}
+
 @media (max-width: 600px) {
+  .kuwait-visible-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .kuwait-visible-information ul {
+    columns: 1;
+  }
+
   .kuwait-adoption-card .mini-diffusion-curve {
     width: 100%;
     max-width: 100%;
