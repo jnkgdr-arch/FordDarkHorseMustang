@@ -295,7 +295,7 @@ function makeAdoptionStrip(marketKey) {
   const markerX = marketKey === "uk" ? 560 : marketKey === "kuwait" ? 340 : 270;
   const markerY = marketKey === "uk" ? 86 : marketKey === "kuwait" ? 132 : 210;
   const label = markets[marketKey].title;
-  return `<figure class="mini-diffusion-curve" aria-label="${label} diffusion adoption curve marker"><svg viewBox="0 0 760 260" role="img" focusable="false"><path class="mini-curve-fill" d="M50 218 C120 216 150 188 190 150 C245 96 300 50 380 44 C460 50 515 96 570 150 C610 188 640 216 710 218 L50 218 Z"></path><path class="mini-curve-line" d="M50 218 C120 216 150 188 190 150 C245 96 300 50 380 44 C460 50 515 96 570 150 C610 188 640 216 710 218"></path><g class="mini-stages">${["Innovators", "Early Adopters", "Early Majority", "Late Majority", "Laggards"].map((stage, index) => `<text class="${stage === active ? "active" : ""}" x="${90 + index * 145}" y="244">${stage}</text>`).join("")}</g><line class="mini-marker-line" x1="${markerX}" y1="${markerY}" x2="${markerX}" y2="218"></line><circle class="mini-marker" cx="${markerX}" cy="${markerY}" r="8"></circle><text class="mini-marker-label" x="${markerX}" y="${markerY - 18}">${label}: ${active}</text></svg><figcaption>${active} placement summarizes this market's adoption role in the project analysis.</figcaption></figure>`;
+  return `<figure class="mini-diffusion-curve" aria-label="${label} diffusion adoption curve marker"><svg viewBox="0 0 760 260" preserveAspectRatio="xMidYMid meet" role="img" focusable="false"><path class="mini-curve-fill" d="M50 218 C120 216 150 188 190 150 C245 96 300 50 380 44 C460 50 515 96 570 150 C610 188 640 216 710 218 L50 218 Z"></path><path class="mini-curve-line" d="M50 218 C120 216 150 188 190 150 C245 96 300 50 380 44 C460 50 515 96 570 150 C610 188 640 216 710 218"></path><g class="mini-stages">${["Innovators", "Early Adopters", "Early Majority", "Late Majority", "Laggards"].map((stage, index) => `<text class="${stage === active ? "active" : ""}" x="${90 + index * 145}" y="244">${stage}</text>`).join("")}</g><line class="mini-marker-line" x1="${markerX}" y1="${markerY}" x2="${markerX}" y2="218"></line><circle class="mini-marker" cx="${markerX}" cy="${markerY}" r="8"></circle><text class="mini-marker-label" x="${markerX}" y="${markerY - 18}">${label}: ${active}</text></svg><figcaption>${active} placement summarizes this market's adoption role in the project analysis.</figcaption></figure>`;
 }
 
 function makeBrandBranches(marketKey, themes) {
@@ -353,9 +353,9 @@ function renderCountryFocus(marketKey) {
   const imcDetails = removeSecondaryDetails ? "" : makeDetail("View IMC Details", data.imc);
   const logisticsDetails = removeSecondaryDetails ? "" : makeDetail("View Logistics Details", data.logistics);
   const usaPriceInformation = isUnitedStates ? `<div class="country-visible-information" aria-label="Additional United States pricing information"><strong>Additional pricing and promotion context</strong>${makeList(data.price.slice(2))}</div>` : "";
-  const usaAdoptionLabels = isUnitedStates ? `<div class="country-visible-facts"><span><strong>Audience priority:</strong> Performance, technology, personalization</span><span><strong>Pricing model:</strong> Rigid cost-plus pricing</span></div>` : "";
-  const ukAdoptionLabels = isUnitedKingdom ? `<div class="country-visible-facts"><span><strong>Early Majority</strong></span><span><strong>Audience priority:</strong> Safety, compliance, road usability</span><span><strong>Pricing model:</strong> Flexible cost-plus pricing</span></div>` : "";
-  const kuwaitAdoptionLabels = isKuwait ? `<div class="kuwait-visible-facts"><span><strong>Early Adopters</strong></span><span><strong>Audience priority:</strong> Luxury, prestige, advanced safety</span><span><strong>Pricing model:</strong> Dynamic incremental pricing</span></div>` : "";
+  const usaAdoptionLabels = isUnitedStates ? `<div class="adoption-support-grid"><div><strong>Audience Priority</strong><span>Performance, technology, personalization</span></div><div><strong>Pricing Model</strong><span>Rigid cost-plus pricing</span></div></div>` : "";
+  const ukAdoptionLabels = isUnitedKingdom ? `<div class="adoption-support-grid"><div><strong>Audience Priority</strong><span>Safety, compliance, road usability</span></div><div><strong>Pricing Model</strong><span>Flexible cost-plus pricing</span></div></div>` : "";
+  const kuwaitAdoptionLabels = isKuwait ? `<div class="adoption-support-grid"><div><strong>Audience Priority</strong><span>Luxury, prestige, advanced safety</span></div><div><strong>Pricing Model</strong><span>Dynamic incremental pricing</span></div></div>` : "";
   const kuwaitImcInformation = isKuwait ? `<div class="kuwait-visible-information" aria-label="Complete Kuwait IMC information"><strong>Channels, localization, and execution considerations</strong>${makeList([
     ...data.imc,
     "Arabic-first social films, mall displays, influencer night drives, and Ramadan-season CRM",
@@ -426,136 +426,45 @@ function renderGlobalFramework() {
   return globalFrameworkMarkup;
 }
 
-function renderKuwaitFramework() {
-  return `
-    <div class="paper-heading">
-      <div>
-        <div class="section-kicker">Paper-backed framework</div>
-        <h3 id="framework-title">Global Strategy Framework</h3>
-      </div>
-      <p>Ford balances a recognizable global Mustang identity with Kuwait-specific feature, safety, pricing, and climate adaptation.</p>
-    </div>
+const frameworkFeatures = {
+  shared: sharedMustangFeatures,
+  usa: ["Interior luxury", "Driver-assist technologies", "Promotions tailored to specific consumer groups"],
+  uk: ["Slightly lower engine output because of stricter emissions requirements", "Pedestrian and cyclist detection", "Lane-keeping aid", "Adaptive cruise control", "Emergency braking systems", "Safety and emissions compliance emphasis"],
+  kuwait: ["Visual customization", "Child-restraint systems", "Crash-severity sensors", "Cross-traffic alert", "Pre-collision assist", "Forward-collision warning", "Luxury, visual presence, and safety emphasis"]
+};
 
-    <div class="flow-diagram" aria-label="Global Mustang Identity to Kuwait Local Market Adaptation to Regional Relevance">
-      <span>Global Mustang Identity</span>
-      <strong aria-hidden="true">→</strong>
-      <span>Kuwait Local Market Adaptation</span>
-      <strong aria-hidden="true">→</strong>
-      <span>Regional Relevance</span>
-    </div>
-
-    <div class="standardization-bars" role="img" aria-labelledby="standardization-bars-title" aria-describedby="standardization-bars-note">
-      <h4 id="standardization-bars-title">Global Standardization vs. Local Market Adaptation</h4>
-      <div class="stacked-comparison" aria-label="Feature-count comparison between the United States benchmark and Kuwait">
-        <div class="stacked-row" data-market-row="usa">
-          <strong>United States — Home-Market Benchmark</strong>
-          <div class="stacked-bar" style="--shared-p: 72.7%; --local-p: 27.3%;">
-            <span class="shared-segment">Shared Global Features · 8</span>
-            <span class="local-segment">Localized Market Features · 3</span>
-          </div>
-        </div>
-        <div class="stacked-row" data-market-row="kuwait">
-          <strong>Kuwait — Local Market Adaptation</strong>
-          <div class="stacked-bar" style="--shared-p: 53.3%; --local-p: 46.7%;">
-            <span class="shared-segment">Shared Global Features · 8</span>
-            <span class="local-segment">Localized Market Features · 7</span>
-          </div>
-        </div>
-      </div>
-      <p id="standardization-bars-note" class="chart-note">Values represent the number of features discussed in the project, not market-performance scores. Ford maintains a consistent global Mustang identity across the United States and Kuwait, while Kuwait requires more localized adaptations than the United States home-market benchmark.</p>
-    </div>
-
-    <div class="details-grid market-comparison-grid">
-      <details><summary>Shared Standardized Features</summary><ul><li>5.0L V8 engine</li><li>Sport-tuned suspension</li><li>Bold sports-car exterior styling</li><li>Quad tailpipes</li><li>Blue-knobbed gear shift</li><li>Distinctive brake calipers</li><li>Consistent luxury-performance positioning</li><li>MagneRide Damping System</li></ul></details>
-      <details><summary>United States Localized Features</summary><ul><li>Interior luxury</li><li>Driver-assist technologies</li><li>Promotions tailored to specific consumer groups</li></ul></details>
-      <details><summary>Kuwait Localized Features</summary><ul><li>Visual customization</li><li>Child-restraint systems</li><li>Crash-severity sensors</li><li>Cross-traffic alert</li><li>Pre-collision assist</li><li>Forward-collision warning</li><li>Luxury, visual presence, and safety emphasis</li></ul></details>
-    </div>
-  `;
+function renderFrameworkAccordion(title, features) {
+  return `<details><summary><span>${title}</span><i aria-hidden="true">⌄</i></summary>${makeList(features)}</details>`;
 }
 
-function renderUnitedKingdomFramework() {
+function renderCountryFramework({ description, flow, rows, note, accordionKeys }) {
   return `
-    <div class="paper-heading">
-      <div>
-        <div class="section-kicker">Paper-backed framework</div>
-        <h3 id="framework-title">Global Strategy Framework</h3>
-      </div>
-      <p>Ford balances a recognizable global Mustang identity with United Kingdom-specific safety, emissions, road-usability, pricing, and promotional adaptation.</p>
-    </div>
-
-    <div class="flow-diagram" aria-label="Global Mustang Identity to United Kingdom Local Market Adaptation to Regional Relevance">
-      <span>Global Mustang Identity</span>
-      <strong aria-hidden="true">→</strong>
-      <span>United Kingdom Local Market Adaptation</span>
-      <strong aria-hidden="true">→</strong>
-      <span>Regional Relevance</span>
-    </div>
-
-    <div class="standardization-bars" role="img" aria-labelledby="standardization-bars-title" aria-describedby="standardization-bars-note">
-      <h4 id="standardization-bars-title">Global Standardization vs. Local Market Adaptation</h4>
-      <div class="stacked-comparison" aria-label="Feature-count comparison between the United States benchmark and the United Kingdom">
-        <div class="stacked-row" data-market-row="usa">
-          <strong>United States — Home-Market Benchmark</strong>
-          <div class="stacked-bar" style="--shared-p: 72.7%; --local-p: 27.3%;">
-            <span class="shared-segment">Shared Global Features · 8</span>
-            <span class="local-segment">Localized Market Features · 3</span>
+    <div class="paper-heading"><div><div class="section-kicker">Paper-backed framework</div><h3 id="framework-title">Global Strategy Framework</h3></div><p>${description}</p></div>
+    <div class="framework-content-grid">
+      <div class="framework-visual-column">
+        <div class="flow-diagram" aria-label="${flow.join(" to ")}">${flow.map((item, index) => `${index ? '<strong aria-hidden="true">→</strong>' : ""}<span>${item}</span>`).join("")}</div>
+        <div class="standardization-bars" role="img" aria-labelledby="standardization-bars-title" aria-describedby="standardization-bars-note">
+          <h4 id="standardization-bars-title">Global Standardization vs. Local Market Adaptation</h4>
+          <div class="country-framework-comparison" aria-label="Country framework feature-count comparison">
+            ${rows.map((row) => `<div class="country-framework-row"><strong>${row.label}</strong><div class="country-framework-counts">${row.counts.map((count, index) => `<div class="usa-feature-count ${index ? "local-segment" : "shared-segment"}"><strong>${count.value} features</strong><span>${count.label}</span></div>`).join("")}</div></div>`).join("")}
           </div>
-        </div>
-        <div class="stacked-row" data-market-row="uk">
-          <strong>United Kingdom — Local Market Adaptation</strong>
-          <div class="stacked-bar" style="--shared-p: 57.1%; --local-p: 42.9%;">
-            <span class="shared-segment">Shared Global Features · 8</span>
-            <span class="local-segment">Localized Market Features · 6</span>
-          </div>
+          <p id="standardization-bars-note" class="chart-note">${note}</p>
         </div>
       </div>
-      <p id="standardization-bars-note" class="chart-note">Values represent the number of features discussed in the project, not market-performance scores. Ford maintains a consistent global Mustang identity across the United States and United Kingdom, while the United Kingdom requires more localized safety, emissions, and road-usability adaptations than the United States home-market benchmark.</p>
-    </div>
-
-    <div class="details-grid market-comparison-grid">
-      <details><summary>Shared Standardized Features</summary><ul><li>5.0L V8 engine</li><li>Sport-tuned suspension</li><li>Bold sports-car exterior styling</li><li>Quad tailpipes</li><li>Blue-knobbed gear shift</li><li>Distinctive brake calipers</li><li>Consistent luxury-performance positioning</li><li>MagneRide Damping System</li></ul></details>
-      <details><summary>United States Localized Features</summary><ul><li>Interior luxury</li><li>Driver-assist technologies</li><li>Promotions tailored to specific consumer groups</li></ul></details>
-      <details><summary>United Kingdom Localized Features</summary><ul><li>Slightly lower engine output because of stricter emissions requirements</li><li>Pedestrian and cyclist detection</li><li>Lane-keeping aid</li><li>Adaptive cruise control</li><li>Emergency braking systems</li><li>Safety and emissions compliance emphasis</li></ul></details>
-    </div>
-  `;
+      <div class="framework-accordion-column">${accordionKeys.map((key) => renderFrameworkAccordion(key === "shared" ? "Shared Standardized Features" : `${markets[key].title} Localized Features`, frameworkFeatures[key])).join("")}</div>
+    </div>`;
 }
 
 function renderUnitedStatesFramework() {
-  return `
-    <div class="paper-heading">
-      <div>
-        <div class="section-kicker">Paper-backed framework</div>
-        <h3 id="framework-title">Global Strategy Framework</h3>
-      </div>
-      <p>Ford preserves a recognizable global Mustang identity while emphasizing performance, technology, personalization, and home-market relevance in the United States.</p>
-    </div>
+  return renderCountryFramework({ description: "Ford preserves a recognizable global Mustang identity while emphasizing performance, technology, personalization, and home-market relevance in the United States.", flow: ["Global Mustang Identity", "United States Home-Market Emphasis"], rows: [{ label: "United States Feature Emphasis", counts: [{ value: 8, label: "Shared Global Features" }, { value: 3, label: "United States Localized Features" }] }], note: "Values represent the number of features discussed in the project, not market-performance scores. The United States view distinguishes eight shared global Mustang features from three features emphasized for Ford’s home-market strategy.", accordionKeys: ["shared", "usa"] });
+}
 
-    <div class="flow-diagram" aria-label="Global Mustang Identity to United States Home-Market Emphasis">
-      <span>Global Mustang Identity</span>
-      <strong aria-hidden="true">→</strong>
-      <span>United States Home-Market Emphasis</span>
-    </div>
+function renderUnitedKingdomFramework() {
+  return renderCountryFramework({ description: "Ford balances a recognizable global Mustang identity with United Kingdom-specific safety, emissions, road-usability, pricing, and promotional adaptation.", flow: ["Global Mustang Identity", "United Kingdom Local Market Adaptation", "Regional Relevance"], rows: [{ label: "United States — Home-Market Benchmark", counts: [{ value: 8, label: "Shared Global Features" }, { value: 3, label: "Localized Market Features" }] }, { label: "United Kingdom — Local-Market Adaptation", counts: [{ value: 8, label: "Shared Global Features" }, { value: 6, label: "Localized Market Features" }] }], note: "Values represent the number of features discussed in the project, not market-performance scores. Ford maintains a consistent global Mustang identity across the United States and United Kingdom, while the United Kingdom requires more localized safety, emissions, and road-usability adaptations than the United States home-market benchmark.", accordionKeys: ["shared", "usa", "uk"] });
+}
 
-    <div class="standardization-bars" role="img" aria-labelledby="standardization-bars-title" aria-describedby="standardization-bars-note">
-      <h4 id="standardization-bars-title">Global Standardization and United States Emphasis</h4>
-      <div class="usa-feature-comparison" aria-label="Feature-count summary of shared global Mustang features and United States localized features">
-        <div class="usa-feature-count shared-segment">
-          <strong>8 features</strong>
-          <span>Shared Global Features</span>
-        </div>
-        <div class="usa-feature-count local-segment">
-          <strong>3 features</strong>
-          <span>United States Localized Features</span>
-        </div>
-      </div>
-      <p id="standardization-bars-note" class="chart-note">Values represent the number of features discussed in the project, not market-performance scores. The United States view distinguishes eight shared global Mustang features from three features emphasized for Ford’s home-market strategy.</p>
-    </div>
-
-    <div class="details-grid usa-framework-details">
-      <details><summary>Shared Standardized Features</summary><ul><li>5.0L V8 engine</li><li>Sport-tuned suspension</li><li>Bold sports-car exterior styling</li><li>Quad tailpipes</li><li>Blue-knobbed gear shift</li><li>Distinctive brake calipers</li><li>Consistent luxury-performance positioning</li><li>MagneRide Damping System</li></ul></details>
-      <details><summary>United States Localized Features</summary><ul><li>Interior luxury</li><li>Driver-assist technologies</li><li>Promotions tailored to specific consumer groups</li></ul></details>
-    </div>
-  `;
+function renderKuwaitFramework() {
+  return renderCountryFramework({ description: "Ford balances a recognizable global Mustang identity with Kuwait-specific feature, safety, pricing, and climate adaptation.", flow: ["Global Mustang Identity", "Kuwait Local Market Adaptation", "Regional Relevance"], rows: [{ label: "United States — Home-Market Benchmark", counts: [{ value: 8, label: "Shared Global Features" }, { value: 3, label: "Localized Market Features" }] }, { label: "Kuwait — Local-Market Adaptation", counts: [{ value: 8, label: "Shared Global Features" }, { value: 7, label: "Localized Market Features" }] }], note: "Values represent the number of features discussed in the project, not market-performance scores. Ford maintains a consistent global Mustang identity across the United States and Kuwait, while Kuwait requires more localized adaptations than the United States home-market benchmark.", accordionKeys: ["shared", "usa", "kuwait"] });
 }
 
 function renderFrameworkForView(viewKey) {

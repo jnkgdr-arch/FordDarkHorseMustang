@@ -318,7 +318,6 @@ body {
 .price-card-header h3 { margin: 8px 0 0; font: 800 clamp(1.5rem, 2.5vw, 2.35rem)/1 Space Grotesk, sans-serif; letter-spacing: -0.04em; }
 .price-card-header p { margin: 0; color: #bcc5d0; line-height: 1.55; font-size: 0.92rem; }
 
-.recommendations-framework-grid,
 .pricing-entry-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -327,7 +326,6 @@ body {
   width: 100%;
 }
 
-.recommendations-framework-grid > *,
 .pricing-entry-grid > * {
   min-width: 0;
 }
@@ -1490,8 +1488,8 @@ p { margin-block: 0 0.75rem; }
 .stacked-comparison { display: grid; gap: 12px; }
 .stacked-row { display: grid; grid-template-columns: minmax(140px, 180px) minmax(0, 1fr); gap: 12px; align-items: center; }
 .stacked-row > strong { color: var(--ink); font: 800 0.92rem Space Grotesk, sans-serif; }
-.stacked-bar { display: grid; grid-template-columns: var(--shared-p) var(--local-p); min-height: 46px; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: rgba(255,255,255,0.035); }
-.stacked-bar span { display: grid; place-items: center; padding: 0 10px; color: var(--ink); font: 800 0.78rem Space Grotesk, sans-serif; text-align: center; white-space: nowrap; }
+.stacked-bar { display: grid; grid-template-columns: var(--shared-p) var(--local-p); min-height: 58px; height: auto; border: 1px solid var(--line); border-radius: 18px; overflow: visible; background: rgba(255,255,255,0.035); }
+.stacked-bar span { display: grid; place-items: center; min-width: 0; min-height: 58px; padding: 10px 14px; color: var(--ink); font: 800 0.78rem/1.25 Space Grotesk, sans-serif; text-align: center; white-space: normal; overflow-wrap: anywhere; }
 .shared-segment { background: linear-gradient(90deg, rgba(45,214,255,0.86), rgba(141,234,255,0.72)); }
 .local-segment { background: linear-gradient(90deg, rgba(247,183,51,0.82), rgba(247,183,51,0.56)); }
 
@@ -2031,7 +2029,6 @@ p { margin-block: 0 0.6rem; }
 }
 
 @media (max-width: 900px) {
-  .recommendations-framework-grid,
   .pricing-entry-grid,
   .logistics-country-grid { grid-template-columns: 1fr; }
 }
@@ -2572,17 +2569,7 @@ p { margin-block: 0 0.6rem; }
   }
 }
 
-/* Comparison dashboard and compact country market-play specs */
-.comparison-dashboard {
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  padding: clamp(0.75rem, 0.8vw + 0.35rem, 1rem);
-  background: var(--panel-strong);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(22px);
-}
-
-.comparison-dashboard-stats,
+/* Compact country market-play specs */
 .market-play-specs {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2590,12 +2577,10 @@ p { margin-block: 0 0.6rem; }
   width: 100%;
 }
 
-.comparison-dashboard-stats > *,
 .market-play-specs > * {
   min-width: 0;
 }
 
-.comparison-dashboard-stats div,
 .market-play-specs div {
   min-height: 0;
   padding: 0.7rem 0.75rem;
@@ -2607,14 +2592,12 @@ p { margin-block: 0 0.6rem; }
   align-content: center;
 }
 
-.comparison-dashboard-stats span,
 .market-play-specs span {
   color: var(--accent);
   font: 800 clamp(1rem, 1.35vw, 1.35rem)/1 Space Grotesk, sans-serif;
   overflow-wrap: anywhere;
 }
 
-.comparison-dashboard-stats small,
 .market-play-specs small {
   color: var(--muted);
   font-size: 0.72rem;
@@ -2635,18 +2618,6 @@ p { margin-block: 0 0.6rem; }
 
 .vehicle-visual {
   grid-column: 1;
-}
-
-.recommendations-framework-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 24px;
-  align-items: start;
-  width: 100%;
-}
-
-.recommendations-framework-grid > * {
-  min-width: 0;
 }
 
 .compact-framework-section .paper-heading,
@@ -2697,7 +2668,6 @@ p { margin-block: 0 0.6rem; }
 }
 
 @media (max-width: 900px) {
-  .recommendations-framework-grid,
   .pricing-entry-grid,
   .logistics-country-grid {
     grid-template-columns: 1fr;
@@ -2710,7 +2680,6 @@ p { margin-block: 0 0.6rem; }
 }
 
 @media (max-width: 640px) {
-  .comparison-dashboard-stats,
   .market-play-specs,
   .usa-feature-comparison,
   .usa-framework-details {
@@ -2919,4 +2888,204 @@ details.strategy-accordion.recommendation-accordion[open] > summary > i {
   .kuwait-adoption-card .mini-marker-label {
     font-size: 0.64rem;
   }
+}
+
+/* Full-width recommendations followed by a shared two-column framework */
+.recommendations-framework-stack {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  width: 100%;
+}
+
+.strategic-recommendations-section,
+.paper-backed-framework-section {
+  width: 100%;
+  min-width: 0;
+}
+
+.recommendation-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  width: 100%;
+  align-items: start;
+}
+
+.recommendation-column {
+  min-width: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.framework-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+  gap: 24px;
+  align-items: start;
+  width: 100%;
+}
+
+.framework-content-grid > *,
+.framework-visual-column,
+.framework-accordion-column,
+.standardization-bars,
+.stacked-comparison,
+.country-framework-comparison {
+  min-width: 0;
+  width: 100%;
+}
+
+.framework-visual-column,
+.framework-accordion-column,
+.country-framework-comparison,
+.country-framework-row {
+  display: grid;
+  gap: 12px;
+}
+
+.framework-accordion-column details {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.framework-accordion-column summary {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  list-style: none;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.framework-accordion-column summary::-webkit-details-marker { display: none; }
+.framework-accordion-column summary span { min-width: 0; flex: 1; white-space: normal; overflow-wrap: anywhere; }
+.framework-accordion-column summary i { margin-left: auto; color: var(--accent); font-style: normal; transition: transform 0.24s ease; }
+.framework-accordion-column details[open] summary i { transform: rotate(180deg); }
+.framework-accordion-column ul { margin: 0.7rem 0 0; padding-left: 1.1rem; }
+
+.stacked-bar {
+  display: grid;
+  grid-template-columns: var(--shared-p) var(--local-p);
+  min-height: 58px;
+  height: auto;
+  overflow: visible;
+  border-radius: 18px;
+}
+
+.stacked-bar span {
+  min-width: 0;
+  min-height: 58px;
+  padding: 10px 14px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.country-framework-counts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.country-framework-row > strong {
+  font: 800 0.9rem Space Grotesk, sans-serif;
+}
+
+.country-story-card .mini-diffusion-curve {
+  width: min(100%, 540px);
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 8px;
+  overflow: visible;
+}
+
+.country-story-card .mini-diffusion-curve svg {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  max-height: 180px;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.country-story-card .mini-diffusion-curve figcaption {
+  max-width: 520px;
+  margin: 6px auto 0;
+  text-align: center;
+  font-size: 0.74rem;
+  line-height: 1.35;
+}
+
+.adoption-support-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.adoption-support-grid > div {
+  min-width: 0;
+  display: grid;
+  gap: 0.3rem;
+  padding: 10px 12px;
+  border: 1px solid rgba(45, 214, 255, 0.2);
+  border-radius: 12px;
+  background: rgba(8, 16, 26, 0.58);
+}
+
+.adoption-support-grid strong,
+.adoption-support-grid span {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.adoption-support-grid strong { color: var(--accent); font-size: 0.76rem; }
+.adoption-support-grid span { color: #d9e2ec; font-size: 0.76rem; line-height: 1.35; }
+
+.venn-scroll {
+  width: 100%;
+  justify-content: flex-start;
+  overflow-x: auto;
+  padding: 8px 0;
+}
+
+.imc-venn {
+  display: block;
+  width: min(100%, 1180px);
+  min-width: 1050px;
+  max-height: none;
+  height: auto;
+  margin: 0 auto;
+}
+
+.venn-country { font-size: 1.15rem; }
+.venn-chip { padding: 12px 14px; line-height: 1.3; }
+.venn-chip strong { font-size: 0.82rem; }
+.venn-chip span { font-size: 0.8rem; }
+
+@media (max-width: 900px) {
+  .recommendation-columns,
+  .framework-content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .stacked-bar,
+  .country-framework-counts {
+    grid-template-columns: 1fr !important;
+    border-radius: 16px;
+  }
+
+  .stacked-bar span { min-height: 40px; }
+  .adoption-support-grid { grid-template-columns: 1fr; }
+  .country-story-card .mini-diffusion-curve svg { max-height: 155px; }
+  .imc-venn { min-width: 980px; }
 }
