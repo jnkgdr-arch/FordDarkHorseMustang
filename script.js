@@ -392,10 +392,71 @@ function updateSectionNav(viewKey) {
   nav.innerHTML = links.map(([label, id]) => `<a href="#${id}">${label}</a>`).join("");
 }
 
+let globalFrameworkMarkup = "";
+
+function renderGlobalFramework() {
+  return globalFrameworkMarkup;
+}
+
+function renderKuwaitFramework() {
+  return `
+    <div class="paper-heading">
+      <div>
+        <div class="section-kicker">Paper-backed framework</div>
+        <h3 id="framework-title">Global Strategy Framework</h3>
+      </div>
+      <p>Ford balances a recognizable global Mustang identity with Kuwait-specific feature, safety, pricing, and climate adaptation.</p>
+    </div>
+
+    <div class="flow-diagram" aria-label="Global Mustang Identity to Kuwait Local Market Adaptation to Regional Relevance">
+      <span>Global Mustang Identity</span>
+      <strong aria-hidden="true">→</strong>
+      <span>Kuwait Local Market Adaptation</span>
+      <strong aria-hidden="true">→</strong>
+      <span>Regional Relevance</span>
+    </div>
+
+    <div class="standardization-bars" role="img" aria-labelledby="standardization-bars-title" aria-describedby="standardization-bars-note">
+      <h4 id="standardization-bars-title">Global Standardization vs. Local Market Adaptation</h4>
+      <div class="stacked-comparison" aria-label="Feature-count comparison between the United States benchmark and Kuwait">
+        <div class="stacked-row" data-market-row="usa">
+          <strong>United States — Home-Market Benchmark</strong>
+          <div class="stacked-bar" style="--shared-p: 72.7%; --local-p: 27.3%;">
+            <span class="shared-segment">Shared Global Features · 8</span>
+            <span class="local-segment">Localized Market Features · 3</span>
+          </div>
+        </div>
+        <div class="stacked-row" data-market-row="kuwait">
+          <strong>Kuwait — Local Market Adaptation</strong>
+          <div class="stacked-bar" style="--shared-p: 53.3%; --local-p: 46.7%;">
+            <span class="shared-segment">Shared Global Features · 8</span>
+            <span class="local-segment">Localized Market Features · 7</span>
+          </div>
+        </div>
+      </div>
+      <p id="standardization-bars-note" class="chart-note">Values represent the number of features discussed in the project, not market-performance scores. Ford maintains a consistent global Mustang identity across the United States and Kuwait, while Kuwait requires more localized adaptations than the United States home-market benchmark.</p>
+    </div>
+
+    <div class="details-grid market-comparison-grid">
+      <details><summary>Shared Standardized Features</summary><ul><li>5.0L V8 engine</li><li>Sport-tuned suspension</li><li>Bold sports-car exterior styling</li><li>Quad tailpipes</li><li>Blue-knobbed gear shift</li><li>Distinctive brake calipers</li><li>Consistent luxury-performance positioning</li><li>MagneRide Damping System</li></ul></details>
+      <details><summary>United States Localized Features</summary><ul><li>Interior luxury</li><li>Driver-assist technologies</li><li>Promotions tailored to specific consumer groups</li></ul></details>
+      <details><summary>Kuwait Localized Features</summary><ul><li>Visual customization</li><li>Child-restraint systems</li><li>Crash-severity sensors</li><li>Cross-traffic alert</li><li>Pre-collision assist</li><li>Forward-collision warning</li><li>Luxury, visual presence, and safety emphasis</li></ul></details>
+    </div>
+  `;
+}
+
+function renderFrameworkForView(viewKey) {
+  const framework = document.getElementById("framework-view");
+  if (!framework) return;
+  if (!globalFrameworkMarkup) globalFrameworkMarkup = framework.innerHTML;
+  framework.innerHTML = viewKey === "kuwait" ? renderKuwaitFramework() : renderGlobalFramework();
+}
+
 function setDashboardView(viewKey, options = {}) {
   const config = viewConfig[viewKey] || viewConfig.compare;
   activeViewKey = viewKey in viewConfig ? viewKey : "compare";
   const isCompare = activeViewKey === "compare";
+  renderFrameworkForView(activeViewKey);
   document.querySelectorAll("[data-view='comparison']").forEach((node) => { node.hidden = !isCompare; });
   document.querySelectorAll("[data-view='country']").forEach((node) => { node.hidden = isCompare; });
   document.querySelectorAll("[data-view-toggle]").forEach((button) => {
