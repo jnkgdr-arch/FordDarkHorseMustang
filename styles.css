@@ -3313,3 +3313,31 @@ p,li,td,th,summary { font-size: .84rem; }
   .market-analysis-tabs { overflow-x:auto; }
   .market-analysis-intro,.market-analysis-grid,.price-context-strip,.conclusion-takeaways { grid-template-columns:1fr; }
 }
+
+/* Decision-ready primary layer */
+.full-research-hub { border:1px solid rgba(247,183,51,.26); border-radius:10px; background:linear-gradient(90deg,rgba(247,183,51,.07),rgba(255,255,255,.025)); }
+.full-research-hub > summary { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:12px 15px; cursor:pointer; list-style:none; }
+.full-research-hub > summary::-webkit-details-marker { display:none; }
+.full-research-hub > summary span,.full-research-hub > summary small,.full-research-hub > summary strong { display:block; }
+.full-research-hub > summary small { color:var(--accent-2); font-size:.62rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+.full-research-hub > summary strong { margin-top:2px; font-size:.86rem; }
+.full-research-hub > summary b { color:var(--accent-2); font-size:.7rem; }
+.full-research-hub nav { display:grid; grid-template-columns:repeat(5,1fr); gap:5px; padding:0 14px 10px; }
+.full-research-hub nav a { padding:7px; border:1px solid var(--line); border-radius:6px; color:#dbe3ec; font-size:.67rem; text-align:center; text-decoration:none; background:rgba(255,255,255,.025); }
+.full-research-hub > p { margin:0; padding:0 14px 12px; color:var(--muted); font-size:.68rem; }
+.executive-market-grid article > p b { display:block; margin-bottom:2px; color:var(--accent); font-size:.6rem; letter-spacing:.09em; text-transform:uppercase; }
+.recommendation-accordion > summary small { color:#e3e9ef; font-size:.75rem; font-weight:700; }
+.recommendation-accordion > summary strong { color:var(--muted); font-size:.64rem; letter-spacing:.07em; text-transform:uppercase; }
+.brand-research,.production-research,.logistics-research,.imc-tactics-research { margin-top:10px; }
+.brand-research .brand-detail-panels,.production-research > .chart-panel,.production-research > .strategy-accordion-group,.logistics-research > .logistics-country-grid,.imc-tactics-research > .imc-detail-panels { margin:0 12px 12px; }
+.production-decisions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+.production-decisions article { padding:12px; border:1px solid var(--line); border-radius:9px; background:rgba(255,255,255,.03); }
+.production-decisions article > span,.production-decisions article > strong { display:block; }
+.production-decisions article > span { color:var(--muted); font-size:.62rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+.production-decisions article > strong { margin:5px 0 9px; font-size:.83rem; }
+.conclusion-takeaways { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.conclusion-takeaways span b { display:block; margin-bottom:3px; color:var(--accent); font-size:.62rem; letter-spacing:.08em; text-transform:uppercase; }
+@media(max-width:720px) {
+  .full-research-hub nav { grid-template-columns:repeat(2,1fr); }
+  .production-decisions,.conclusion-takeaways { grid-template-columns:1fr; }
+}
