@@ -3484,3 +3484,17 @@ body:not(.full-research-open) .main-panel { min-height:calc(100vh - 118px); }
 @keyframes markerPulse { 0%,100%{box-shadow:0 0 0 3px rgba(45,214,255,.1),0 0 10px rgba(45,214,255,.55)} 50%{box-shadow:0 0 0 6px rgba(45,214,255,.04),0 0 19px rgba(45,214,255,.8)} }
 .site-footer { width:min(1400px,calc(100vw - 32px)); margin:0 auto 10px; display:flex; justify-content:space-between; color:#65717d; font-size:.62rem; }
 @media(prefers-reduced-motion:reduce){.hub-continuum .marker.selected::before{animation:none}}
+
+/* Market-first risk workspace */
+.risk-module-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.risk-module-grid button { min-width:0; padding:13px 10px; border:1px solid var(--line); border-radius:9px; color:var(--ink); background:rgba(255,255,255,.025); text-align:left; cursor:pointer; }
+.risk-module-grid button > i,.risk-module-grid button > strong,.risk-module-grid button > span { display:block; }
+.risk-module-grid button > i { color:var(--accent); font-size:1.1rem; font-style:normal; }
+.risk-module-grid button > strong { margin:7px 0 4px; font-size:.7rem; }.risk-module-grid button > span { color:var(--muted); font-size:.62rem; }
+.risk-module-grid button.selected { border-color:var(--accent); background:rgba(45,214,255,.08); box-shadow:0 8px 24px rgba(0,0,0,.2); }
+.risk-flow { margin-top:12px; padding:18px; border:1px solid rgba(45,214,255,.18); border-radius:9px; text-align:center; background:rgba(4,10,17,.45); }
+.risk-flow small { display:block; margin-bottom:13px; color:var(--accent); font-size:.61rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+.risk-flow > strong { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:9px; font-size:.75rem; }
+.risk-flow > strong i { color:var(--accent-2); font-style:normal; }
+.comparison-insight > ul { margin:10px 0 0; padding-left:1rem; }.comparison-insight > ul li,.comparison-insight details li { margin:3px 0; color:#bdc7d1; font-size:.68rem; }
+@media(max-width:640px){.risk-module-grid{grid-template-columns:1fr}.risk-flow>strong{display:grid}.risk-flow>strong i{transform:rotate(90deg)}}

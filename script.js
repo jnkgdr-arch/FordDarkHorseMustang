@@ -1078,8 +1078,13 @@ function setMarketFocus(focus) {
   if (workspace) workspace.dataset.marketFocus = focus;
   const label = focus === "compare" ? "Compare Markets" : focus === "research" ? "Strategy & Research" : focus === "risks" ? "Risk, Constraints & Challenges" : markets[focus].title;
   if (focus === "research") { setContextMode("research"); renderResearchWorkspace(activeResearchCategory); }
-  else if (focus === "risks") { setContextMode("risks"); renderRiskWorkspace(activeRiskCategory); }
-  else { setContextMode("market"); setText("workspace-focus-label", `${label} · ${comparisonCategoryLabels[activeComparisonCategory]}`); }
+  else if (focus === "risks") { setContextMode("risks"); renderRiskWorkspace(activeRiskMarket); }
+  else {
+    setContextMode("market");
+    updateMarketTopicVisibility(focus);
+    if (focus !== "compare" && ["pricingDrivers","imc","logistics"].includes(activeComparisonCategory)) activeComparisonCategory = "prices";
+    setText("workspace-focus-label", `${label} · ${comparisonCategoryLabels[activeComparisonCategory]}`);
+  }
   document.querySelectorAll("[data-market-focus]").forEach((button) => {
     if (!button.matches("button")) return;
     const active = button.dataset.marketFocus === focus;
@@ -1094,6 +1099,13 @@ function setMarketFocus(focus) {
   if (!["research","risks"].includes(focus)) renderComparisonHub(activeComparisonCategory, focus === "compare" ? activeHubItem : focus);
 }
 
+function updateMarketTopicVisibility(focus) {
+  const challengeTopics=["pricingDrivers","imc","logistics"];
+  document.querySelectorAll("[data-comparison-category]").forEach(button => {
+    button.hidden = focus !== "compare" && challengeTopics.includes(button.dataset.comparisonCategory);
+  });
+}
+
 const researchReferences = ["Ford U.K., “All-New Ford Mustang: 5L V8 Sportscar”", "Alsalfiti and Notteboom’s 2025 research on Shuwaikh Port", "BestSellingCars/Statista Kuwait market-share data", "“Competing Effectively Through Global Marketing, Distribution, and Supply-Chain Management”", "Ford Alghanim, “Ford Mustang Dark Horse”", "AP News reporting by Jon Gambrell on tariffs and falling oil prices", "AP News reporting on Kuwait’s political gridlock", "Ford’s 2025 Mustang pricing and model pages"];
 const researchRecommendations = [
   ["Product Adaptation","Handling, appearance & track packages",markets.usa.sections.product],
@@ -1103,7 +1115,7 @@ const researchRecommendations = [
   ["Logistics","Certified distribution & parts readiness",markets.usa.sections.logistics],
   ["Market Drivers","Heritage, scarcity & enthusiast demand",markets.usa.sections.drivers]
 ];
-let activeRiskCategory = "imc";
+let activeRiskMarket = "usa", activeRiskModule = "pricing";
 let activeResearchCategory = "recommendations";
 function setContextMode(mode) {
   document.querySelector(".workspace-topic-nav > div[aria-label='Comparison topic']")?.toggleAttribute("hidden", mode !== "market");
@@ -1130,12 +1142,33 @@ function renderResearchWorkspace(category) {
   visual.classList.add("is-ready");
 }
 
-function renderRiskWorkspace(category) {
-  activeRiskCategory=category;
-  activeComparisonCategory=category;
-  document.querySelectorAll("[data-risk-category]").forEach(button=>button.setAttribute("aria-selected",String(button.dataset.riskCategory===category)));
-  renderComparisonHub(category,"usa");
-  setText("workspace-focus-label", category === "imc" ? "Risks · Global IMC Constraints and Communication Tools" : "Risks · Global Logistics Challenges");
+const riskModules = {
+  usa: {
+    pricing:["Domestic benchmark","Standard $62,230 → Premium $66,225",["Additional destination charge","Targeted incentives and offers"]],
+    imc:["Attention saturation","Digital → Social → PR → Television",["Bold, concise content","Competing social content","Reach and personalization"]],
+    logistics:["Scale + distance","Long-distance transportation → Distribution centers",["Vast distances between states","Long-haul requirements","Coordinated nationwide delivery"]]
+  },
+  uk: {
+    pricing:["Tax and regulatory pressure","Environmental regulation → Taxation → Consumer value",["CO₂ regulation","First-year and annual charges","Ownership-cost expectations"]],
+    imc:["Responsible-performance balance","CSR → Environmental responsibility → Trust",["Builds credibility","Reduced emotional appeal","Compliance-led communication"]],
+    logistics:["Urban access + emissions","Urban congestion → Last-mile access → Emissions zones",["Narrow streets","Limited city-center space","Dealership-access challenges"]]
+  },
+  kuwait: {
+    pricing:["Import and market environment","Political → Economic → Import → Currency",["Tariffs and import costs","Currency fluctuations","Consumer-value expectations"]],
+    imc:["Cultural localization","Arabic-first social → Premium media → Personal selling",["Language nuances","Cultural boundaries","Luxury and road-safety messaging"]],
+    logistics:["Climate + port capacity","Port infrastructure → Customs / handling → Heat exposure",["Shuwaikh Port limitations","Customs-clearance delays","Harsh desert climate"]]
+  }
+};
+function renderRiskWorkspace(marketKey, module=activeRiskModule) {
+  activeRiskMarket=marketKey; activeRiskModule=module;
+  const country=markets[marketKey].title, data=riskModules[marketKey], selected=data[module];
+  document.querySelectorAll("[data-risk-market]").forEach(button=>button.setAttribute("aria-selected",String(button.dataset.riskMarket===marketKey)));
+  setText("workspace-focus-label", `Risks · ${country}`);
+  setText("comparison-category-description", "What could make execution difficult in this market?");
+  const visual=document.getElementById("comparison-visual"), insight=document.getElementById("comparison-insight");
+  visual.innerHTML=`<div class="risk-module-grid">${[["pricing","Pricing / Market","◫"],["imc","IMC / Communication","◎"],["logistics","Logistics / Distribution","⇢"]].map(([key,label,icon])=>`<button data-risk-module="${key}" class="${key===module?'selected':''}"><i>${icon}</i><strong>${label}</strong><span>${data[key][0]}</span></button>`).join("")}</div><div class="risk-flow"><small>${country} · ${module==='pricing'?'Pricing / Market':module==='imc'?'IMC / Communication':'Logistics / Distribution'}</small><strong>${selected[1].split(' → ').join('<i>→</i>')}</strong></div>`;
+  visual.classList.add("is-ready");
+  insight.innerHTML=`<small>Key challenge</small><h3>${selected[0]}</h3><strong>${country}</strong><ul>${selected[2].map(point=>`<li>${point}</li>`).join("")}</ul><details><summary>Explore deeper +</summary><ul>${getDeepContext(module==='pricing'?'pricingDrivers':module,marketKey).map(point=>`<li>${point}</li>`).join("")}</ul></details>`;
 }
 
 const comparisonCategoryLabels = { prices:"Prices", framework:"Framework", diffusion:"Diffusion", branding:"Branding", pricingDrivers:"Pricing Drivers", production:"Production", imc:"IMC", logistics:"Logistics", conclusion:"Conclusion" };
@@ -1173,10 +1206,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.querySelectorAll("[data-research-category]").forEach((button) => button.addEventListener("click", () => renderResearchWorkspace(button.dataset.researchCategory)));
-  document.querySelectorAll("[data-risk-category]").forEach((button) => button.addEventListener("click", () => renderRiskWorkspace(button.dataset.riskCategory)));
+  document.querySelectorAll("[data-risk-market]").forEach((button) => button.addEventListener("click", () => renderRiskWorkspace(button.dataset.riskMarket)));
 
 
   document.getElementById("comparison-visual")?.addEventListener("click", (event) => {
+    const riskModule = event.target.closest("[data-risk-module]");
+    if (riskModule) { renderRiskWorkspace(activeRiskMarket, riskModule.dataset.riskModule); return; }
     const rec = event.target.closest("[data-research-rec]");
     if (rec) {
       const data=researchRecommendations[Number(rec.dataset.researchRec)];
