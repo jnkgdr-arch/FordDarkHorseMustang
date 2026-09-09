@@ -1144,7 +1144,7 @@ function renderResearchWorkspace(category) {
 
 const riskModules = {
   usa: {
-    pricing:["Domestic benchmark","Standard $62,230 → Premium $66,225",["Additional destination charge","Targeted incentives and offers"]],
+    pricing:["Home-market benchmark","Home market → Standard benchmark → Primary exposure → Economy + consumer demand",["Market role: U.S. standard pricing benchmark","Primary exposure: domestic economic conditions","Consumer demand and purchasing conditions"],"Economy & Consumer Demand"],
     imc:["Attention saturation","Digital → Social → PR → Television",["Bold, concise content","Competing social content","Reach and personalization"]],
     logistics:["Scale + distance","Long-distance transportation → Distribution centers",["Vast distances between states","Long-haul requirements","Coordinated nationwide delivery"]]
   },
@@ -1168,7 +1168,9 @@ function renderRiskWorkspace(marketKey, module=activeRiskModule) {
   const visual=document.getElementById("comparison-visual"), insight=document.getElementById("comparison-insight");
   visual.innerHTML=`<div class="risk-module-grid">${[["pricing","Pricing / Market","◫"],["imc","IMC / Communication","◎"],["logistics","Logistics / Distribution","⇢"]].map(([key,label,icon])=>`<button data-risk-module="${key}" class="${key===module?'selected':''}"><i>${icon}</i><strong>${label}</strong><span>${data[key][0]}</span></button>`).join("")}</div><div class="risk-flow"><small>${country} · ${module==='pricing'?'Pricing / Market':module==='imc'?'IMC / Communication':'Logistics / Distribution'}</small><strong>${selected[1].split(' → ').join('<i>→</i>')}</strong></div>`;
   visual.classList.add("is-ready");
-  insight.innerHTML=`<small>Key challenge</small><h3>${selected[0]}</h3><strong>${country}</strong><ul>${selected[2].map(point=>`<li>${point}</li>`).join("")}</ul><details><summary>Explore deeper +</summary><ul>${getDeepContext(module==='pricing'?'pricingDrivers':module,marketKey).map(point=>`<li>${point}</li>`).join("")}</ul></details>`;
+  const challengeTitle=selected[3] || selected[0];
+  const usPricingContext=marketKey === "usa" && module === "pricing" ? `<div class="risk-role-context"><span><small>Market role</small><b>Home-market benchmark</b></span><i>↓</i><span><small>Primary exposure</small><b>Economy &amp; Consumer Demand</b></span></div>` : "";
+  insight.innerHTML=`<small>Key challenge</small><h3>${challengeTitle}</h3><strong>${country}</strong>${usPricingContext}<ul>${selected[2].map(point=>`<li>${point}</li>`).join("")}</ul><details><summary>Explore deeper +</summary>${marketKey === "usa" && module === "pricing" ? `<p>As the Mustang's home market, the United States serves as the standard pricing benchmark for the global comparison. The primary U.S. market risk comes from changes in domestic economic conditions and consumer demand rather than foreign-market import or localization pressures.</p>` : ""}<ul>${getDeepContext(module==='pricing'?'pricingDrivers':module,marketKey).map(point=>`<li>${point}</li>`).join("")}</ul></details>`;
 }
 
 const comparisonCategoryLabels = { prices:"Prices", framework:"Framework", diffusion:"Diffusion", branding:"Branding", pricingDrivers:"Pricing Drivers", production:"Production", imc:"IMC", logistics:"Logistics", conclusion:"Conclusion" };
