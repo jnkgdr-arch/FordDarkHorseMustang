@@ -965,6 +965,31 @@ function setActiveMarket(marketKey) {
   });
 }
 
+function renderMarketAnalysis(marketKey) {
+  const panel = document.getElementById("market-analysis-panel");
+  const research = countryFocusData[marketKey];
+  const market = markets[marketKey];
+  if (!panel || !research || !market) return;
+
+  const sections = [
+    ["Pricing & promotion", research.price],
+    ["Product adaptation", research.features],
+    ["Diffusion & pricing model", research.adoption],
+    ["Brand strategy", research.branding],
+    ["Integrated marketing communications", research.imc],
+    ["Logistics", research.logistics],
+    ["Pricing drivers", research.pricingDrivers]
+  ];
+
+  panel.innerHTML = `<div class="market-analysis-intro"><div><span>${market.kicker}</span><h3>${market.title}</h3></div><p>${market.subtitle}</p><p>${market.summary}</p></div><div class="market-analysis-grid">${sections.map(([title, items]) => `<section><h4>${title}</h4>${makeList(items)}</section>`).join("")}</div>`;
+
+  document.querySelectorAll("[data-analysis-tab]").forEach((button) => {
+    const active = button.dataset.analysisTab === marketKey;
+    button.setAttribute("aria-selected", String(active));
+    button.tabIndex = active ? 0 : -1;
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   renderPriceChart();
   renderDerivedCharts();
@@ -986,6 +1011,19 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   renderPricingDriverPanel(activePricingDriverKey);
   setupExclusiveAccordions();
+  renderMarketAnalysis("usa");
+
+  document.querySelectorAll("[data-analysis-tab]").forEach((button) => {
+    button.addEventListener("click", () => renderMarketAnalysis(button.dataset.analysisTab));
+    button.addEventListener("keydown", (event) => {
+      if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+      const tabs = [...document.querySelectorAll("[data-analysis-tab]")];
+      const direction = event.key === 'ArrowRight' ? 1 : -1;
+      const next = tabs[(tabs.indexOf(button) + direction + tabs.length) % tabs.length];
+      next.focus();
+      renderMarketAnalysis(next.dataset.analysisTab);
+    });
+  });
 
   document.querySelectorAll("[data-view-toggle]").forEach((button) => {
     button.addEventListener("click", () => setDashboardView(button.dataset.viewToggle));
