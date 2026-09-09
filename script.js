@@ -990,6 +990,62 @@ function renderMarketAnalysis(marketKey) {
   });
 }
 
+const comparisonHub = {
+  prices: {
+    description: "Comparable MSRP across five existing Dark Horse variants.",
+    takeaway: "U.K. variants carry the highest USD-equivalent prices in this comparison.",
+    visual: () => `<div class="hub-price-chart">${priceComparisons.map((item) => `<button data-hub-item="${item.country}" style="--bar:${item.value / 1000}%"><span>${item.market}</span><i><b></b></i><strong>${formatUsd(item.value)}</strong></button>`).join("")}</div>`,
+    details: {
+      usa: ["United States", "Domestic pricing benchmark", "$62,230 standard · $66,225 Premium", "Rigid cost-plus pricing supports premium positioning, with destination charges and targeted incentives providing additional context."],
+      uk: ["United Kingdom", "Tax and regulatory pressure", "£70,740 manual · £72,740 automatic", "The approximately $94,320–$96,987 USD equivalents sit above the other markets. Environmental regulation, taxation, and consumer-value expectations shape ownership cost."],
+      kuwait: ["Kuwait", "Import and currency pressure", "KWD 22,536.50 · approximately $72,698", "Political and economic pressure, tariffs, import costs, currency movement, and consumer-value expectations influence local price perception."]
+    }
+  },
+  framework: {
+    description: "Eight shared features anchor increasing local adaptation.", takeaway: "Global identity stays fixed; localization rises in the U.K. and Kuwait.",
+    visual: () => `<div class="hub-grouped-bars">${[["usa","United States",8,3],["uk","United Kingdom",8,6],["kuwait","Kuwait",8,7]].map(([key,label,shared,local]) => `<button data-hub-item="${key}"><strong>${label}</strong><span><i style="--v:${shared / 8 * 100}%">Shared <b>${shared}</b></i><i class="local" style="--v:${local / 8 * 100}%">Localized <b>${local}</b></i></span></button>`).join("")}</div>`,
+    details: { usa:["United States","Home-market benchmark","8 shared · 3 localized","Mustang performance identity remains standardized, with fewer localized features than the two foreign markets."],uk:["United Kingdom","Compliance-led adaptation","8 shared · 6 localized","Safety, emissions compliance, right-hand-drive usability, and narrower-road needs increase local adaptation."],kuwait:["Kuwait","Climate and luxury adaptation","8 shared · 7 localized","Cooling, safety, premium trim, customization, and visual presence create the largest localized feature set discussed."] }
+  },
+  diffusion: {
+    description:"Conceptual adoption placement—never measured percentages.", takeaway:"The U.S. and Kuwait align with Early Adopters; the U.K. aligns with the Early Majority.",
+    visual:()=>`<div class="hub-continuum"><div class="continuum-line"><span>Innovators</span><span>Early Adopters</span><span>Early Majority</span><span>Late Majority</span><span>Laggards</span></div><button class="marker usa" data-hub-item="usa"><b>U.S.</b><small>Performance · Technology · Personalization</small></button><button class="marker kuwait" data-hub-item="kuwait"><b>Kuwait</b><small>Luxury · Prestige · Advanced safety</small></button><button class="marker uk" data-hub-item="uk"><b>U.K.</b><small>Safety · Compliance · Road usability</small></button><p>Conceptual research classifications, not measured sales percentages.</p></div>`,
+    details:{usa:["United States","Early Adopters","Performance · Technology · Personalization","Track capability, V8 performance, and customization support early-adopter appeal."],uk:["United Kingdom","Early Majority","Safety · Compliance · Road usability","A more cautious audience places greater weight on compliance, everyday usability, and safety."],kuwait:["Kuwait","Early Adopters","Luxury · Prestige · Advanced safety","Luxury, appearance, status, and advanced safety align the market with early adopters."]}
+  },
+  branding: {
+    description:"One global Mustang core, expressed through three local positions.",takeaway:"Heritage and performance remain common; the emphasis changes by market.",
+    visual:()=>`<div class="hub-brand"><div class="brand-core"><small>Global core</small><strong>Heritage · Performance · Innovation</strong><span>Distinctive design · Driving experience</span></div><div class="brand-routes">${[["usa","United States","Freedom-led American performance","Heritage · V8 · Freedom"],["uk","United Kingdom","Performance balanced with responsibility","Safety · Usability · Innovation"],["kuwait","Kuwait","Luxury-status performance","Luxury · Status · Power"]].map(x=>`<button data-hub-item="${x[0]}"><small>${x[1]}</small><strong>${x[2]}</strong><span>${x[3]}</span></button>`).join("")}</div></div>`,
+    details:{usa:["United States","Freedom-led performance","Heritage · V8 · Personal expression","American car culture, open-road excitement, aggressive styling, and raw V8 power lead the expression."],uk:["United Kingdom","Responsible performance","Performance · Safety · Road usability","Power and individuality are balanced with responsibility, controllable sound, safety, and practical road use."],kuwait:["Kuwait","Prestige-led performance","Luxury · Status · Power · Safety","Speed, durability, visual upgrades, premium presence, and advanced safety shape a status-oriented expression."]}
+  },
+  pricingDrivers: {
+    description:"Categorical pricing pressures—Applicable, Not Emphasized, or Not Assessed.",takeaway:"The U.K. is regulation-led; Kuwait carries broader macroeconomic and import pressure.",
+    visual:()=>makeHubMatrix(["Political","Economic","Import","Currency","Environmental","Taxation","Consumer value"],{usa:["na","na","na","na","na","na","na"],uk:["no","no","no","no","yes","yes","yes"],kuwait:["yes","yes","yes","yes","no","no","yes"]}),
+    details:{usa:["United States","Domestic benchmark","Foreign-market pressures not assessed","The project uses U.S. prices as the domestic benchmark rather than evaluating foreign-market political, import, currency, regulatory, and tax pressure."],uk:["United Kingdom","Regulation and ownership cost","Environmental · Taxation · Consumer value","CO₂ regulation, first-year road tax, annual charges, and environmental expectations affect cost and value perception."],kuwait:["Kuwait","Macroeconomic and import pressure","Political · Economic · Import · Currency · Consumer value","Gridlock, spending, oil prices, tariffs, import costs, and currency movement affect purchasing power and perceived value."]}
+  },
+  production: {description:"Strategy options with counts of benefits discussed—not performance ratings.",takeaway:"Foreign assembly is presented as a possibility, not a claim about current production.",visual:()=>makeCountCards([["usa","United States","Export from U.S.",3],["uk","United Kingdom","Potential local assembly",5],["kuwait","Kuwait","Potential local assembly",5]],5),details:{usa:["United States","Export from U.S.","3 discussed benefits","Quality control, brand consistency, and lower initial foreign-production investment support export."],uk:["United Kingdom","Potential local assembly","5 discussed benefits","Regional suppliers, consumer insight, operational efficiency, and local alignment are the main possibilities discussed."],kuwait:["Kuwait","Potential local assembly","5 discussed benefits","Tax incentives, facilities, reduced entry barriers, and market integration are possibilities discussed in the paper."]}},
+  imc: {description:"Channel presence by market based only on tools discussed in the research.",takeaway:"The U.S. is digital and motorsport-led; Kuwait uses the broadest localized channel mix.",visual:()=>makeHubMatrix(["Digital","Social","PR","Television","CSR","Billboards","Print","Personal selling","Showroom"],{usa:["yes","yes","yes","yes","no","no","no","no","no"],uk:["no","no","no","no","yes","no","no","no","no"],kuwait:["yes","yes","no","yes","no","yes","yes","yes","yes"]},true),details:{usa:["United States","Digital + motorsport","Reach and engagement · Attention saturation","Use concise performance content, social, PR, television, creator drives, track events, and retargeting."],uk:["United Kingdom","Responsible performance","Trust and credibility · Reduced emotional appeal","CSR and environmental responsibility build trust; experiential and performance-media activity retains emotion."],kuwait:["Kuwait","Localized premium media","Local influence · Cultural localization","Arabic-first social, television, outdoor, print, personal selling, showroom, and invitation-led activity support relevance."]}},
+  logistics:{description:"Discussed operational factors and the path through each market.",takeaway:"Distance leads in the U.S.; urban access in the U.K.; port and climate exposure in Kuwait.",visual:()=>makeCountCards([["usa","United States","Transport → Distribution centers",2],["uk","United Kingdom","Congestion → Last mile → Emissions zones",3],["kuwait","Kuwait","Port → Handling → Heat exposure",3]],3),details:{usa:["United States","Scale + distance","2 discussed factors","Long-haul transport and dependence on regional distribution centers require coordinated nationwide delivery."],uk:["United Kingdom","Urban access","3 discussed factors","Narrow streets, congestion, last-mile constraints, dealership access, and emissions zones complicate delivery."],kuwait:["Kuwait","Climate + port capacity","3 discussed factors","Shuwaikh Port limitations, customs and handling delays, facility constraints, and extreme heat shape logistics."]}},
+  conclusion:{description:"Strategy synthesis across identity, adaptation, and execution.",takeaway:"Preserve identity → Adapt execution.",visual:()=>`<div class="hub-synthesis">${[["Preserve","Global Mustang performance identity"],["Adapt","Pricing · Messaging · Product features"],["Execute","Regional channels · Distribution"]].map(x=>`<div><small>${x[0]}</small><strong>${x[1]}</strong></div>`).join("<i>→</i>")}</div>`,details:{usa:["United States","Preserve the home-market halo","Performance · Heritage · Track credibility","Defend premium performance through customization, motorsport credibility, and the emotional pull of Mustang heritage."],uk:["United Kingdom","Adapt for responsible usability","Compliance · Safety · Road conditions","Retain the Mustang character while adapting ownership, product, and communication to regulation and everyday road use."],kuwait:["Kuwait","Execute a localized prestige strategy","Luxury · Climate · Local communication","Combine premium presence with climate confidence, localized media, concierge-style retail, and capable import support."]}}
+};
+
+function makeHubMatrix(rows, states, channels = false) {
+  const keys=["usa","uk","kuwait"], labels=["U.S.","U.K.","Kuwait"];
+  return `<div class="hub-matrix"><div><b>${channels?"Channel":"Driver"}</b>${labels.map(x=>`<b>${x}</b>`).join("")}</div>${rows.map((row,i)=>`<div><strong>${row}</strong>${keys.map(k=>`<button data-hub-item="${k}" data-hub-factor="${row}" class="${states[k][i]}" aria-label="${labels[keys.indexOf(k)]} ${row}: ${states[k][i]==='yes'?'Applicable':states[k][i]==='no'?'Not emphasized':'Not assessed'}"></button>`).join("")}</div>`).join("")}</div>`;
+}
+
+function makeCountCards(items,max) { return `<div class="hub-count-cards">${items.map(([key,country,label,count])=>`<button data-hub-item="${key}"><small>${country}</small><strong>${label}</strong><span><i style="--count:${count / max * 100}%"></i></span><b>${count} discussed ${count===1?'factor':'factors'}</b></button>`).join("")}</div>`; }
+
+let activeComparisonCategory="prices", activeHubItem="usa";
+function renderComparisonHub(category=activeComparisonCategory,item="usa",factor="") {
+  const data=comparisonHub[category]; if(!data)return; activeComparisonCategory=category; activeHubItem=item;
+  setText("comparison-category-description",data.description);
+  const visual=document.getElementById("comparison-visual"), insight=document.getElementById("comparison-insight");
+  if(visual){visual.classList.remove("is-ready");visual.innerHTML=`${data.visual()}<p class="hub-takeaway">${data.takeaway}</p>`;requestAnimationFrame(()=>visual.classList.add("is-ready"));}
+  const detail=data.details[item]||data.details.usa;
+  if(insight)insight.innerHTML=`<small>${factor || "Selected insight"}</small><h3>${detail[0]}</h3><strong>${detail[1]}</strong><p>${detail[2]}</p><details><summary>Explore deeper +</summary><p>${detail[3]}</p></details><a href="#country-focus" data-open-country="${item}">Open full ${detail[0]} research →</a>`;
+  document.querySelectorAll("[data-comparison-category]").forEach(b=>{const on=b.dataset.comparisonCategory===category;b.setAttribute("aria-selected",String(on));b.tabIndex=on?0:-1;});
+  document.querySelectorAll("[data-hub-item]").forEach(b=>b.classList.toggle("selected",b.dataset.hubItem===item));
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   renderPriceChart();
   renderDerivedCharts();
@@ -1012,6 +1068,27 @@ document.addEventListener("DOMContentLoaded", () => {
   renderPricingDriverPanel(activePricingDriverKey);
   setupExclusiveAccordions();
   renderMarketAnalysis("usa");
+  renderComparisonHub();
+
+  document.querySelectorAll("[data-comparison-category]").forEach((button) => {
+    button.addEventListener("click", () => renderComparisonHub(button.dataset.comparisonCategory));
+  });
+
+  document.getElementById("comparison-visual")?.addEventListener("click", (event) => {
+    const item = event.target.closest("[data-hub-item]");
+    if (item) renderComparisonHub(activeComparisonCategory, item.dataset.hubItem, item.dataset.hubFactor || "");
+  });
+
+  document.getElementById("comparison-insight")?.addEventListener("click", (event) => {
+    const link = event.target.closest("[data-open-country]");
+    if (!link) return;
+    event.preventDefault();
+    setDashboardView(link.dataset.openCountry);
+  });
+
+  document.querySelector(".full-research-hub")?.addEventListener("toggle", (event) => {
+    document.body.classList.toggle("full-research-open", event.currentTarget.open);
+  });
 
   document.querySelectorAll("[data-analysis-tab]").forEach((button) => {
     button.addEventListener("click", () => renderMarketAnalysis(button.dataset.analysisTab));
