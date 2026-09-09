@@ -74,25 +74,40 @@
             </figcaption>
           </figure>
         </section>
-        <section class="comparison-workspace" data-view="comparison" aria-labelledby="comparison-hub-title">
-          <header class="workspace-heading">
-            <div><p class="section-kicker">Market comparison hub</p><h2 id="comparison-hub-title">See the strategic difference</h2></div>
-            <p id="comparison-category-description">Comparable MSRP across five existing Dark Horse variants.</p>
-          </header>
-          <div class="comparison-category-tabs" role="tablist" aria-label="Comparison category">
-            <button type="button" role="tab" aria-selected="true" data-comparison-category="prices">Prices</button>
-            <button type="button" role="tab" aria-selected="false" data-comparison-category="framework">Framework</button>
-            <button type="button" role="tab" aria-selected="false" data-comparison-category="diffusion">Diffusion</button>
-            <button type="button" role="tab" aria-selected="false" data-comparison-category="branding">Branding</button>
-            <button type="button" role="tab" aria-selected="false" data-comparison-category="pricingDrivers">Pricing Drivers</button>
-            <button type="button" role="tab" aria-selected="false" data-comparison-category="production">Production</button>
-            <button type="button" role="tab" aria-selected="false" data-comparison-category="imc">IMC</button>
-            <button type="button" role="tab" aria-selected="false" data-comparison-category="logistics">Logistics</button>
-            <button type="button" role="tab" aria-selected="false" data-comparison-category="conclusion">Conclusion</button>
+        <section class="comparison-workspace" data-view="comparison" data-market-focus="compare" aria-labelledby="comparison-hub-title">
+          <div class="workspace-market-nav">
+            <p class="workspace-label">Market focus</p>
+            <div role="tablist" aria-label="Market focus">
+              <button type="button" role="tab" aria-selected="true" data-market-focus="compare"><i></i>Compare Markets</button>
+              <button type="button" role="tab" aria-selected="false" data-market-focus="usa"><i></i>United States</button>
+              <button type="button" role="tab" aria-selected="false" data-market-focus="uk"><i></i>United Kingdom</button>
+              <button type="button" role="tab" aria-selected="false" data-market-focus="kuwait"><i></i>Kuwait</button>
+            </div>
+            <details class="workspace-research-link"><summary>View Full Research</summary><p>Open the research archive below for the complete analysis and references.</p></details>
           </div>
-          <div class="comparison-stage">
-            <div class="comparison-visual" id="comparison-visual" role="tabpanel" aria-live="polite"></div>
-            <aside class="comparison-insight" id="comparison-insight" aria-live="polite"></aside>
+          <div class="workspace-topic-nav">
+            <p class="workspace-label">Topic</p>
+            <div role="tablist" aria-label="Comparison topic">
+              <button type="button" role="tab" aria-selected="true" data-comparison-category="prices"><i></i>Prices</button>
+              <button type="button" role="tab" aria-selected="false" data-comparison-category="framework"><i></i>Framework</button>
+              <button type="button" role="tab" aria-selected="false" data-comparison-category="diffusion"><i></i>Diffusion</button>
+              <button type="button" role="tab" aria-selected="false" data-comparison-category="branding"><i></i>Branding</button>
+              <button type="button" role="tab" aria-selected="false" data-comparison-category="pricingDrivers"><i></i>Pricing Drivers</button>
+              <button type="button" role="tab" aria-selected="false" data-comparison-category="production"><i></i>Production</button>
+              <button type="button" role="tab" aria-selected="false" data-comparison-category="imc"><i></i>IMC</button>
+              <button type="button" role="tab" aria-selected="false" data-comparison-category="logistics"><i></i>Logistics</button>
+              <button type="button" role="tab" aria-selected="false" data-comparison-category="conclusion"><i></i>Conclusion</button>
+            </div>
+          </div>
+          <div class="workspace-active">
+            <header class="workspace-heading">
+              <div><p class="section-kicker" id="workspace-focus-label">Compare Markets · Prices</p><h2 id="comparison-hub-title">See the strategic difference</h2></div>
+              <p id="comparison-category-description">Comparable MSRP across five existing Dark Horse variants.</p>
+            </header>
+            <div class="comparison-stage">
+              <div class="comparison-visual" id="comparison-visual" role="tabpanel" aria-live="polite"></div>
+              <aside class="comparison-insight" id="comparison-insight" aria-live="polite"></aside>
+            </div>
           </div>
         </section>
         <section class="market-command-center" data-view="comparison" aria-labelledby="compare-markets-title">

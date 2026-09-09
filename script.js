@@ -1034,10 +1034,12 @@ function makeHubMatrix(rows, states, channels = false) {
 
 function makeCountCards(items,max) { return `<div class="hub-count-cards">${items.map(([key,country,label,count])=>`<button data-hub-item="${key}"><small>${country}</small><strong>${label}</strong><span><i style="--count:${count / max * 100}%"></i></span><b>${count} discussed ${count===1?'factor':'factors'}</b></button>`).join("")}</div>`; }
 
-let activeComparisonCategory="prices", activeHubItem="usa";
+let activeComparisonCategory="prices", activeHubItem="usa", activeMarketFocus="compare";
 function renderComparisonHub(category=activeComparisonCategory,item="usa",factor="") {
   const data=comparisonHub[category]; if(!data)return; activeComparisonCategory=category; activeHubItem=item;
   setText("comparison-category-description",data.description);
+  const focusLabel = activeMarketFocus === "compare" ? "Compare Markets" : markets[activeMarketFocus].title;
+  setText("workspace-focus-label", `${focusLabel} · ${comparisonCategoryLabels[category]}`);
   const visual=document.getElementById("comparison-visual"), insight=document.getElementById("comparison-insight");
   if(visual){visual.classList.remove("is-ready");visual.innerHTML=`${data.visual()}<p class="hub-takeaway">${data.takeaway}</p>`;requestAnimationFrame(()=>visual.classList.add("is-ready"));}
   const detail=data.details[item]||data.details.usa;
@@ -1045,6 +1047,29 @@ function renderComparisonHub(category=activeComparisonCategory,item="usa",factor
   document.querySelectorAll("[data-comparison-category]").forEach(b=>{const on=b.dataset.comparisonCategory===category;b.setAttribute("aria-selected",String(on));b.tabIndex=on?0:-1;});
   document.querySelectorAll("[data-hub-item]").forEach(b=>b.classList.toggle("selected",b.dataset.hubItem===item));
 }
+
+function setMarketFocus(focus) {
+  if (!["compare", "usa", "uk", "kuwait"].includes(focus)) return;
+  activeMarketFocus = focus;
+  const workspace = document.querySelector(".comparison-workspace");
+  if (workspace) workspace.dataset.marketFocus = focus;
+  const label = focus === "compare" ? "Compare Markets" : markets[focus].title;
+  setText("workspace-focus-label", `${label} · ${comparisonCategoryLabels[activeComparisonCategory]}`);
+  document.querySelectorAll("[data-market-focus]").forEach((button) => {
+    if (!button.matches("button")) return;
+    const active = button.dataset.marketFocus === focus;
+    button.setAttribute("aria-selected", String(active));
+  });
+  document.querySelectorAll("[data-view-toggle]").forEach((button) => {
+    const key = button.dataset.viewToggle;
+    const active = key === focus;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+  renderComparisonHub(activeComparisonCategory, focus === "compare" ? activeHubItem : focus);
+}
+
+const comparisonCategoryLabels = { prices:"Prices", framework:"Framework", diffusion:"Diffusion", branding:"Branding", pricingDrivers:"Pricing Drivers", production:"Production", imc:"IMC", logistics:"Logistics", conclusion:"Conclusion" };
 
 document.addEventListener("DOMContentLoaded", () => {
   renderPriceChart();
@@ -1071,19 +1096,26 @@ document.addEventListener("DOMContentLoaded", () => {
   renderComparisonHub();
 
   document.querySelectorAll("[data-comparison-category]").forEach((button) => {
-    button.addEventListener("click", () => renderComparisonHub(button.dataset.comparisonCategory));
+    button.addEventListener("click", () => renderComparisonHub(button.dataset.comparisonCategory, activeMarketFocus === "compare" ? "usa" : activeMarketFocus));
+  });
+
+  document.querySelectorAll("button[data-market-focus]").forEach((button) => {
+    button.addEventListener("click", () => setMarketFocus(button.dataset.marketFocus));
   });
 
   document.getElementById("comparison-visual")?.addEventListener("click", (event) => {
     const item = event.target.closest("[data-hub-item]");
-    if (item) renderComparisonHub(activeComparisonCategory, item.dataset.hubItem, item.dataset.hubFactor || "");
+    if (item) {
+      const selectedItem = activeMarketFocus === "compare" ? item.dataset.hubItem : activeMarketFocus;
+      renderComparisonHub(activeComparisonCategory, selectedItem, item.dataset.hubFactor || "");
+    }
   });
 
   document.getElementById("comparison-insight")?.addEventListener("click", (event) => {
     const link = event.target.closest("[data-open-country]");
     if (!link) return;
     event.preventDefault();
-    setDashboardView(link.dataset.openCountry);
+    setMarketFocus(link.dataset.openCountry);
   });
 
   document.querySelector(".full-research-hub")?.addEventListener("toggle", (event) => {
@@ -1103,7 +1135,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.querySelectorAll("[data-view-toggle]").forEach((button) => {
-    button.addEventListener("click", () => setDashboardView(button.dataset.viewToggle));
+    button.addEventListener("click", () => setMarketFocus(button.dataset.viewToggle));
   });
 
   window.addEventListener("popstate", () => setDashboardView(viewFromHash(), { skipHash: true, skipScroll: true }));
