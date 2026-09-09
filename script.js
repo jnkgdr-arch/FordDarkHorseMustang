@@ -1008,7 +1008,7 @@ const comparisonHub = {
   },
   diffusion: {
     description:"Conceptual adoption placement—never measured percentages.", takeaway:"The U.S. and Kuwait align with Early Adopters; the U.K. aligns with the Early Majority.",
-    visual:()=>`<div class="hub-continuum"><div class="continuum-line"><span>Innovators</span><span>Early Adopters</span><span>Early Majority</span><span>Late Majority</span><span>Laggards</span></div><button class="marker usa" data-hub-item="usa"><b>U.S.</b><small>Performance · Technology · Personalization</small></button><button class="marker kuwait" data-hub-item="kuwait"><b>Kuwait</b><small>Luxury · Prestige · Advanced safety</small></button><button class="marker uk" data-hub-item="uk"><b>U.K.</b><small>Safety · Compliance · Road usability</small></button><p>Conceptual research classifications, not measured sales percentages.</p></div>`,
+    visual:()=>`<div class="hub-continuum"><div class="continuum-line"><span>Innovators</span><span>Early Adopters</span><span>Early Majority</span><span>Late Majority</span><span>Laggards</span></div><button class="marker usa" data-hub-item="usa"><b>U.S.</b><small>Performance · Technology · Personalization</small></button><button class="marker kuwait" data-hub-item="kuwait"><b>Kuwait</b><small>Luxury · Prestige · Advanced safety</small></button><button class="marker uk" data-hub-item="uk"><b>U.K.</b><small>Safety · Compliance · Road usability</small></button><p>The adoption stages are conceptual research classifications and do not represent measured adoption percentages or actual sales volume.</p></div>`,
     details:{usa:["United States","Early Adopters","Performance · Technology · Personalization","Track capability, V8 performance, and customization support early-adopter appeal."],uk:["United Kingdom","Early Majority","Safety · Compliance · Road usability","A more cautious audience places greater weight on compliance, everyday usability, and safety."],kuwait:["Kuwait","Early Adopters","Luxury · Prestige · Advanced safety","Luxury, appearance, status, and advanced safety align the market with early adopters."]}
   },
   branding: {
@@ -1034,39 +1034,52 @@ function makeHubMatrix(rows, states, channels = false) {
 
 function makeCountCards(items,max) { return `<div class="hub-count-cards">${items.map(([key,country,label,count])=>`<button data-hub-item="${key}"><small>${country}</small><strong>${label}</strong><span><i style="--count:${count / max * 100}%"></i></span><b>${count} discussed ${count===1?'factor':'factors'}</b></button>`).join("")}</div>`; }
 
+const productionBenefits = {
+  usa:["Maintains quality control","Preserves brand consistency","Limits initial foreign-production investment"],
+  uk:["Potentially lower labor and logistics costs","Direct access to regional suppliers","Improved consumer insights","More efficient operations","Better alignment with local preferences"],
+  kuwait:["Possible tax breaks","Government incentives","Access to assembly facilities","Reduced entry barriers","Greater market integration"]
+};
+function getDeepContext(category, marketKey) {
+  const sources={prices:"price",framework:"features",diffusion:"adoption",branding:"branding",pricingDrivers:"pricingDrivers",production:"production",imc:"imc",logistics:"logistics"};
+  if(category==="production") return productionBenefits[marketKey];
+  if(category==="conclusion") return [comparisonHub.conclusion.details[marketKey][3]];
+  return countryFocusData[marketKey]?.[sources[category]] || [];
+}
 let activeComparisonCategory="prices", activeHubItem="usa", activeMarketFocus="compare";
 function renderComparisonHub(category=activeComparisonCategory,item="usa",factor="") {
   const data=comparisonHub[category]; if(!data)return; activeComparisonCategory=category; activeHubItem=item;
-  const focusLabel = activeMarketFocus === "compare" ? "Compare Markets" : markets[activeMarketFocus].title;
+  const focusLabel = activeMarketFocus === "compare" || activeMarketFocus === "risks" ? "Compare Markets" : markets[activeMarketFocus]?.title || "Market Analysis";
   setText("workspace-focus-label", `${focusLabel} · ${comparisonCategoryLabels[category]}`);
   const visual=document.getElementById("comparison-visual"), insight=document.getElementById("comparison-insight");
   const detail=data.details[item]||data.details.usa;
-  setText("comparison-category-description", activeMarketFocus === "compare" ? data.description : detail[2]);
+  setText("comparison-category-description", ["compare","risks"].includes(activeMarketFocus) ? data.description : detail[2]);
   if (visual) {
     visual.classList.remove("is-ready");
-    const individualConclusion = activeMarketFocus !== "compare" && category === "conclusion";
+    const individualConclusion = !["compare","risks"].includes(activeMarketFocus) && category === "conclusion";
     visual.innerHTML = individualConclusion
       ? `<div class="country-only-synthesis"><small>${detail[0]}</small><strong>${detail[1]}</strong><span>${detail[2]}</span></div><p class="hub-takeaway">${detail[3]}</p>`
-      : `${data.visual()}<p class="hub-takeaway">${activeMarketFocus === "compare" ? data.takeaway : detail[1]}</p>`;
-    if (activeMarketFocus !== "compare") {
+      : `${data.visual()}<p class="hub-takeaway">${["compare","risks"].includes(activeMarketFocus) ? data.takeaway : detail[1]}</p>`;
+    if (!["compare","risks"].includes(activeMarketFocus)) {
       visual.querySelectorAll(`[data-hub-item]:not([data-hub-item="${activeMarketFocus}"])`).forEach((node) => node.remove());
       visual.classList.add("country-isolated");
     } else visual.classList.remove("country-isolated");
     requestAnimationFrame(()=>visual.classList.add("is-ready"));
   }
-  if(insight)insight.innerHTML=`<small>${factor || "Selected insight"}</small><h3>${detail[0]}</h3><strong>${detail[1]}</strong><p>${detail[2]}</p><details><summary>Explore deeper +</summary><p>${detail[3]}</p></details><a href="#country-focus" data-open-country="${item}">Open full ${detail[0]} research →</a>`;
+  const deepItems=getDeepContext(category,item);
+  if(insight)insight.innerHTML=`<small>${factor || "Selected insight"}</small><h3>${detail[0]}</h3><strong>${detail[1]}</strong><p>${detail[2]}</p><details><summary>Explore deeper +</summary><p>${detail[3]}</p>${deepItems.length?`<ul>${deepItems.map(point=>`<li>${point}</li>`).join("")}</ul>`:""}</details>`;
   document.querySelectorAll("[data-comparison-category]").forEach(b=>{const on=b.dataset.comparisonCategory===category;b.setAttribute("aria-selected",String(on));b.tabIndex=on?0:-1;});
   document.querySelectorAll("[data-hub-item]").forEach(b=>b.classList.toggle("selected",b.dataset.hubItem===item));
 }
 
 function setMarketFocus(focus) {
-  if (!["compare", "usa", "uk", "kuwait", "research"].includes(focus)) return;
+  if (!["compare", "usa", "uk", "kuwait", "research", "risks"].includes(focus)) return;
   activeMarketFocus = focus;
   const workspace = document.querySelector(".comparison-workspace");
   if (workspace) workspace.dataset.marketFocus = focus;
-  const label = focus === "compare" ? "Compare Markets" : focus === "research" ? "Strategy & Research" : markets[focus].title;
-  if (focus === "research") { setResearchMode(true); renderResearchWorkspace(activeResearchCategory); }
-  else { setResearchMode(false); setText("workspace-focus-label", `${label} · ${comparisonCategoryLabels[activeComparisonCategory]}`); }
+  const label = focus === "compare" ? "Compare Markets" : focus === "research" ? "Strategy & Research" : focus === "risks" ? "Risk, Constraints & Challenges" : markets[focus].title;
+  if (focus === "research") { setContextMode("research"); renderResearchWorkspace(activeResearchCategory); }
+  else if (focus === "risks") { setContextMode("risks"); renderRiskWorkspace(activeRiskCategory); }
+  else { setContextMode("market"); setText("workspace-focus-label", `${label} · ${comparisonCategoryLabels[activeComparisonCategory]}`); }
   document.querySelectorAll("[data-market-focus]").forEach((button) => {
     if (!button.matches("button")) return;
     const active = button.dataset.marketFocus === focus;
@@ -1078,31 +1091,51 @@ function setMarketFocus(focus) {
     button.classList.toggle("active", active);
     button.setAttribute("aria-pressed", String(active));
   });
-  if (focus !== "research") renderComparisonHub(activeComparisonCategory, focus === "compare" ? activeHubItem : focus);
+  if (!["research","risks"].includes(focus)) renderComparisonHub(activeComparisonCategory, focus === "compare" ? activeHubItem : focus);
 }
 
+const researchReferences = ["Ford U.K., “All-New Ford Mustang: 5L V8 Sportscar”", "Alsalfiti and Notteboom’s 2025 research on Shuwaikh Port", "BestSellingCars/Statista Kuwait market-share data", "“Competing Effectively Through Global Marketing, Distribution, and Supply-Chain Management”", "Ford Alghanim, “Ford Mustang Dark Horse”", "AP News reporting by Jon Gambrell on tariffs and falling oil prices", "AP News reporting on Kuwait’s political gridlock", "Ford’s 2025 Mustang pricing and model pages"];
+const researchRecommendations = [
+  ["Product Adaptation","Handling, appearance & track packages",markets.usa.sections.product],
+  ["Pricing Strategy","Premium pricing & ownership incentives",markets.usa.sections.pricing],
+  ["Branding","Modern, precise American performance",markets.usa.sections.branding],
+  ["IMC","Motorsport-led integrated communications",markets.usa.sections.imc],
+  ["Logistics","Certified distribution & parts readiness",markets.usa.sections.logistics],
+  ["Market Drivers","Heritage, scarcity & enthusiast demand",markets.usa.sections.drivers]
+];
+let activeRiskCategory = "imc";
 let activeResearchCategory = "recommendations";
-function setResearchMode(enabled) {
-  document.querySelector(".workspace-topic-nav > div[aria-label='Comparison topic']")?.toggleAttribute("hidden", enabled);
-  document.querySelector(".research-topic-list")?.toggleAttribute("hidden", !enabled);
-  document.querySelector(".comparison-workspace")?.classList.toggle("is-research-mode", enabled);
+function setContextMode(mode) {
+  document.querySelector(".workspace-topic-nav > div[aria-label='Comparison topic']")?.toggleAttribute("hidden", mode !== "market");
+  document.querySelector(".research-topic-list")?.toggleAttribute("hidden", mode !== "research");
+  document.querySelector(".risk-topic-list")?.toggleAttribute("hidden", mode !== "risks");
+  const workspace=document.querySelector(".comparison-workspace");
+  workspace?.classList.toggle("is-research-mode", mode === "research");
+  workspace?.classList.toggle("is-risk-mode", mode === "risks");
 }
 function renderResearchWorkspace(category) {
   activeResearchCategory = category;
   const visual = document.getElementById("comparison-visual"), insight = document.getElementById("comparison-insight");
-  const labels = { recommendations:"Strategic Recommendations", basis:"Research Basis", full:"Full Research", references:"References" };
+  const labels = { recommendations:"Strategic Recommendations", framework:"Global Strategy Framework", references:"Research & References" };
   setText("workspace-focus-label", `Strategy & Research · ${labels[category]}`);
   setText("comparison-category-description", "Supporting strategy, methodology, and source material.");
   document.querySelectorAll("[data-research-category]").forEach((button) => button.setAttribute("aria-selected", String(button.dataset.researchCategory === category)));
   if (insight) insight.innerHTML = `<small>Supporting layer</small><h3>${labels[category]}</h3><strong>Research depth on demand</strong><p>The executive market workspace remains separate from the complete supporting material.</p>`;
   if (!visual) return;
   if (category === "recommendations") {
-    const cards = [...document.querySelectorAll(".recommendation-accordion")].map((item,index) => `<details class="research-rec"><summary><b>0${index+1}</b><span>${item.querySelector("summary strong")?.textContent}<small>${item.querySelector("summary small")?.textContent}</small></span><i>+</i></summary><p>${item.querySelector(".recommendation-full-text")?.textContent}</p></details>`).join("");
+    const cards = researchRecommendations.map((item,index) => `<button type="button" class="research-rec" data-research-rec="${index}"><b>0${index+1}</b><span>${item[0]}<small>${item[1]}</small></span><i>+</i></button>`).join("");
     visual.innerHTML = `<div class="research-recommendations">${cards}</div>`;
-  } else if (category === "basis") visual.innerHTML = `<div class="research-basis-visual"><div><b>01</b><strong>Standardization</strong><span>Eight shared global features</span></div><i>→</i><div><b>02</b><strong>Adaptation</strong><span>Market-specific product and execution</span></div><i>→</i><div><b>03</b><strong>Interpretation</strong><span>Conceptual classifications, not invented scores</span></div></div><p class="hub-takeaway">The research combines quantitative comparisons with qualitative strategic frameworks.</p>`;
-  else if (category === "full") visual.innerHTML = `<div class="open-research-panel"><strong>Complete project research</strong><p>Access every detailed section, chart, table, recommendation, conclusion, and reference.</p><button type="button" data-open-full-research>Open Full Research</button></div>`;
-  else { const references=document.querySelector(".references-section ul")?.innerHTML||""; visual.innerHTML=`<div class="workspace-references"><ul>${references}</ul></div>`; }
+  } else if (category === "framework") visual.innerHTML = `<div class="research-basis-visual"><div><b>01</b><strong>Global Mustang Identity</strong><span>Heritage · Performance · Innovation</span></div><i>→</i><div><b>02</b><strong>Local Market Adaptation</strong><span>Product · Safety · Pricing · Promotion</span></div><i>→</i><div><b>03</b><strong>Regional Relevance</strong><span>Execution aligned to market expectations</span></div></div><p class="hub-takeaway">One recognizable Mustang identity is adapted for regional relevance.</p>`;
+  else visual.innerHTML=`<div class="research-foundation"><strong>Research foundation</strong><span>Official Ford product and pricing material · academic supply-chain research · market data · news reporting</span></div><div class="workspace-references"><ul>${researchReferences.map(item=>`<li>${item}</li>`).join("")}</ul></div>`;
   visual.classList.add("is-ready");
+}
+
+function renderRiskWorkspace(category) {
+  activeRiskCategory=category;
+  activeComparisonCategory=category;
+  document.querySelectorAll("[data-risk-category]").forEach(button=>button.setAttribute("aria-selected",String(button.dataset.riskCategory===category)));
+  renderComparisonHub(category,"usa");
+  setText("workspace-focus-label", category === "imc" ? "Risks · Global IMC Constraints and Communication Tools" : "Risks · Global Logistics Challenges");
 }
 
 const comparisonCategoryLabels = { prices:"Prices", framework:"Framework", diffusion:"Diffusion", branding:"Branding", pricingDrivers:"Pricing Drivers", production:"Production", imc:"IMC", logistics:"Logistics", conclusion:"Conclusion" };
@@ -1140,13 +1173,17 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.querySelectorAll("[data-research-category]").forEach((button) => button.addEventListener("click", () => renderResearchWorkspace(button.dataset.researchCategory)));
-  document.getElementById("comparison-visual")?.addEventListener("click", (event) => {
-    if (!event.target.closest("[data-open-full-research]")) return;
-    const archive=document.querySelector(".full-research-hub"); if(archive) archive.open=true;
-    archive?.scrollIntoView({behavior:"smooth",block:"start"});
-  });
+  document.querySelectorAll("[data-risk-category]").forEach((button) => button.addEventListener("click", () => renderRiskWorkspace(button.dataset.riskCategory)));
+
 
   document.getElementById("comparison-visual")?.addEventListener("click", (event) => {
+    const rec = event.target.closest("[data-research-rec]");
+    if (rec) {
+      const data=researchRecommendations[Number(rec.dataset.researchRec)];
+      document.querySelectorAll("[data-research-rec]").forEach(node=>node.classList.toggle("selected",node===rec));
+      document.getElementById("comparison-insight").innerHTML=`<small>Recommendation rationale</small><h3>${data[0]}</h3><strong>${data[1]}</strong><p>${data[2]}</p>`;
+      return;
+    }
     const item = event.target.closest("[data-hub-item]");
     if (item) {
       const selectedItem = activeMarketFocus === "compare" ? item.dataset.hubItem : activeMarketFocus;
@@ -1161,9 +1198,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setMarketFocus(link.dataset.openCountry);
   });
 
-  document.querySelector(".full-research-hub")?.addEventListener("toggle", (event) => {
-    document.body.classList.toggle("full-research-open", event.currentTarget.open);
-  });
+
 
   document.querySelectorAll("[data-analysis-tab]").forEach((button) => {
     button.addEventListener("click", () => renderMarketAnalysis(button.dataset.analysisTab));
