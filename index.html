@@ -26,30 +26,9 @@
         <strong>Mustang Dark Horse Strategy · Product × Price × Brand × Channel</strong>
       </a>
 
-      <nav class="site-view-selector" aria-label="Dashboard view selector">
-        <button type="button" class="view-toggle active" data-view-toggle="compare" aria-pressed="true">Compare Markets</button>
-        <button type="button" class="view-toggle" data-view-toggle="usa" aria-pressed="false">United States</button>
-        <button type="button" class="view-toggle" data-view-toggle="uk" aria-pressed="false">United Kingdom</button>
-        <button type="button" class="view-toggle" data-view-toggle="kuwait" aria-pressed="false">Kuwait</button>
-      </nav>
     </header>
 
     <div class="dashboard-shell">
-      <aside class="sidebar" aria-label="Dashboard section navigation">
-        <nav class="section-nav sidebar-section-nav" aria-label="Dashboard section navigation">
-          <a href="#price-chart-title">Prices</a>
-          <a href="#recommendation-title">Recommendations</a>
-          <a href="#framework-title">Framework</a>
-          <a href="#diffusion-title">Diffusion</a>
-          <a href="#branding-title">Branding</a>
-          <a href="#pricing-drivers-title">Pricing Drivers</a>
-          <a href="#production-title">Production</a>
-          <a href="#imc-title">IMC</a>
-          <a href="#logistics-title">Logistics</a>
-          <a href="#conclusion-title">Conclusion</a>
-          <a href="#references-title">References</a>
-        </nav>
-      </aside>
 
       <main class="main-panel">
         <p id="matrix-live-region" class="sr-only" aria-live="polite"></p>
@@ -83,7 +62,8 @@
               <button type="button" role="tab" aria-selected="false" data-market-focus="uk"><i></i>United Kingdom</button>
               <button type="button" role="tab" aria-selected="false" data-market-focus="kuwait"><i></i>Kuwait</button>
             </div>
-            <details class="workspace-research-link"><summary>View Full Research</summary><p>Open the research archive below for the complete analysis and references.</p></details>
+            <div class="workspace-mode-separator"></div>
+            <button type="button" role="tab" aria-selected="false" data-market-focus="research"><i></i>Strategy &amp; Research</button>
           </div>
           <div class="workspace-topic-nav">
             <p class="workspace-label">Topic</p>
@@ -98,6 +78,12 @@
               <button type="button" role="tab" aria-selected="false" data-comparison-category="logistics"><i></i>Logistics</button>
               <button type="button" role="tab" aria-selected="false" data-comparison-category="conclusion"><i></i>Conclusion</button>
             </div>
+            <div class="research-topic-list" role="tablist" aria-label="Strategy and research topic" hidden>
+              <button type="button" role="tab" aria-selected="true" data-research-category="recommendations"><i></i>Strategic Recommendations</button>
+              <button type="button" role="tab" aria-selected="false" data-research-category="basis"><i></i>Research Basis</button>
+              <button type="button" role="tab" aria-selected="false" data-research-category="full"><i></i>Full Research</button>
+              <button type="button" role="tab" aria-selected="false" data-research-category="references"><i></i>References</button>
+            </div>
           </div>
           <div class="workspace-active">
             <header class="workspace-heading">
@@ -110,30 +96,9 @@
             </div>
           </div>
         </section>
-        <section class="market-command-center" data-view="comparison" aria-labelledby="compare-markets-title">
-          <div class="command-heading">
-            <div><p class="section-kicker">Compare markets</p><h2 id="compare-markets-title">Three markets. One performance identity.</h2></div>
-            <p>Executive market priorities and the strategic implication for Ford.</p>
-          </div>
-          <div class="executive-market-grid">
-            <article data-market-row="usa"><div class="market-card-top"><span>United States</span><strong>500 hp</strong></div><h3>Performance-led home market</h3><div class="priority-tags"><span>Performance</span><span>Heritage</span><span>Personalization</span><span>Track capability</span></div><p><b>Strategy</b> Defend premium performance through heritage, customization, and track credibility.</p></article>
-            <article data-market-row="uk"><div class="market-card-top"><span>United Kingdom</span><strong>RHD</strong></div><h3>Performance with practical adaptation</h3><div class="priority-tags"><span>Safety</span><span>Compliance</span><span>Road usability</span><span>Responsibility</span></div><p><b>Strategy</b> Balance performance with regulation, everyday usability, and responsible ownership.</p></article>
-            <article data-market-row="kuwait"><div class="market-card-top"><span>Kuwait</span><strong>KWD 22,536.50</strong></div><h3>Prestige-led performance market</h3><div class="priority-tags"><span>Luxury</span><span>Status</span><span>Customization</span><span>Advanced safety</span></div><p><b>Strategy</b> Emphasize exclusivity, visual presence, localized communications, and premium ownership.</p></article>
-          </div>
-          <details class="market-analysis-disclosure research-disclosure">
-            <summary>Explore full market analysis <i aria-hidden="true">+</i></summary>
-            <div class="market-analysis-tabs" role="tablist" aria-label="Full market analysis">
-              <button type="button" role="tab" aria-selected="true" data-analysis-tab="usa" aria-controls="market-analysis-panel">United States</button>
-              <button type="button" role="tab" aria-selected="false" data-analysis-tab="uk" aria-controls="market-analysis-panel">United Kingdom</button>
-              <button type="button" role="tab" aria-selected="false" data-analysis-tab="kuwait" aria-controls="market-analysis-panel">Kuwait</button>
-            </div>
-            <div id="market-analysis-panel" class="market-analysis-panel" role="tabpanel" tabindex="0"></div>
-          </details>
-        </section>
         <details class="full-research-hub" data-view="comparison">
           <summary><span><small>Research archive</small><strong>Full Research / Detailed Analysis</strong></span><b>Explore all evidence +</b></summary>
-          <nav aria-label="Full research topics"><a href="#price-chart-title">Prices</a><a href="#recommendation-title">Recommendations</a><a href="#framework-title">Framework</a><a href="#diffusion-title">Diffusion</a><a href="#branding-title">Branding</a><a href="#pricing-drivers-title">Pricing Drivers</a><a href="#production-title">Production</a><a href="#imc-title">IMC</a><a href="#logistics-title">Logistics</a><a href="#conclusion-title">Conclusion</a></nav>
-          <p>Open a topic, then use its research control to access the complete supporting analysis.</p>
+          <p>The complete original analysis, tables, visualizations, conclusions, and references appear below when this archive is opened.</p>
         </details>
         <section class="country-hero" data-view="country" hidden aria-label="Selected market dashboard summary">
         <header class="hero-header">
